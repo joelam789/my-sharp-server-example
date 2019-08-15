@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.GameServer", "MiniBaccarat.GameServer\MiniBaccarat.GameServer.csproj", "{E4B672D3-FB54-456C-ADE1-63B78AC316CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.GameServer.Service", "MiniBaccarat.GameServer.Service\MiniBaccarat.GameServer.Service.csproj", "{AA5CDC54-B624-4C3F-AACC-CF9FAEE863FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.TableController", "MiniBaccarat.TableController\MiniBaccarat.TableController.csproj", "{4915BC85-418A-459E-AA13-85B0D2BC2B5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.TableController.Dealing", "MiniBaccarat.TableController.Dealing\MiniBaccarat.TableController.Dealing.csproj", "{1C5F1F58-181C-47CF-ACA1-A6395A72725A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.FrontEndServer", "MiniBaccarat.FrontEndServer\MiniBaccarat.FrontEndServer.csproj", "{63B5E88E-9C3B-4048-A539-A2617CCE1300}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.FrontEndServer.TableInfo", "MiniBaccarat.FrontEndServer.TableInfo\MiniBaccarat.FrontEndServer.TableInfo.csproj", "{996A3D2D-236F-4411-A5C0-0D21DEBD770C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.SimpleClient", "MiniBaccarat.SimpleClient\MiniBaccarat.SimpleClient.csproj", "{9DCF3F14-9152-4B52-9ACA-20BDF7F167BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BetServer", "MiniBaccarat.BetServer\MiniBaccarat.BetServer.csproj", "{A6B72B83-B332-4B28-9245-8419FCBF4DEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BetServer.Betting", "MiniBaccarat.BetServer.Betting\MiniBaccarat.BetServer.Betting.csproj", "{21E3FA4F-2C28-49BC-9DFD-8066C59E1A31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.FrontEndServer.BetResult", "MiniBaccarat.FrontEndServer.BetResult\MiniBaccarat.FrontEndServer.BetResult.csproj", "{BA0A818D-E2B2-4FD8-B651-DBC3431E08B4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4B672D3-FB54-456C-ADE1-63B78AC316CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4B672D3-FB54-456C-ADE1-63B78AC316CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4B672D3-FB54-456C-ADE1-63B78AC316CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4B672D3-FB54-456C-ADE1-63B78AC316CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA5CDC54-B624-4C3F-AACC-CF9FAEE863FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA5CDC54-B624-4C3F-AACC-CF9FAEE863FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA5CDC54-B624-4C3F-AACC-CF9FAEE863FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA5CDC54-B624-4C3F-AACC-CF9FAEE863FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4915BC85-418A-459E-AA13-85B0D2BC2B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4915BC85-418A-459E-AA13-85B0D2BC2B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4915BC85-418A-459E-AA13-85B0D2BC2B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4915BC85-418A-459E-AA13-85B0D2BC2B5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C5F1F58-181C-47CF-ACA1-A6395A72725A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C5F1F58-181C-47CF-ACA1-A6395A72725A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C5F1F58-181C-47CF-ACA1-A6395A72725A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C5F1F58-181C-47CF-ACA1-A6395A72725A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63B5E88E-9C3B-4048-A539-A2617CCE1300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63B5E88E-9C3B-4048-A539-A2617CCE1300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63B5E88E-9C3B-4048-A539-A2617CCE1300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63B5E88E-9C3B-4048-A539-A2617CCE1300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{996A3D2D-236F-4411-A5C0-0D21DEBD770C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{996A3D2D-236F-4411-A5C0-0D21DEBD770C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{996A3D2D-236F-4411-A5C0-0D21DEBD770C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{996A3D2D-236F-4411-A5C0-0D21DEBD770C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DCF3F14-9152-4B52-9ACA-20BDF7F167BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DCF3F14-9152-4B52-9ACA-20BDF7F167BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DCF3F14-9152-4B52-9ACA-20BDF7F167BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DCF3F14-9152-4B52-9ACA-20BDF7F167BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6B72B83-B332-4B28-9245-8419FCBF4DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B72B83-B332-4B28-9245-8419FCBF4DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B72B83-B332-4B28-9245-8419FCBF4DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B72B83-B332-4B28-9245-8419FCBF4DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21E3FA4F-2C28-49BC-9DFD-8066C59E1A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21E3FA4F-2C28-49BC-9DFD-8066C59E1A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21E3FA4F-2C28-49BC-9DFD-8066C59E1A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21E3FA4F-2C28-49BC-9DFD-8066C59E1A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA0A818D-E2B2-4FD8-B651-DBC3431E08B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA0A818D-E2B2-4FD8-B651-DBC3431E08B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA0A818D-E2B2-4FD8-B651-DBC3431E08B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA0A818D-E2B2-4FD8-B651-DBC3431E08B4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {201D53DE-F834-46A8-9141-E0D836A8DAEA}
+	EndGlobalSection
+EndGlobal
