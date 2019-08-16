@@ -181,8 +181,8 @@ namespace MiniBaccarat.FrontEndServer.BetResult
                     Console.WriteLine("FES Send-Bet-Result Error - " + ex.ToString());
                 }
             }
-            
 
+            if (betResults.Count > 0) m_Logger.Info("Sent bet results - " + betResults.Count);
         }
     }
 }

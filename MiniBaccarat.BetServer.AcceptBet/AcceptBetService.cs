@@ -6,25 +6,26 @@ using System.Threading.Tasks;
 
 using MySharpServer.Common;
 
-namespace MiniBaccarat.BetServer.Betting
+namespace MiniBaccarat.BetServer.AcceptBet
 {
-    [Access(Name = "betting")]
-    public class BetService
+    [Access(Name = "accept-bet")]
+    public class AcceptBetService
     {
-        BetChecker m_BetCheck = null;
+        IServerNode m_Node = null;
+        BetCollector m_BetCollector = null;
 
         [Access(Name = "on-load", IsLocal = true)]
         public async Task<string> Load(IServerNode node)
         {
             //System.Diagnostics.Debugger.Break();
 
-            if (m_BetCheck == null) m_BetCheck = new BetChecker(node);
+            m_Node = node;
+
+            if (m_BetCollector == null) m_BetCollector = new BetCollector(node);
 
             await Task.Delay(50);
-            if (m_BetCheck != null) m_BetCheck.Start();
-            await Task.Delay(50);
 
-            node.GetLogger().Info(this.GetType().Name + " service started");
+            m_Node.GetLogger().Info(this.GetType().Name + " service started");
 
             return "";
         }
@@ -35,22 +36,21 @@ namespace MiniBaccarat.BetServer.Betting
             //System.Diagnostics.Debugger.Break();
 
             await Task.Delay(100);
-            if (m_BetCheck != null)
+            if (m_BetCollector != null)
             {
-                m_BetCheck.Stop();
-                m_BetCheck = null;
+                m_BetCollector = null;
             }
             await Task.Delay(100);
 
             return "";
         }
 
-        [Access(Name = "place-bet")]
-        public async Task PlaceBet(RequestContext ctx)
+        [Access(Name = "accept")]
+        public async Task AcceptBet(RequestContext ctx)
         {
             //System.Diagnostics.Debugger.Break();
 
-            if (m_BetCheck == null)
+            if (m_BetCollector == null)
             {
                 await ctx.Session.Send("Service not available");
                 return;
@@ -65,7 +65,11 @@ namespace MiniBaccarat.BetServer.Betting
 
             dynamic betreq = ctx.JsonCodec.ToJsonObject(betstr);
 
-            var reply = m_BetCheck.AcceptBet(betreq);
+            var reply = m_BetCollector.AcceptBet(betreq);
+
+            if (reply.error_code == 0)
+                ctx.Logger.Info("BET - [" + betreq.round_number + "], " + betreq.bet_pool + " , " + betreq.bet_amount);
+
             await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
 
         }

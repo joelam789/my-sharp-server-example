@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MiniBaccarat.BetServer.Betting")]
+[assembly: AssemblyTitle("MiniBaccarat.BetServer.CheckBet")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MiniBaccarat.BetServer.Betting")]
+[assembly: AssemblyProduct("MiniBaccarat.BetServer.CheckBet")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("21e3fa4f-2c28-49bc-9dfd-8066c59e1a31")]
+[assembly: Guid("692b92de-551e-4dd3-9585-215859c86d0f")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -143,7 +143,7 @@ namespace MiniBaccarat.SimpleClient
 
         private async void btnPlaceBet_Click(object sender, EventArgs e)
         {
-            var url = m_BettingServerURL + "/betting/place-bet";
+            var url = m_BettingServerURL + "/accept-bet/accept";
             var req = new
             {
                 server_code = edtGameServer.Text,

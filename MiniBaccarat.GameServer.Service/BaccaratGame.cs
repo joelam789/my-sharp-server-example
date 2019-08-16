@@ -106,9 +106,9 @@ namespace MiniBaccarat.GameServer.Service
 
         private string m_MainCache = "SharpNode";
 
-        public static readonly int GET_READY_COUNTDOWN = 2;
-        public static readonly int BET_TIME_COUNTDOWN = 5;
-        public static readonly int MAX_HIST_LENGTH = 20;
+        public static readonly int GET_READY_COUNTDOWN = 3;
+        public static readonly int BET_TIME_COUNTDOWN = 8;
+        public static readonly int MAX_HIST_LENGTH = 10;
 
         public int PlayerPoints { get; private set; } = -1;
         public int BankerPoints { get; private set; } = -1;
@@ -302,7 +302,7 @@ namespace MiniBaccarat.GameServer.Service
             }
         }
 
-        public void GameLoop()
+        public async Task GameLoop()
         {
             switch (m_GameState)
             {
@@ -330,19 +330,19 @@ namespace MiniBaccarat.GameServer.Service
                     CountingPoints();
                     break;
                 case (GAME_STATUS.OutputGameResult):
-                    OutputGameResult();
+                    await OutputGameResult();
                     break;
             }
             
         }
 
-        private void Tick(object param)
+        private async void Tick(object param)
         {
             if (m_IsRunningGameLoop) return;
             m_IsRunningGameLoop = true;
             try
             {
-                GameLoop();
+                await GameLoop();
             }
             catch (Exception ex)
             {
@@ -669,7 +669,7 @@ namespace MiniBaccarat.GameServer.Service
 
         }
 
-        public void OutputGameResult()
+        public async Task OutputGameResult()
         {
             m_Logger.Info("Player: " + String.Join(",", m_PlayerCards.ToArray()) + " = " + PlayerPoints);
             m_Logger.Info("Banker: " + String.Join(",", m_BankerCards.ToArray()) + " = " + BankerPoints);
@@ -679,7 +679,35 @@ namespace MiniBaccarat.GameServer.Service
             if (PlayerPoints == BankerPoints) m_Logger.Info("TIE");
             m_GameReadyCountdown = GET_READY_COUNTDOWN;
             //m_GameState = GAME_STATUS.GetGameReady;
+
             UpdateRoundState(GAME_STATUS.GetGameReady);
+
+            //System.Diagnostics.Debugger.Break();
+
+            m_Logger.Info("Settling...");
+            string replystr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(), "check-bet", "check", m_Node.GetName());
+            if (!replystr.Contains('[')) m_Logger.Error("Failed to update bets by game result - " + replystr);
+            else
+            {
+                dynamic reply = m_Node.GetJsonHelper().ToJsonObject(replystr);
+                Stack<dynamic> bets = new Stack<dynamic>();
+                foreach (var item in reply) bets.Push(item);
+
+                int batch = 0;
+                while (bets.Count > 0)
+                {
+                    batch++;
+                    m_Logger.Info("Sending settle request - " + batch);
+
+                    List<dynamic> list = new List<dynamic>();
+                    int count = bets.Count >= 5 ? 5 : bets.Count;
+                    for (var i = 1; i <= count; i++) list.Add(bets.Pop());
+                    await Task.Run(() => RemoteCaller.RandomCall(m_Node.GetRemoteServices(), "settle-bet", "settle", m_Node.GetJsonHelper().ToJsonString(list)));
+                }
+
+                m_Logger.Info("Settle done");
+            }
+            
         }
 
         public int GetPlayerPoints()

@@ -132,9 +132,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MiniBaccarat.BetServer.Betting\MiniBaccarat.BetServer.Betting.csproj">
-      <Project>{21e3fa4f-2c28-49bc-9dfd-8066c59e1a31}</Project>
-      <Name>MiniBaccarat.BetServer.Betting</Name>
+    <ProjectReference Include="..\MiniBaccarat.BetServer.AcceptBet\MiniBaccarat.BetServer.AcceptBet.csproj">
+      <Project>{a38013d3-5f7e-451e-81ea-628383096091}</Project>
+      <Name>MiniBaccarat.BetServer.AcceptBet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MiniBaccarat.BetServer.CheckBet\MiniBaccarat.BetServer.CheckBet.csproj">
+      <Project>{692b92de-551e-4dd3-9585-215859c86d0f}</Project>
+      <Name>MiniBaccarat.BetServer.CheckBet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MiniBaccarat.BetServer.SettleBet\MiniBaccarat.BetServer.SettleBet.csproj">
+      <Project>{423ea866-4f3f-492c-9f45-515995d95df2}</Project>
+      <Name>MiniBaccarat.BetServer.SettleBet</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
