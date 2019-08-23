@@ -727,7 +727,6 @@ namespace MiniBaccarat.GameServer.Service
             else m_Logger.Error("Failed to update game data in database");
 
 
-
             m_GameReadyCountdown = GET_READY_COUNTDOWN;
             //m_GameState = GAME_STATUS.GetGameReady;
 
@@ -751,7 +750,7 @@ namespace MiniBaccarat.GameServer.Service
                     {
                         string dbErr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
                                                 "bet-data", "update-result", m_Node.GetJsonHelper().ToJsonString(item));
-                        m_Logger.Info("Update bet in database: " + uuid + " ... " + dbErr);
+                        m_Logger.Info("Update bet in database: " + uuid + " ... " + dbErr); // should do more if really failed to update db...
                     }));
                 }
 

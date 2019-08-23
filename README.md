@@ -8,3 +8,5 @@ Features:
 2. Easy to share game tables with another casino
 
 3. Stateless(more) + Stateful(less) mixed-mode, fit for cloud environment
+
+4. Implements simple "sharding" for bet records (just as an example)

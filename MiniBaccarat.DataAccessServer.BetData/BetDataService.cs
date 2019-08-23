@@ -35,6 +35,7 @@ namespace MiniBaccarat.DataAccessServer.BetData
             node.GetLogger().Info("Reloading database settings from config...");
 
             await Task.Delay(50);
+            // we can apply new merchant db config just by hot-swapping, no need to restart server
             node.GetDataHelper().RefreshDatabaseSettings();
             await Task.Delay(50);
 
