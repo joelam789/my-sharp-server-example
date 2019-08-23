@@ -27,6 +27,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BetServer.Sett
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BetServer.CheckBet", "MiniBaccarat.BetServer.CheckBet\MiniBaccarat.BetServer.CheckBet.csproj", "{692B92DE-551E-4DD3-9585-215859C86D0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.DataAccessServer", "MiniBaccarat.DataAccessServer\MiniBaccarat.DataAccessServer.csproj", "{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.DataAccessServer.GameData", "MiniBaccarat.DataAccessServer.GameData\MiniBaccarat.DataAccessServer.GameData.csproj", "{D056D3BA-E9C3-4AD7-AFE6-8357631CCBF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.DataAccessServer.BetData", "MiniBaccarat.DataAccessServer.BetData\MiniBaccarat.DataAccessServer.BetData.csproj", "{2AB9A713-206B-4983-859C-8FE9E33811D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +87,18 @@ Global
 		{692B92DE-551E-4DD3-9585-215859C86D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{692B92DE-551E-4DD3-9585-215859C86D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{692B92DE-551E-4DD3-9585-215859C86D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D056D3BA-E9C3-4AD7-AFE6-8357631CCBF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D056D3BA-E9C3-4AD7-AFE6-8357631CCBF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D056D3BA-E9C3-4AD7-AFE6-8357631CCBF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D056D3BA-E9C3-4AD7-AFE6-8357631CCBF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AB9A713-206B-4983-859C-8FE9E33811D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AB9A713-206B-4983-859C-8FE9E33811D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AB9A713-206B-4983-859C-8FE9E33811D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AB9A713-206B-4983-859C-8FE9E33811D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

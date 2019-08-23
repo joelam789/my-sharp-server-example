@@ -43,8 +43,9 @@ namespace MiniBaccarat.BetServer.CheckBet
 
             List<dynamic> bets = new List<dynamic>();
 
-            Dictionary<long, decimal> payouts = new Dictionary<long, decimal>();
-            Dictionary<long, int> results = new Dictionary<long, int>();
+            Dictionary<string, decimal> payouts = new Dictionary<string, decimal>();
+            Dictionary<string, int> results = new Dictionary<string, int>();
+            Dictionary<string, string> merchants = new Dictionary<string, string>();
             var dbhelper = m_Node.GetDataHelper();
             using (var cnn = dbhelper.OpenDatabase(m_MainCache))
             {
@@ -52,7 +53,7 @@ namespace MiniBaccarat.BetServer.CheckBet
                 {
                     dbhelper.AddParam(cmd, "@server_code", gameServer);
 
-                    cmd.CommandText = " select a.game_result, b.bet_id, b.bet_pool, b.bet_amount from db_mini_baccarat.tbl_round_state a, db_mini_baccarat.tbl_bet_record b "
+                    cmd.CommandText = " select a.game_result, b.bet_uuid, b.merchant_code, b.bet_pool, b.bet_amount from db_mini_baccarat.tbl_round_state a, db_mini_baccarat.tbl_bet_record b "
                                     + " where a.round_state = 9 and b.bet_state = 0 "
                                     + " and a.server_code = @server_code "
                                     + " and a.server_code = b.server_code "
@@ -64,18 +65,22 @@ namespace MiniBaccarat.BetServer.CheckBet
                         while (reader.Read())
                         {
                             string result = reader["game_result"].ToString();
-                            long betId = Convert.ToInt64(reader["bet_id"].ToString());
+                            string betGuid = reader["bet_uuid"].ToString();
+                            string merchant = reader["merchant_code"].ToString();
                             int pool = Convert.ToInt32(reader["bet_pool"].ToString());
                             decimal amount = Convert.ToDecimal(reader["bet_amount"].ToString());
 
-                            if (payouts.ContainsKey(betId)) continue;
+                            if (payouts.ContainsKey(betGuid)) continue;
 
-                            if (result[0] == '1' && pool == 1) payouts.Add(betId, amount * m_PayRates["B"]);
-                            else if (result[0] == '2' && pool == 2) payouts.Add(betId, amount * m_PayRates["P"]);
-                            else if (result[0] == '3' && pool == 3) payouts.Add(betId, amount * m_PayRates["T"]);
-                            else payouts.Add(betId, 0); // lose
+                            merchants.Add(betGuid, merchant);
 
-                            results.Add(betId, Convert.ToInt32(result));
+                            if (result[0] == '1' && pool == 1) payouts.Add(betGuid, amount * m_PayRates["B"]);
+                            else if (result[0] == '2' && pool == 2) payouts.Add(betGuid, amount * m_PayRates["P"]);
+                            else if (result[0] == '3' && pool == 3) payouts.Add(betGuid, amount * m_PayRates["T"]);
+                            else payouts.Add(betGuid, 0); // lose
+
+                            results.Add(betGuid, Convert.ToInt32(result));
+                            
                         }
                     }
                 }
@@ -86,9 +91,10 @@ namespace MiniBaccarat.BetServer.CheckBet
                 {
                     dynamic bet = new
                     {
-                        bet_id = item.Key,
+                        bet_uuid = item.Key,
                         pay_amount = item.Value,
-                        game_result = results[item.Key]
+                        game_result = results[item.Key],
+                        merchant_code = merchants[item.Key]
                     };
 
                     bets.Add(bet);

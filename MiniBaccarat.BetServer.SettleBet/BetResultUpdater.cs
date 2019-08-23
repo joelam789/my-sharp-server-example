@@ -24,37 +24,37 @@ namespace MiniBaccarat.BetServer.SettleBet
             m_Logger = m_Node.GetLogger();
         }
 
-        public void Update(dynamic bets)
+        public int Update(dynamic bet)
         {
             //System.Diagnostics.Debugger.Break();
 
-            m_Logger.Info("Settle bets - " + bets.Count);
+            //m_Logger.Info("Settle bet - " + bet.bet_uuid);
 
-            if (bets.Count <= 0) return;
+            int ret = 0;
+
             var dbhelper = m_Node.GetDataHelper();
             using (var cnn = dbhelper.OpenDatabase(m_MainCache))
             {
-                foreach (var bet in bets)
+                using (var cmd = cnn.CreateCommand())
                 {
-                    using (var cmd = cnn.CreateCommand())
-                    {
-                        dbhelper.AddParam(cmd, "@bet_id", bet.bet_id);
-                        dbhelper.AddParam(cmd, "@pay_amount", bet.pay_amount);
-                        dbhelper.AddParam(cmd, "@game_result", bet.game_result);
+                    dbhelper.AddParam(cmd, "@bet_uuid", bet.bet_uuid);
+                    dbhelper.AddParam(cmd, "@pay_amount", bet.pay_amount);
+                    dbhelper.AddParam(cmd, "@game_result", bet.game_result);
 
-                        cmd.CommandText = "update db_mini_baccarat.tbl_bet_record "
-                                            + " set pay_amount = @pay_amount "
-                                            + " , game_result = @game_result "
-                                            + " , bet_state = 1 "
-                                            + " , settle_time = CURRENT_TIMESTAMP "
-                                            + " where bet_id = @bet_id "
-                                            ;
-                        cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandText = "update db_mini_baccarat.tbl_bet_record "
+                                        + " set pay_amount = @pay_amount "
+                                        + " , game_result = @game_result "
+                                        + " , bet_state = 1 "
+                                        + " , settle_time = CURRENT_TIMESTAMP "
+                                        + " where bet_uuid = @bet_uuid "
+                                        ;
+                    ret = cmd.ExecuteNonQuery();
                 }
             }
 
-            m_Logger.Info("done");
+            //m_Logger.Info("done");
+
+            return ret;
 
         }
     }

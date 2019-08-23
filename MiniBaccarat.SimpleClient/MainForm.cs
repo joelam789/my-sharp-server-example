@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using WebSocket4Net;
 using Newtonsoft.Json;
-using System.IO;
+using WebSocket4Net;
 
 namespace MiniBaccarat.SimpleClient
 {
     public partial class MainForm : Form
     {
         WebSocket m_Socket = null;
+
+        CommonRng m_Rng = new CommonRng();
 
         string m_FrontEndServerURL = "ws://127.0.0.1:9996";
         string m_BettingServerURL = "http://127.0.0.1:9998";
@@ -144,6 +147,8 @@ namespace MiniBaccarat.SimpleClient
         private async void btnPlaceBet_Click(object sender, EventArgs e)
         {
             var url = m_BettingServerURL + "/accept-bet/accept";
+            var merchant = (m_Rng.Next(2) + 1).ToString();
+            var player = merchant + m_Rng.Next(10).ToString() + m_Rng.Next(10).ToString() + m_Rng.Next(10).ToString();
             var req = new
             {
                 server_code = edtGameServer.Text,
@@ -151,6 +156,10 @@ namespace MiniBaccarat.SimpleClient
                 round_number = Convert.ToInt32(edtRound.Text),
                 client_id = edtClientId.Text,
                 front_end = edtFrontEnd.Text,
+
+                merchant_code = "m" + merchant,
+                player_id = "p" + player,
+
                 bet_pool = cbbBetPool.Items.IndexOf(cbbBetPool.Text) + 1,
                 bet_amount = Convert.ToInt32(cbbBetAmount.Text)
             };
@@ -185,6 +194,36 @@ namespace MiniBaccarat.SimpleClient
             }
 
             LogMsg2("PLACE-BET REPLY - " + ret);
+        }
+    }
+
+    public class CommonRng
+    {
+        private RNGCryptoServiceProvider m_rngsp = new RNGCryptoServiceProvider();
+
+        // generate a random integer (0 <= value)
+        public int Next()
+        {
+            byte[] rb = { 0, 0, 0, 0 };
+            m_rngsp.GetBytes(rb);
+            int value = BitConverter.ToInt32(rb, 0);
+            return value < 0 ? -value : value;
+        }
+
+        // generate a random integer, less than the maximum value (0 <= value < max)
+        public int Next(int max)
+        {
+            if (max <= 0) return 0;
+            byte[] rb = { 0, 0, 0, 0 };
+            m_rngsp.GetBytes(rb);
+            int value = BitConverter.ToInt32(rb, 0) % max;
+            return value < 0 ? -value : value;
+        }
+
+        // generate a random integer, between the minimum value and the maximum value (min <= value < max)
+        public int Next(int min, int max)
+        {
+            return Next(max - min) + min;
         }
     }
 }

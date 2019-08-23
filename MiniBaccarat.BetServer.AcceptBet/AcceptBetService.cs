@@ -65,10 +65,11 @@ namespace MiniBaccarat.BetServer.AcceptBet
 
             dynamic betreq = ctx.JsonCodec.ToJsonObject(betstr);
 
-            var reply = m_BetCollector.AcceptBet(betreq);
+            var reply = await m_BetCollector.AcceptBet(betreq);
 
             if (reply.error_code == 0)
-                ctx.Logger.Info("BET - [" + betreq.round_number + "], " + betreq.bet_pool + " , " + betreq.bet_amount);
+                ctx.Logger.Info("BET - [" + betreq.merchant_code + " - "  + betreq.player_id + "], " 
+                    + "[" + betreq.round_number + "], " + betreq.bet_pool + " , " + betreq.bet_amount);
 
             await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
 

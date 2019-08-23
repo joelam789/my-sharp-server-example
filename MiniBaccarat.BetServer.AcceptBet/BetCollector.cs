@@ -33,7 +33,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
             m_Logger = m_Node.GetLogger();
         }
 
-        public dynamic AcceptBet(dynamic betreq)
+        public async Task<dynamic> AcceptBet(dynamic betreq)
         {
             string replyMsgType = "bet_reply";
             int replyErrorCode = -1;
@@ -79,34 +79,65 @@ namespace MiniBaccarat.BetServer.AcceptBet
 
                 if (replyErrorCode >= 0)
                 {
-                    using (var cmd = cnn.CreateCommand())
+                    m_Logger.Info("Saving bet record to database...");
+
+                    string betGuid = "";
+                    string ret = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                                 "bet-data", "save-record", m_Node.GetJsonHelper().ToJsonString(betreq));
+
+                    if (ret.Contains("-"))
                     {
-                        dbhelper.AddParam(cmd, "@server_code", betreq.server_code);
-                        dbhelper.AddParam(cmd, "@game_code", betreq.game_code);
-                        dbhelper.AddParam(cmd, "@round_number", betreq.round_number);
-                        dbhelper.AddParam(cmd, "@client_id", betreq.client_id);
-                        dbhelper.AddParam(cmd, "@front_end", betreq.front_end);
-                        dbhelper.AddParam(cmd, "@bet_pool", betreq.bet_pool);
-                        dbhelper.AddParam(cmd, "@bet_amount", betreq.bet_amount);
-
-                        cmd.CommandText = " insert into db_mini_baccarat.tbl_bet_record "
-                                        + " ( server_code, game_code, round_number, client_id, front_end, bet_pool, bet_amount, bet_time ) values "
-                                        + " ( @server_code , @game_code , @round_number , @client_id , @front_end , @bet_pool, @bet_amount , CURRENT_TIMESTAMP ) "
-                                        ;
-
-                        int rows = cmd.ExecuteNonQuery();
-                        if (rows > 0)
-                        {
-                            replyErrorCode = 3;
-                            replyErroMsg = "added to cache";
-                        }
-                        else
-                        {
-                            replyErrorCode = -3;
-                            replyErroMsg = "failed to add it to cache";
-                        }
-
+                        betGuid = ret;
+                        m_Logger.Info("Update database successfully");
                     }
+                    else
+                    {
+                        m_Logger.Error("Failed to save bet data in database");
+                    }
+
+                    if (betGuid.Length > 0)
+                    {
+                        using (var cmd = cnn.CreateCommand())
+                        {
+                            dbhelper.AddParam(cmd, "@bet_uuid", betGuid);
+
+                            dbhelper.AddParam(cmd, "@merchant_code", betreq.merchant_code);
+                            dbhelper.AddParam(cmd, "@player_id", betreq.player_id);
+
+                            dbhelper.AddParam(cmd, "@server_code", betreq.server_code);
+                            dbhelper.AddParam(cmd, "@game_code", betreq.game_code);
+                            dbhelper.AddParam(cmd, "@round_number", betreq.round_number);
+                            dbhelper.AddParam(cmd, "@client_id", betreq.client_id);
+                            dbhelper.AddParam(cmd, "@front_end", betreq.front_end);
+                            dbhelper.AddParam(cmd, "@bet_pool", betreq.bet_pool);
+                            dbhelper.AddParam(cmd, "@bet_amount", betreq.bet_amount);
+
+                            cmd.CommandText = " insert into db_mini_baccarat.tbl_bet_record "
+                                            + " ( bet_uuid, merchant_code, player_id, server_code, game_code, round_number, client_id, front_end, bet_pool, bet_amount, bet_time ) values "
+                                            + " ( @bet_uuid, @merchant_code, @player_id, @server_code , @game_code , @round_number , @client_id , @front_end , @bet_pool, @bet_amount , CURRENT_TIMESTAMP ) "
+                                            ;
+
+                            int rows = cmd.ExecuteNonQuery();
+                            if (rows > 0)
+                            {
+                                replyErrorCode = 3;
+                                replyErroMsg = "added to cache";
+                            }
+                            else
+                            {
+                                replyErrorCode = -3;
+                                replyErroMsg = "failed to add it to cache";
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        replyErrorCode = -4;
+                        replyErroMsg = "failed to add it to db";
+                    }
+
+                    
                 }
 
                 if (replyErrorCode >= 0)

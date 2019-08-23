@@ -62,7 +62,10 @@ namespace MiniBaccarat.BetServer.SettleBet
 
             dynamic betreq = ctx.JsonCodec.ToJsonObject(betstr);
 
-            m_Updater.Update(betreq);
+            bool okay = m_Updater.Update(betreq) > 0;
+
+            if (okay) await ctx.Session.Send("ok");
+            else await ctx.Session.Send("Failed to update cache");
 
         }
     }

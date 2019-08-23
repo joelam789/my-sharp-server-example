@@ -312,7 +312,7 @@ namespace MiniBaccarat.GameServer.Service
                     GetGameReady();
                     break;
                 case (GAME_STATUS.StartNewRound):
-                    StartNewRound();
+                    await StartNewRound();
                     break;
                 case (GAME_STATUS.BettingTime):
                     StartBettingTime();
@@ -374,7 +374,7 @@ namespace MiniBaccarat.GameServer.Service
             return "";
         }
 
-        public string StartNewRound()
+        public async Task<string> StartNewRound()
         {
             m_Logger.Info("Start a new round...");
 
@@ -388,7 +388,28 @@ namespace MiniBaccarat.GameServer.Service
             PlayerPoints = -1;
             BankerPoints = -1;
 
-            m_Logger.Info("New round ID: " + GetGameId());
+            var newGameId = GetGameId();
+            m_Logger.Info("New round ID: " + newGameId);
+
+            m_Logger.Info("Saving new game record to database...");
+
+            var saveReq = new
+            {
+                server = m_Node.GetName(),
+                game = m_GameCode,
+                round = m_RoundIndex,
+                state = (int)m_GameState,
+                starttime = m_RoundStartTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                updatetime = m_RoundStartTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                player = String.Join(",", m_PlayerCards.ToArray()),
+                banker = String.Join(",", m_BankerCards.ToArray()),
+                result = 0
+            };
+            string replystr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(), 
+                "game-data", "save-record", m_Node.GetJsonHelper().ToJsonString(saveReq));
+
+            if (replystr == "ok") m_Logger.Info("Update database successfully");
+            else m_Logger.Error("Failed to save game data to database");
 
             m_GameReadyCountdown = -1;
             m_BettingTimeCountdown = BET_TIME_COUNTDOWN;
@@ -677,6 +698,36 @@ namespace MiniBaccarat.GameServer.Service
             if (PlayerPoints > BankerPoints) m_Logger.Info("PLAYER WIN");
             if (PlayerPoints < BankerPoints) m_Logger.Info("BANKER WIN");
             if (PlayerPoints == BankerPoints) m_Logger.Info("TIE");
+
+            m_Logger.Info("Updating game record in database...");
+
+            int gameResult = 0;
+            int playerPoints = PlayerPoints;
+            int bankerPoints = BankerPoints;
+            if (playerPoints < bankerPoints) gameResult = 1;
+            if (playerPoints > bankerPoints) gameResult = 2;
+            if (playerPoints == bankerPoints) gameResult = 3;
+            gameResult = gameResult * 100 + bankerPoints * 10 + playerPoints;
+
+            var saveReq = new
+            {
+                server = m_Node.GetName(),
+                game = m_GameCode,
+                round = m_RoundIndex,
+                state = (int)m_GameState,
+                updatetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                player = String.Join(",", m_PlayerCards.ToArray()),
+                banker = String.Join(",", m_BankerCards.ToArray()),
+                result = gameResult
+            };
+            string ret = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(), 
+                "game-data", "update-result", m_Node.GetJsonHelper().ToJsonString(saveReq));
+
+            if (ret == "ok") m_Logger.Info("Update database successfully");
+            else m_Logger.Error("Failed to update game data in database");
+
+
+
             m_GameReadyCountdown = GET_READY_COUNTDOWN;
             //m_GameState = GAME_STATUS.GetGameReady;
 
@@ -690,20 +741,36 @@ namespace MiniBaccarat.GameServer.Service
             else
             {
                 dynamic reply = m_Node.GetJsonHelper().ToJsonObject(replystr);
-                Stack<dynamic> bets = new Stack<dynamic>();
-                foreach (var item in reply) bets.Push(item);
 
-                int batch = 0;
-                while (bets.Count > 0)
+                m_Logger.Info("Update database...");
+                List<Task> dbTasks = new List<Task>();
+                foreach (var item in reply)
                 {
-                    batch++;
-                    m_Logger.Info("Sending settle request - " + batch);
-
-                    List<dynamic> list = new List<dynamic>();
-                    int count = bets.Count >= 5 ? 5 : bets.Count;
-                    for (var i = 1; i <= count; i++) list.Add(bets.Pop());
-                    await Task.Run(() => RemoteCaller.RandomCall(m_Node.GetRemoteServices(), "settle-bet", "settle", m_Node.GetJsonHelper().ToJsonString(list)));
+                    string uuid = item.bet_uuid.ToString();
+                    dbTasks.Add(Task.Run(async () =>
+                    {
+                        string dbErr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                                                "bet-data", "update-result", m_Node.GetJsonHelper().ToJsonString(item));
+                        m_Logger.Info("Update bet in database: " + uuid + " ... " + dbErr);
+                    }));
                 }
+
+                Task.WaitAll(dbTasks.ToArray());
+
+                m_Logger.Info("Update cache...");
+                List<Task> cacheTasks = new List<Task>();
+                foreach (var item in reply)
+                {
+                    string uuid = item.bet_uuid.ToString();
+                    cacheTasks.Add(Task.Run(async () =>
+                    {
+                        string cacheErr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                                                "settle-bet", "settle", m_Node.GetJsonHelper().ToJsonString(item));
+                        m_Logger.Info("Update bet cache: " + uuid + " ... " + cacheErr);
+                    }));
+                }
+
+                Task.WaitAll(cacheTasks.ToArray());
 
                 m_Logger.Info("Settle done");
             }
