@@ -8,7 +8,7 @@ using MySharpServer.Common;
 
 namespace MiniBaccarat.TableController.Dealing
 {
-    [Access(Name = "dealing")]
+    [Access(Name = "dealing", IsPublic = false)]
     public class DealingService
     {
         [Access(Name = "cards")]

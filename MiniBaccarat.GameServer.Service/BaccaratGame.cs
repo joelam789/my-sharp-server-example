@@ -741,6 +741,7 @@ namespace MiniBaccarat.GameServer.Service
             {
                 dynamic reply = m_Node.GetJsonHelper().ToJsonObject(replystr);
 
+                /*
                 m_Logger.Info("Update database...");
                 List<Task> dbTasks = new List<Task>();
                 foreach (var item in reply)
@@ -770,6 +771,114 @@ namespace MiniBaccarat.GameServer.Service
                 }
 
                 Task.WaitAll(cacheTasks.ToArray());
+                */
+
+
+                m_Logger.Info("Update database...");
+
+                int idx = 0;
+                int batchCount = 100;
+
+                List<List<dynamic>> dbItems = new List<List<dynamic>>();
+                while (idx < reply.Count)
+                {
+                    List<dynamic> items = new List<dynamic>();
+                    int count = reply.Count - idx >= batchCount ? batchCount : reply.Count - idx;
+                    for (var i = 0; i < count; i++) items.Add(reply[idx + i]);
+                    idx += count;
+                    dbItems.Add(items);
+                }
+                
+                List<Task> dbBatchTasks = new List<Task>();
+                List<string> dbErrIds = new List<string>();
+                foreach (var list in dbItems)
+                {
+                    dbBatchTasks.Add(Task.Run(async () =>
+                    {
+                        string dbErr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                                                "batch-update", "update-bet-db", m_Node.GetJsonHelper().ToJsonString(list));
+                        if (dbErr.Length <= 0 || !dbErr.Contains("["))
+                        {
+                            foreach (var item in list)
+                            {
+                                string uuid = item.bet_uuid.ToString();
+                                dbErrIds.Add(uuid);
+                            }
+                            m_Logger.Info("Errors found when update bets in db: " + dbErr);
+                        }
+                        else
+                        {
+                            dynamic errList = m_Node.GetJsonHelper().ToJsonObject(dbErr);
+                            foreach (var item in errList)
+                            {
+                                string uuid = item.ToString();
+                                dbErrIds.Add(uuid);
+                            }
+                        }
+                    }));
+                }
+
+                Task.WaitAll(dbBatchTasks.ToArray());
+
+                m_Logger.Info("Updated bets in db: " + (reply.Count - dbErrIds.Count) + " / " + reply.Count);
+
+
+                List<dynamic> records = new List<dynamic>();
+                foreach (var item in reply)
+                {
+                    string uuid = item.bet_uuid.ToString();
+                    if (dbErrIds.Contains(uuid)) continue;
+                    else records.Add(item); // only keep fine records
+                }
+
+
+                m_Logger.Info("Update cache...");
+
+                idx = 0;
+                batchCount = 100;
+
+                List<List<dynamic>> cacheItems = new List<List<dynamic>>();
+                while (idx < records.Count)
+                {
+                    List<dynamic> items = new List<dynamic>();
+                    int count = records.Count - idx >= batchCount ? batchCount : records.Count - idx;
+                    for (var i = 0; i < count; i++) items.Add(records[idx + i]);
+                    idx += count;
+                    cacheItems.Add(items);
+                }
+
+                List<Task> cacheBatchTasks = new List<Task>();
+                List<string> cacheErrIds = new List<string>();
+                foreach (var list in cacheItems)
+                {
+                    cacheBatchTasks.Add(Task.Run(async () =>
+                    {
+                        string cacheErr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                                                "batch-update", "update-bet-cache", m_Node.GetJsonHelper().ToJsonString(list));
+                        if (cacheErr.Length <= 0 || !cacheErr.Contains("["))
+                        {
+                            foreach (var item in list)
+                            {
+                                string uuid = item.bet_uuid.ToString();
+                                cacheErrIds.Add(uuid);
+                            }
+                            m_Logger.Info("Errors found when update bets in cache: " + cacheErr);
+                        }
+                        else
+                        {
+                            dynamic errList = m_Node.GetJsonHelper().ToJsonObject(cacheErr);
+                            foreach (var item in errList)
+                            {
+                                string uuid = item.ToString();
+                                cacheErrIds.Add(uuid);
+                            }
+                        }
+                    }));
+                }
+
+                Task.WaitAll(cacheBatchTasks.ToArray());
+
+                m_Logger.Info("Updated bets in cache: " + (records.Count - cacheErrIds.Count) + " / " + records.Count);
 
                 m_Logger.Info("Settle done");
             }
