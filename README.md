@@ -10,3 +10,5 @@ Features:
 3. Stateless(more) + Stateful(less) mixed-mode, fit for cloud environment
 
 4. Implements simple "sharding" for bet records (just as an example)
+
+5. Implements simple "map/reduce" for bet settling (just as an example)
