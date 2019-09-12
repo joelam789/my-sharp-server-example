@@ -72,7 +72,8 @@ namespace MiniBaccarat.DataAccessServer.BetData
                     dbhelper.AddParam(cmd, "@player_id", betreq.player_id);
 
                     dbhelper.AddParam(cmd, "@server_code", betreq.server_code);
-                    dbhelper.AddParam(cmd, "@game_code", betreq.game_code);
+                    dbhelper.AddParam(cmd, "@table_code", betreq.table_code);
+                    dbhelper.AddParam(cmd, "@shoe_code", betreq.shoe_code);
                     dbhelper.AddParam(cmd, "@round_number", betreq.round_number);
                     dbhelper.AddParam(cmd, "@client_id", betreq.client_id);
                     dbhelper.AddParam(cmd, "@front_end", betreq.front_end);
@@ -80,8 +81,8 @@ namespace MiniBaccarat.DataAccessServer.BetData
                     dbhelper.AddParam(cmd, "@bet_amount", betreq.bet_amount);
 
                     cmd.CommandText = " insert into tbl_bet_record "
-                                    + " ( bet_uuid, merchant_code, player_id, server_code, game_code, round_number, client_id, front_end, bet_pool, bet_amount, bet_time ) values "
-                                    + " ( @bet_uuid, @merchant_code, @player_id, @server_code , @game_code , @round_number , @client_id , @front_end , @bet_pool, @bet_amount , CURRENT_TIMESTAMP ) "
+                                    + " ( bet_uuid, merchant_code, player_id, server_code, table_code, shoe_code, round_number, client_id, front_end, bet_pool, bet_amount, bet_time ) values "
+                                    + " ( @bet_uuid, @merchant_code, @player_id, @server_code , @table_code , @shoe_code , @round_number , @client_id , @front_end , @bet_pool, @bet_amount , CURRENT_TIMESTAMP ) "
                                     ;
 
                     okay = cmd.ExecuteNonQuery() > 0;

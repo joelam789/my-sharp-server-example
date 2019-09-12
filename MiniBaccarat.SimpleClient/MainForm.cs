@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using WebSocket4Net;
 
 namespace MiniBaccarat.SimpleClient
@@ -97,9 +98,13 @@ namespace MiniBaccarat.SimpleClient
                 LogMsg("MESSAGE - " + msg);
                 BeginInvoke((Action)(() =>
                 {
-                    edtGameServer.Text = obj.tables[0].server;
-                    edtGameCode.Text = obj.tables[0].game;
-                    edtRound.Text = obj.tables[0].round;
+                   if (((JArray)obj.tables).Count > 0)
+                   {
+                        edtGameServer.Text = obj.tables[0].server;
+                        edtTableCode.Text = obj.tables[0].table;
+                        edtShoeCode.Text = obj.tables[0].shoe;
+                        edtRound.Text = obj.tables[0].round;
+                   }
                 }));
             }
             if (obj.msg == "client_info")
@@ -152,7 +157,8 @@ namespace MiniBaccarat.SimpleClient
             var req = new
             {
                 server_code = edtGameServer.Text,
-                game_code = edtGameCode.Text,
+                table_code = edtTableCode.Text,
+                shoe_code = edtShoeCode.Text,
                 round_number = Convert.ToInt32(edtRound.Text),
                 client_id = edtClientId.Text,
                 front_end = edtFrontEnd.Text,

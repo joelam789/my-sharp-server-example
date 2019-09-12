@@ -124,7 +124,8 @@ namespace MiniBaccarat.FrontEndServer.BetResult
                             {
                                 client = reader["client_id"].ToString(),
                                 server = reader["server_code"].ToString(),
-                                game = reader["game_code"].ToString(),
+                                table = reader["table_code"].ToString(),
+                                shoe = reader["shoe_code"].ToString(),
                                 round = Convert.ToInt32(reader["round_number"].ToString()),
                                 pool = Convert.ToInt32(reader["bet_pool"].ToString()),
                                 bet = Convert.ToDecimal(reader["bet_amount"].ToString()),

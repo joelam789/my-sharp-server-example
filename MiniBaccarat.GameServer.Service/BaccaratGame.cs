@@ -96,7 +96,7 @@ namespace MiniBaccarat.GameServer.Service
 
         private bool m_IsRunningGameLoop = false;
 
-        private string m_GameCode = "";
+        private string m_ShoeCode = "";
         private int m_RoundIndex = 0;
 
         private DateTime m_RoundStartTime = DateTime.MinValue;
@@ -109,6 +109,8 @@ namespace MiniBaccarat.GameServer.Service
         public static readonly int GET_READY_COUNTDOWN = 3;
         public static readonly int BET_TIME_COUNTDOWN = 8;
         public static readonly int MAX_HIST_LENGTH = 10;
+
+        public string TableCode { get; set; } = "b0";
 
         public int PlayerPoints { get; private set; } = -1;
         public int BankerPoints { get; private set; } = -1;
@@ -125,7 +127,7 @@ namespace MiniBaccarat.GameServer.Service
             PlayerPoints = -1;
             BankerPoints = -1;
 
-            m_GameCode = "";
+            m_ShoeCode = "";
             m_RoundIndex = 0;
         }
 
@@ -134,7 +136,7 @@ namespace MiniBaccarat.GameServer.Service
 
         public string GetGameId()
         {
-            return m_Node.GetName() + "-" + m_GameCode + "-" + m_RoundIndex;
+            return m_Node.GetName() + "-" + m_ShoeCode + "-" + m_RoundIndex;
         }
 
         private dynamic Snapshot()
@@ -150,7 +152,8 @@ namespace MiniBaccarat.GameServer.Service
             var currentGameState = new
             {
                 server = m_Node.GetName(),
-                game = m_GameCode,
+                table = TableCode,
+                shoe = m_ShoeCode,
                 round = m_RoundIndex,
                 state = (int)m_GameState,
                 status = m_GameStatus[(int)m_GameState],
@@ -172,9 +175,42 @@ namespace MiniBaccarat.GameServer.Service
         public void Start()
         {
             Stop();
+
+            m_Logger.Info("Clean up old cache...");
+            Thread.Sleep(500);
+
+            try
+            {
+                var dbhelper = m_Node.GetDataHelper();
+                using (var cnn = dbhelper.OpenDatabase(m_MainCache))
+                {
+                    using (var cmd = cnn.CreateCommand())
+                    {
+                        dbhelper.AddParam(cmd, "@server_code", m_Node.GetName());
+                        dbhelper.AddParam(cmd, "@table_code", TableCode);
+
+                        cmd.CommandText = " delete from db_mini_baccarat.tbl_round_state "
+                                                + " where server_code = @server_code ; ";
+                        cmd.CommandText = cmd.CommandText + " delete from db_mini_baccarat.tbl_round_state "
+                                                + " where table_code = @table_code ; ";
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                Thread.Sleep(500);
+                m_Logger.Info("Done");
+            }
+            catch(Exception ex)
+            {
+                m_Logger.Error("Failed to clean up old cache: ");
+                m_Logger.Error(ex.ToString());
+            }
+            
+
             m_RoundIndex = 0;
             //m_GameCode = Guid.NewGuid().ToString();
-            m_GameCode = DateTime.Now.ToString("yyyyMMddHHmmss");
+            m_ShoeCode = DateTime.Now.ToString("yyyyMMddHHmmss");
             m_History.Clear();
             m_GameReadyCountdown = GET_READY_COUNTDOWN;
             m_GameState = GAME_STATUS.GetGameReady;
@@ -236,7 +272,8 @@ namespace MiniBaccarat.GameServer.Service
                 using (var cmd = cnn.CreateCommand())
                 {
                     dbhelper.AddParam(cmd, "@server_code", snapshot.server);
-                    dbhelper.AddParam(cmd, "@game_code", snapshot.game);
+                    dbhelper.AddParam(cmd, "@table_code", snapshot.table);
+                    dbhelper.AddParam(cmd, "@shoe_code", snapshot.shoe);
                     dbhelper.AddParam(cmd, "@round_number", snapshot.round);
                     dbhelper.AddParam(cmd, "@round_state", snapshot.state);
                     dbhelper.AddParam(cmd, "@round_state_text", snapshot.status);
@@ -256,15 +293,15 @@ namespace MiniBaccarat.GameServer.Service
                             break;
                         case (GAME_STATUS.StartNewRound):
                             cmd.CommandText = "update db_mini_baccarat.tbl_round_state "
-                                            + " set backup_number = backup_number + 1 "
-                                            + " where server_code = @server_code ; ";
+                                            + " set backup_number = backup_number + 1 , init_flag = state_id "
+                                            + " where server_code = @server_code and table_code = @table_code ; ";
                             cmd.CommandText = cmd.CommandText + "delete from db_mini_baccarat.tbl_round_state "
-                                            + " where server_code = @server_code and backup_number > 3 ; ";
+                                            + " where server_code = @server_code and table_code = @table_code and backup_number > 3 ; ";
                             cmd.CommandText = cmd.CommandText + " insert into db_mini_baccarat.tbl_round_state "
-                                            + " ( server_code, game_code, round_number, round_state, round_state_text, bet_time_countdown, "
-                                            + "   player_cards, banker_cards, game_result, game_history, round_start_time, round_update_time ) values "
-                                            + " ( @server_code , @game_code , @round_number , @round_state , @round_state_text , @bet_time_countdown , "
-                                            + "   @player_cards , @banker_cards , @game_result, @game_history, @round_start_time, @round_update_time ) "
+                                            + " ( server_code, table_code, shoe_code, round_number, round_state, round_state_text, bet_time_countdown, "
+                                            + "   player_cards, banker_cards, game_result, game_history, init_flag, round_start_time, round_update_time ) values "
+                                            + " ( @server_code , @table_code , @shoe_code , @round_number , @round_state , @round_state_text , @bet_time_countdown , "
+                                            + "   @player_cards , @banker_cards , @game_result, @game_history, 0, @round_start_time, @round_update_time ) "
                                             ;
 
                             cmd.ExecuteNonQuery();
@@ -274,8 +311,9 @@ namespace MiniBaccarat.GameServer.Service
                                             + " set round_state = @round_state "
                                             + " , round_state_text = @round_state_text "
                                             + " , bet_time_countdown = @bet_time_countdown "
-                                            + ", round_update_time = @round_update_time "
-                                            + " where server_code = @server_code and game_code = @game_code and round_number = @round_number "
+                                            + " , round_update_time = @round_update_time "
+                                            + " where server_code = @server_code and table_code = @table_code " 
+                                            + " and shoe_code = @shoe_code and round_number = @round_number "
                                             ;
                             cmd.ExecuteNonQuery();
                             break;
@@ -291,8 +329,9 @@ namespace MiniBaccarat.GameServer.Service
                                             + " , banker_cards = @banker_cards "
                                             + " , game_result = @game_result "
                                             + " , game_history = @game_history "
-                                            + ", round_update_time = @round_update_time "
-                                            + " where server_code = @server_code and game_code = @game_code and round_number = @round_number "
+                                            + " , round_update_time = @round_update_time "
+                                            + " where server_code = @server_code and table_code = @table_code "
+                                            + " and shoe_code = @shoe_code and round_number = @round_number "
                                             ;
                             cmd.ExecuteNonQuery();
                             break;
@@ -396,7 +435,8 @@ namespace MiniBaccarat.GameServer.Service
             var saveReq = new
             {
                 server = m_Node.GetName(),
-                game = m_GameCode,
+                table = TableCode,
+                shoe = m_ShoeCode,
                 round = m_RoundIndex,
                 state = (int)m_GameState,
                 starttime = m_RoundStartTime.ToString("yyyy-MM-dd HH:mm:ss"),
@@ -712,7 +752,8 @@ namespace MiniBaccarat.GameServer.Service
             var saveReq = new
             {
                 server = m_Node.GetName(),
-                game = m_GameCode,
+                table = TableCode,
+                shoe = m_ShoeCode,
                 round = m_RoundIndex,
                 state = (int)m_GameState,
                 updatetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
@@ -827,7 +868,11 @@ namespace MiniBaccarat.GameServer.Service
                 foreach (var item in reply)
                 {
                     string uuid = item.bet_uuid.ToString();
-                    if (dbErrIds.Contains(uuid)) continue;
+                    if (dbErrIds.Contains(uuid))
+                    {
+                        m_Logger.Error("Fialed to update bet in db: " + uuid);
+                        continue;
+                    }
                     else records.Add(item); // only keep fine records
                 }
 

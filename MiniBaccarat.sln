@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BatchProcessSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BatchProcessServer.BatchUpdate", "MiniBaccarat.BatchProcessServer.BatchUpdate\MiniBaccarat.BatchProcessServer.BatchUpdate.csproj", "{F305D0C0-743A-4987-BD00-5D88A112150D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.SampleMerchant", "MiniBaccarat.SampleMerchant\MiniBaccarat.SampleMerchant.csproj", "{7764374B-06DC-426C-BC5F-527F8A6F2361}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.SampleMerchant.Api", "MiniBaccarat.SampleMerchant.Api\MiniBaccarat.SampleMerchant.Api.csproj", "{84BDA2A3-5282-46E5-B929-EA8A1D8BFE9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +115,14 @@ Global
 		{F305D0C0-743A-4987-BD00-5D88A112150D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F305D0C0-743A-4987-BD00-5D88A112150D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F305D0C0-743A-4987-BD00-5D88A112150D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7764374B-06DC-426C-BC5F-527F8A6F2361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7764374B-06DC-426C-BC5F-527F8A6F2361}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7764374B-06DC-426C-BC5F-527F8A6F2361}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7764374B-06DC-426C-BC5F-527F8A6F2361}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84BDA2A3-5282-46E5-B929-EA8A1D8BFE9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84BDA2A3-5282-46E5-B929-EA8A1D8BFE9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84BDA2A3-5282-46E5-B929-EA8A1D8BFE9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84BDA2A3-5282-46E5-B929-EA8A1D8BFE9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

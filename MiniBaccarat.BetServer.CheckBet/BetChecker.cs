@@ -57,7 +57,8 @@ namespace MiniBaccarat.BetServer.CheckBet
                                     + " where a.round_state = 9 and b.bet_state = 0 "
                                     + " and a.server_code = @server_code "
                                     + " and a.server_code = b.server_code "
-                                    + " and a.game_code = b.game_code "
+                                    + " and a.table_code = b.table_code "
+                                    + " and a.shoe_code = b.shoe_code "
                                     + " and a.round_number = b.round_number "
                                     ;
                     using (var reader = cmd.ExecuteReader())

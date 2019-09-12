@@ -56,12 +56,14 @@ namespace MiniBaccarat.BetServer.AcceptBet
                 using (var cmd = cnn.CreateCommand())
                 {
                     dbhelper.AddParam(cmd, "@server_code", betreq.server_code);
-                    dbhelper.AddParam(cmd, "@game_code", betreq.game_code);
+                    dbhelper.AddParam(cmd, "@table_code", betreq.table_code);
+                    dbhelper.AddParam(cmd, "@shoe_code", betreq.shoe_code);
                     dbhelper.AddParam(cmd, "@round_number", betreq.round_number);
 
                     cmd.CommandText = " select * from db_mini_baccarat.tbl_round_state "
                                     + " where round_state = 4 and bet_time_countdown > 0 "
-                                    + " and server_code = @server_code and game_code = @game_code and round_number = @round_number ";
+                                    + " and server_code = @server_code and table_code = @table_code "
+                                    + " and shoe_code = @shoe_code and round_number = @round_number ";
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -105,7 +107,8 @@ namespace MiniBaccarat.BetServer.AcceptBet
                             dbhelper.AddParam(cmd, "@player_id", betreq.player_id);
 
                             dbhelper.AddParam(cmd, "@server_code", betreq.server_code);
-                            dbhelper.AddParam(cmd, "@game_code", betreq.game_code);
+                            dbhelper.AddParam(cmd, "@table_code", betreq.table_code);
+                            dbhelper.AddParam(cmd, "@shoe_code", betreq.shoe_code);
                             dbhelper.AddParam(cmd, "@round_number", betreq.round_number);
                             dbhelper.AddParam(cmd, "@client_id", betreq.client_id);
                             dbhelper.AddParam(cmd, "@front_end", betreq.front_end);
@@ -113,8 +116,8 @@ namespace MiniBaccarat.BetServer.AcceptBet
                             dbhelper.AddParam(cmd, "@bet_amount", betreq.bet_amount);
 
                             cmd.CommandText = " insert into db_mini_baccarat.tbl_bet_record "
-                                            + " ( bet_uuid, merchant_code, player_id, server_code, game_code, round_number, client_id, front_end, bet_pool, bet_amount, bet_time ) values "
-                                            + " ( @bet_uuid, @merchant_code, @player_id, @server_code , @game_code , @round_number , @client_id , @front_end , @bet_pool, @bet_amount , CURRENT_TIMESTAMP ) "
+                                            + " ( bet_uuid, merchant_code, player_id, server_code, table_code, shoe_code, round_number, client_id, front_end, bet_pool, bet_amount, bet_time ) values "
+                                            + " ( @bet_uuid, @merchant_code, @player_id, @server_code , @table_code , @shoe_code , @round_number , @client_id , @front_end , @bet_pool, @bet_amount , CURRENT_TIMESTAMP ) "
                                             ;
 
                             int rows = cmd.ExecuteNonQuery();

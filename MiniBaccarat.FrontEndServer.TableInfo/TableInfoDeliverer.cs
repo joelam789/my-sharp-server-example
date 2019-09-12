@@ -85,7 +85,8 @@ namespace MiniBaccarat.FrontEndServer.TableInfo
                             var item = new
                             {
                                 server = reader["server_code"].ToString(),
-                                game = reader["game_code"].ToString(),
+                                table = reader["table_code"].ToString(),
+                                shoe = reader["shoe_code"].ToString(),
                                 round = reader["round_number"].ToString(),
                                 state = reader["round_state"].ToString(),
                                 status = reader["round_state_text"].ToString(),

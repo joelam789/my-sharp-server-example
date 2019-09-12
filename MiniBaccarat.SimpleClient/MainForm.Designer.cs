@@ -35,16 +35,17 @@
             this.cbbBetPool = new System.Windows.Forms.ComboBox();
             this.btnPlaceBet = new System.Windows.Forms.Button();
             this.mmLog2 = new System.Windows.Forms.RichTextBox();
-            this.edtGameCode = new System.Windows.Forms.TextBox();
+            this.edtShoeCode = new System.Windows.Forms.TextBox();
             this.edtRound = new System.Windows.Forms.TextBox();
             this.edtClientId = new System.Windows.Forms.TextBox();
             this.edtFrontEnd = new System.Windows.Forms.TextBox();
             this.edtGameServer = new System.Windows.Forms.TextBox();
+            this.edtTableCode = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(788, 25);
+            this.btnStop.Location = new System.Drawing.Point(878, 25);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 8;
@@ -54,9 +55,9 @@
             // 
             // mmLog
             // 
-            this.mmLog.Location = new System.Drawing.Point(20, 73);
+            this.mmLog.Location = new System.Drawing.Point(20, 54);
             this.mmLog.Name = "mmLog";
-            this.mmLog.Size = new System.Drawing.Size(860, 192);
+            this.mmLog.Size = new System.Drawing.Size(952, 211);
             this.mmLog.TabIndex = 7;
             this.mmLog.Text = "";
             // 
@@ -99,7 +100,7 @@
             // 
             // btnPlaceBet
             // 
-            this.btnPlaceBet.Location = new System.Drawing.Point(788, 282);
+            this.btnPlaceBet.Location = new System.Drawing.Point(897, 282);
             this.btnPlaceBet.Name = "btnPlaceBet";
             this.btnPlaceBet.Size = new System.Drawing.Size(75, 23);
             this.btnPlaceBet.TabIndex = 11;
@@ -111,55 +112,63 @@
             // 
             this.mmLog2.Location = new System.Drawing.Point(20, 321);
             this.mmLog2.Name = "mmLog2";
-            this.mmLog2.Size = new System.Drawing.Size(860, 96);
+            this.mmLog2.Size = new System.Drawing.Size(952, 128);
             this.mmLog2.TabIndex = 12;
             this.mmLog2.Text = "";
             // 
-            // edtGameCode
+            // edtShoeCode
             // 
-            this.edtGameCode.Location = new System.Drawing.Point(338, 284);
-            this.edtGameCode.Name = "edtGameCode";
-            this.edtGameCode.Size = new System.Drawing.Size(181, 20);
-            this.edtGameCode.TabIndex = 13;
+            this.edtShoeCode.Location = new System.Drawing.Point(435, 284);
+            this.edtShoeCode.Name = "edtShoeCode";
+            this.edtShoeCode.Size = new System.Drawing.Size(170, 20);
+            this.edtShoeCode.TabIndex = 13;
             // 
             // edtRound
             // 
-            this.edtRound.Location = new System.Drawing.Point(525, 284);
+            this.edtRound.Location = new System.Drawing.Point(611, 284);
             this.edtRound.Name = "edtRound";
-            this.edtRound.Size = new System.Drawing.Size(100, 20);
+            this.edtRound.Size = new System.Drawing.Size(111, 20);
             this.edtRound.TabIndex = 14;
             // 
             // edtClientId
             // 
-            this.edtClientId.Location = new System.Drawing.Point(631, 284);
+            this.edtClientId.Location = new System.Drawing.Point(728, 285);
             this.edtClientId.Name = "edtClientId";
             this.edtClientId.Size = new System.Drawing.Size(151, 20);
             this.edtClientId.TabIndex = 15;
             // 
             // edtFrontEnd
             // 
-            this.edtFrontEnd.Location = new System.Drawing.Point(202, 284);
+            this.edtFrontEnd.Location = new System.Drawing.Point(204, 284);
             this.edtFrontEnd.Name = "edtFrontEnd";
             this.edtFrontEnd.Size = new System.Drawing.Size(62, 20);
             this.edtFrontEnd.TabIndex = 16;
             // 
             // edtGameServer
             // 
-            this.edtGameServer.Location = new System.Drawing.Point(270, 284);
+            this.edtGameServer.Location = new System.Drawing.Point(272, 284);
             this.edtGameServer.Name = "edtGameServer";
             this.edtGameServer.Size = new System.Drawing.Size(62, 20);
             this.edtGameServer.TabIndex = 17;
+            // 
+            // edtTableCode
+            // 
+            this.edtTableCode.Location = new System.Drawing.Point(340, 284);
+            this.edtTableCode.Name = "edtTableCode";
+            this.edtTableCode.Size = new System.Drawing.Size(89, 20);
+            this.edtTableCode.TabIndex = 18;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(892, 450);
+            this.ClientSize = new System.Drawing.Size(984, 461);
+            this.Controls.Add(this.edtTableCode);
             this.Controls.Add(this.edtGameServer);
             this.Controls.Add(this.edtFrontEnd);
             this.Controls.Add(this.edtClientId);
             this.Controls.Add(this.edtRound);
-            this.Controls.Add(this.edtGameCode);
+            this.Controls.Add(this.edtShoeCode);
             this.Controls.Add(this.mmLog2);
             this.Controls.Add(this.btnPlaceBet);
             this.Controls.Add(this.cbbBetPool);
@@ -185,11 +194,12 @@
         private System.Windows.Forms.ComboBox cbbBetPool;
         private System.Windows.Forms.Button btnPlaceBet;
         private System.Windows.Forms.RichTextBox mmLog2;
-        private System.Windows.Forms.TextBox edtGameCode;
+        private System.Windows.Forms.TextBox edtShoeCode;
         private System.Windows.Forms.TextBox edtRound;
         private System.Windows.Forms.TextBox edtClientId;
         private System.Windows.Forms.TextBox edtFrontEnd;
         private System.Windows.Forms.TextBox edtGameServer;
+        private System.Windows.Forms.TextBox edtTableCode;
     }
 }
 

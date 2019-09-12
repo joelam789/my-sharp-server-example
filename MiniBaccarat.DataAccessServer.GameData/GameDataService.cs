@@ -43,7 +43,8 @@ namespace MiniBaccarat.DataAccessServer.GameData
                 using (var cmd = cnn.CreateCommand())
                 {
                     dbhelper.AddParam(cmd, "@server_code", req.server);
-                    dbhelper.AddParam(cmd, "@game_code", req.game);
+                    dbhelper.AddParam(cmd, "@table_code", req.table);
+                    dbhelper.AddParam(cmd, "@shoe_code", req.shoe);
                     dbhelper.AddParam(cmd, "@round_number", req.round);
                     dbhelper.AddParam(cmd, "@round_state", req.state);
                     dbhelper.AddParam(cmd, "@player_cards", req.player);
@@ -53,9 +54,9 @@ namespace MiniBaccarat.DataAccessServer.GameData
                     dbhelper.AddParam(cmd, "@last_update_time", req.updatetime);
 
                     cmd.CommandText = " insert into tbl_game_record "
-                                            + " ( server_code, game_code, round_number, round_state,  "
+                                            + " ( server_code, table_code, shoe_code, round_number, round_state,  "
                                             + "   player_cards, banker_cards, game_result, round_start_time, last_update_time ) values "
-                                            + " ( @server_code , @game_code , @round_number , @round_state , "
+                                            + " ( @server_code , @table_code , @shoe_code , @round_number , @round_state , "
                                             + "   @player_cards , @banker_cards , @game_result, @round_start_time, @last_update_time ) "
                                             ;
 
@@ -87,7 +88,8 @@ namespace MiniBaccarat.DataAccessServer.GameData
                 using (var cmd = cnn.CreateCommand())
                 {
                     dbhelper.AddParam(cmd, "@server_code", req.server);
-                    dbhelper.AddParam(cmd, "@game_code", req.game);
+                    dbhelper.AddParam(cmd, "@table_code", req.table);
+                    dbhelper.AddParam(cmd, "@shoe_code", req.shoe);
                     dbhelper.AddParam(cmd, "@round_number", req.round);
                     dbhelper.AddParam(cmd, "@round_state", req.state);
                     dbhelper.AddParam(cmd, "@player_cards", req.player);
@@ -101,7 +103,8 @@ namespace MiniBaccarat.DataAccessServer.GameData
                                             + " , banker_cards = @banker_cards "
                                             + " , game_result = @game_result "
                                             + ", last_update_time = @last_update_time "
-                                            + " where server_code = @server_code and game_code = @game_code and round_number = @round_number "
+                                            + " where server_code = @server_code and table_code = @table_code " 
+                                            + " and shoe_code = @shoe_code and round_number = @round_number "
                                             ;
                     okay = cmd.ExecuteNonQuery() > 0;
                 }

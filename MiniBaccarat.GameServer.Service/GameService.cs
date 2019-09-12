@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,16 +21,36 @@ namespace MiniBaccarat.GameServer.Service
 
             if (m_Game == null) m_Game = new BaccaratGame(node);
 
-            node.GetLogger().Info(this.GetType().Name + " is testing...");
-            await Task.Delay(100);
-
+            node.GetLogger().Info(this.GetType().Name + " is loading settings from config...");
+            
             //var lines = m_Game.PlayOneRound();
             //foreach (var line in lines) node.GetServerLogger().Info(line);
 
-            if (m_Game != null) m_Game.Start();
+            try
+            {
+                ConfigurationManager.RefreshSection("appSettings");
+                await Task.Delay(100);
+                var keys = ConfigurationManager.AppSettings.Keys;
+                foreach (var key in keys)
+                {
+                    if (key.ToString() == "GameTable")
+                    {
+                        m_Game.TableCode = ConfigurationManager.AppSettings["GameTable"].ToString();
+                        break;
+                    }
+                }
+                node.GetLogger().Info("Done");
+            }
+            catch(Exception ex)
+            {
+                node.GetLogger().Error("Failed to load settings from config for BaccaratGame: ");
+                node.GetLogger().Error(ex.ToString());
+            }
 
+            if (m_Game != null) m_Game.Start();
             await Task.Delay(100);
-            node.GetLogger().Info(this.GetType().Name + " test done");
+
+            node.GetLogger().Info(this.GetType().Name + " started");
 
             return "";
         }
