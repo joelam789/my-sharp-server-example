@@ -776,7 +776,7 @@ namespace MiniBaccarat.GameServer.Service
             //System.Diagnostics.Debugger.Break();
 
             m_Logger.Info("Settling...");
-            string replystr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(), "check-bet", "check", m_Node.GetName());
+            string replystr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(), "check-bet-winloss", "check-and-update", m_Node.GetName());
             if (!replystr.Contains('[')) m_Logger.Error("Failed to update bets by game result - " + replystr);
             else
             {

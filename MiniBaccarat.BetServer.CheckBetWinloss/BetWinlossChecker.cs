@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 using MySharpServer.Common;
 
-namespace MiniBaccarat.BetServer.CheckBet
+namespace MiniBaccarat.BetServer.CheckBetWinloss
 {
-    public class BetChecker
+    public class BetWinlossChecker
     {
         static CommonRng m_Rng = new CommonRng();
 
@@ -29,17 +29,17 @@ namespace MiniBaccarat.BetServer.CheckBet
 
         //private Dictionary<string, List<long>> m_BetRecordLists = new Dictionary<string, List<long>>();
 
-        public BetChecker(IServerNode node)
+        public BetWinlossChecker(IServerNode node)
         {
             m_Node = node;
             m_Logger = m_Node.GetLogger();
         }
 
-        public List<dynamic> CheckBetsByGameResult(string gameServer)
+        public List<dynamic> CheckBetWinlossByGameResult(string gameServer)
         {
             //System.Diagnostics.Debugger.Break();
 
-            m_Logger.Info("CheckBetsByGameResult - " + gameServer);
+            m_Logger.Info("CheckBetWinlossByGameResult - " + gameServer);
 
             List<dynamic> bets = new List<dynamic>();
 
@@ -78,10 +78,11 @@ namespace MiniBaccarat.BetServer.CheckBet
                             if (result[0] == '1' && pool == 1) payouts.Add(betGuid, amount * m_PayRates["B"]);
                             else if (result[0] == '2' && pool == 2) payouts.Add(betGuid, amount * m_PayRates["P"]);
                             else if (result[0] == '3' && pool == 3) payouts.Add(betGuid, amount * m_PayRates["T"]);
+                            else if (result[0] == '3' && (pool == 1 || pool == 2)) payouts.Add(betGuid, amount); // zero winloss
                             else payouts.Add(betGuid, 0); // lose
 
                             results.Add(betGuid, Convert.ToInt32(result));
-                            
+
                         }
                     }
                 }

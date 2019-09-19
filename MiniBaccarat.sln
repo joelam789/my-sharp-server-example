@@ -25,8 +25,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BetServer.Acce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BetServer.SettleBet", "MiniBaccarat.BetServer.SettleBet\MiniBaccarat.BetServer.SettleBet.csproj", "{423EA866-4F3F-492C-9F45-515995D95DF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BetServer.CheckBet", "MiniBaccarat.BetServer.CheckBet\MiniBaccarat.BetServer.CheckBet.csproj", "{692B92DE-551E-4DD3-9585-215859C86D0F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.DataAccessServer", "MiniBaccarat.DataAccessServer\MiniBaccarat.DataAccessServer.csproj", "{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.DataAccessServer.GameData", "MiniBaccarat.DataAccessServer.GameData\MiniBaccarat.DataAccessServer.GameData.csproj", "{D056D3BA-E9C3-4AD7-AFE6-8357631CCBF9}"
@@ -40,6 +38,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.SampleMerchant", "MiniBaccarat.SampleMerchant\MiniBaccarat.SampleMerchant.csproj", "{7764374B-06DC-426C-BC5F-527F8A6F2361}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.SampleMerchant.Api", "MiniBaccarat.SampleMerchant.Api\MiniBaccarat.SampleMerchant.Api.csproj", "{84BDA2A3-5282-46E5-B929-EA8A1D8BFE9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BetServer.CheckBetWinloss", "MiniBaccarat.BetServer.CheckBetWinloss\MiniBaccarat.BetServer.CheckBetWinloss.csproj", "{0840F31D-DDD2-4463-AEA6-A54017F8C12D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,10 +91,6 @@ Global
 		{423EA866-4F3F-492C-9F45-515995D95DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{423EA866-4F3F-492C-9F45-515995D95DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{423EA866-4F3F-492C-9F45-515995D95DF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{692B92DE-551E-4DD3-9585-215859C86D0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{692B92DE-551E-4DD3-9585-215859C86D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{692B92DE-551E-4DD3-9585-215859C86D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{692B92DE-551E-4DD3-9585-215859C86D0F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -123,6 +119,10 @@ Global
 		{84BDA2A3-5282-46E5-B929-EA8A1D8BFE9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84BDA2A3-5282-46E5-B929-EA8A1D8BFE9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84BDA2A3-5282-46E5-B929-EA8A1D8BFE9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0840F31D-DDD2-4463-AEA6-A54017F8C12D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0840F31D-DDD2-4463-AEA6-A54017F8C12D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0840F31D-DDD2-4463-AEA6-A54017F8C12D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0840F31D-DDD2-4463-AEA6-A54017F8C12D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

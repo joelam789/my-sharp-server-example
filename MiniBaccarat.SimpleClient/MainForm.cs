@@ -120,8 +120,10 @@ namespace MiniBaccarat.SimpleClient
             {
                 foreach (var betResult in obj.results)
                 {
-                    if (betResult.payout > 0) LogMsg2("WIN - " + msg);
-                    else LogMsg2("LOSE - " + msg);
+                    if (betResult.bet > 0 && betResult.payout > betResult.bet) LogMsg2("WIN - " + msg);
+                    else if (betResult.bet > 0 && betResult.payout == betResult.bet) LogMsg2("TIE - " + msg);
+                    else if (betResult.bet > 0 && betResult.payout < betResult.bet) LogMsg2("LOSE - " + msg);
+                    else LogMsg2("ERROR - " + msg);
                 }
             }
         }

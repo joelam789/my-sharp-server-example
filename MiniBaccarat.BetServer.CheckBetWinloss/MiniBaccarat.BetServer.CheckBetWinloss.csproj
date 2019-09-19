@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{692B92DE-551E-4DD3-9585-215859C86D0F}</ProjectGuid>
+    <ProjectGuid>{0840F31D-DDD2-4463-AEA6-A54017F8C12D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MiniBaccarat.BetServer.CheckBet</RootNamespace>
-    <AssemblyName>MiniBaccarat.BetServer.CheckBet</AssemblyName>
+    <RootNamespace>MiniBaccarat.BetServer.CheckBetWinloss</RootNamespace>
+    <AssemblyName>MiniBaccarat.BetServer.CheckBetWinloss</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -47,8 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BetChecker.cs" />
-    <Compile Include="CheckBetService.cs" />
+    <Compile Include="BetWinlossChecker.cs" />
+    <Compile Include="CheckBetWinlossService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

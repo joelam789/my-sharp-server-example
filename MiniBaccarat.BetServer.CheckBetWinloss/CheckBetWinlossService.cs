@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 using MySharpServer.Common;
 
-namespace MiniBaccarat.BetServer.CheckBet
+namespace MiniBaccarat.BetServer.CheckBetWinloss
 {
-    [Access(Name = "check-bet")]
-    public class CheckBetService
+    [Access(Name = "check-bet-winloss")]
+    public class CheckBetWinlossService
     {
-        BetChecker m_Checker = null;
+        BetWinlossChecker m_Checker = null;
 
         [Access(Name = "on-load", IsLocal = true)]
         public async Task<string> Load(IServerNode node)
         {
             //System.Diagnostics.Debugger.Break();
 
-            if (m_Checker == null) m_Checker = new BetChecker(node);
+            if (m_Checker == null) m_Checker = new BetWinlossChecker(node);
 
             await Task.Delay(50);
 
@@ -42,8 +42,8 @@ namespace MiniBaccarat.BetServer.CheckBet
             return "";
         }
 
-        [Access(Name = "check")]
-        public async Task Check(RequestContext ctx)
+        [Access(Name = "check-and-update")]
+        public async Task CheckAndUpdate(RequestContext ctx)
         {
             //System.Diagnostics.Debugger.Break();
 
@@ -60,7 +60,7 @@ namespace MiniBaccarat.BetServer.CheckBet
                 return;
             }
 
-            var reply = m_Checker.CheckBetsByGameResult(gameServerName);
+            var reply = m_Checker.CheckBetWinlossByGameResult(gameServerName);
             await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
 
         }
