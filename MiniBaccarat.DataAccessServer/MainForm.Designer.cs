@@ -35,7 +35,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(672, 25);
+            this.btnStop.Location = new System.Drawing.Point(772, 25);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 8;
@@ -47,7 +47,7 @@
             // 
             this.mmLog.Location = new System.Drawing.Point(20, 73);
             this.mmLog.Name = "mmLog";
-            this.mmLog.Size = new System.Drawing.Size(760, 353);
+            this.mmLog.Size = new System.Drawing.Size(852, 353);
             this.mmLog.TabIndex = 7;
             this.mmLog.Text = "";
             // 
@@ -65,7 +65,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(884, 450);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.mmLog);
             this.Controls.Add(this.btnStart);

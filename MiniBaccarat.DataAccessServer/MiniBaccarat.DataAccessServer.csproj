@@ -139,6 +139,10 @@
       <Project>{d056d3ba-e9c3-4ad7-afe6-8357631ccbf9}</Project>
       <Name>MiniBaccarat.DataAccessServer.GameData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.MerchantData\MiniBaccarat.DataAccessServer.MerchantData.csproj">
+      <Project>{a13f4d85-93be-4990-8f81-1b52ab1ddeff}</Project>
+      <Name>MiniBaccarat.DataAccessServer.MerchantData</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
