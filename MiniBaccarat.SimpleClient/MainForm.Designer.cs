@@ -41,11 +41,16 @@
             this.edtFrontEnd = new System.Windows.Forms.TextBox();
             this.edtGameServer = new System.Windows.Forms.TextBox();
             this.edtTableCode = new System.Windows.Forms.TextBox();
+            this.edtMerchantCode = new System.Windows.Forms.TextBox();
+            this.edtPlayerId = new System.Windows.Forms.TextBox();
+            this.edtLoginToken = new System.Windows.Forms.TextBox();
+            this.edtPlayerBalance = new System.Windows.Forms.TextBox();
+            this.edtLoginUrl = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(878, 25);
+            this.btnStop.Location = new System.Drawing.Point(876, 22);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 8;
@@ -63,7 +68,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(30, 25);
+            this.btnStart.Location = new System.Drawing.Point(30, 22);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 6;
@@ -158,11 +163,56 @@
             this.edtTableCode.Size = new System.Drawing.Size(89, 20);
             this.edtTableCode.TabIndex = 18;
             // 
+            // edtMerchantCode
+            // 
+            this.edtMerchantCode.Location = new System.Drawing.Point(368, 24);
+            this.edtMerchantCode.Name = "edtMerchantCode";
+            this.edtMerchantCode.Size = new System.Drawing.Size(100, 20);
+            this.edtMerchantCode.TabIndex = 19;
+            this.edtMerchantCode.Text = "m1";
+            // 
+            // edtPlayerId
+            // 
+            this.edtPlayerId.Location = new System.Drawing.Point(474, 24);
+            this.edtPlayerId.Name = "edtPlayerId";
+            this.edtPlayerId.Size = new System.Drawing.Size(100, 20);
+            this.edtPlayerId.TabIndex = 20;
+            this.edtPlayerId.Text = "p1234";
+            // 
+            // edtLoginToken
+            // 
+            this.edtLoginToken.Location = new System.Drawing.Point(580, 24);
+            this.edtLoginToken.Name = "edtLoginToken";
+            this.edtLoginToken.Size = new System.Drawing.Size(100, 20);
+            this.edtLoginToken.TabIndex = 21;
+            this.edtLoginToken.Text = "some-token";
+            // 
+            // edtPlayerBalance
+            // 
+            this.edtPlayerBalance.Location = new System.Drawing.Point(686, 24);
+            this.edtPlayerBalance.Name = "edtPlayerBalance";
+            this.edtPlayerBalance.Size = new System.Drawing.Size(100, 20);
+            this.edtPlayerBalance.TabIndex = 22;
+            this.edtPlayerBalance.Text = "0";
+            // 
+            // edtLoginUrl
+            // 
+            this.edtLoginUrl.Location = new System.Drawing.Point(162, 24);
+            this.edtLoginUrl.Name = "edtLoginUrl";
+            this.edtLoginUrl.Size = new System.Drawing.Size(200, 20);
+            this.edtLoginUrl.TabIndex = 23;
+            this.edtLoginUrl.Text = "http://127.0.0.1:9990";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 461);
+            this.Controls.Add(this.edtLoginUrl);
+            this.Controls.Add(this.edtPlayerBalance);
+            this.Controls.Add(this.edtLoginToken);
+            this.Controls.Add(this.edtPlayerId);
+            this.Controls.Add(this.edtMerchantCode);
             this.Controls.Add(this.edtTableCode);
             this.Controls.Add(this.edtGameServer);
             this.Controls.Add(this.edtFrontEnd);
@@ -200,6 +250,11 @@
         private System.Windows.Forms.TextBox edtFrontEnd;
         private System.Windows.Forms.TextBox edtGameServer;
         private System.Windows.Forms.TextBox edtTableCode;
+        private System.Windows.Forms.TextBox edtMerchantCode;
+        private System.Windows.Forms.TextBox edtPlayerId;
+        private System.Windows.Forms.TextBox edtLoginToken;
+        private System.Windows.Forms.TextBox edtPlayerBalance;
+        private System.Windows.Forms.TextBox edtLoginUrl;
     }
 }
 

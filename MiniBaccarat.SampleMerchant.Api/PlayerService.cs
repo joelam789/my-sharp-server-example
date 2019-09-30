@@ -34,7 +34,7 @@ namespace MiniBaccarat.SampleMerchant.Api
                 using (var cmd = cnn.CreateCommand())
                 {
                     dbhelper.AddParam(cmd, "@merchant_code", req.merchant_code);
-                    dbhelper.AddParam(cmd, "@player_id", req.player_name);
+                    dbhelper.AddParam(cmd, "@player_id", req.player_id);
                     dbhelper.AddParam(cmd, "@session_id", req.login_token);
 
                     cmd.CommandText = "select * from tbl_player_balance "
@@ -59,7 +59,7 @@ namespace MiniBaccarat.SampleMerchant.Api
                     using (var cmd = cnn.CreateCommand())
                     {
                         dbhelper.AddParam(cmd, "@merchant_code", req.merchant_code);
-                        dbhelper.AddParam(cmd, "@player_id", req.player_name);
+                        dbhelper.AddParam(cmd, "@player_id", req.player_id);
                         dbhelper.AddParam(cmd, "@player_balance", balance);
 
                         cmd.CommandText = "insert into tbl_player_balance "
@@ -77,10 +77,11 @@ namespace MiniBaccarat.SampleMerchant.Api
             var reply = new
             {
                 req.merchant_code,
-                req.player_name,
+                req.player_id,
                 player_balance = balance,
                 error_code = balance >= 0 ? 0 : -1
             };
+            if (reply.error_code == 0) ctx.Logger.Info("Three-Way Login Passed on merchant site!");
             await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
         }
 
@@ -107,7 +108,7 @@ namespace MiniBaccarat.SampleMerchant.Api
                 using (var cmd = cnn.CreateCommand())
                 {
                     dbhelper.AddParam(cmd, "@merchant_code", req.merchant_code);
-                    dbhelper.AddParam(cmd, "@player_id", req.player_name);
+                    dbhelper.AddParam(cmd, "@player_id", req.player_id);
                     dbhelper.AddParam(cmd, "@session_id", req.login_token);
 
                     cmd.CommandText = "select * from tbl_player_balance "
@@ -131,10 +132,11 @@ namespace MiniBaccarat.SampleMerchant.Api
             var reply = new
             {
                 req.merchant_code,
-                req.player_name,
+                req.player_id,
                 player_balance = balance,
                 error_code = balance >= 0 ? 0 : -1
             };
+            
             await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
         }
     }

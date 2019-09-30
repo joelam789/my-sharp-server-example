@@ -30,6 +30,18 @@ CREATE TABLE `db_mini_baccarat`.`tbl_bet_record` (
   KEY `IDX_GAME_ROUND` (`table_code`,`shoe_code`,`round_number`)
 ) ENGINE=ndbcluster AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `db_mini_baccarat`.`tbl_player_session` (
+  `session_id` varchar(64) NOT NULL,
+  `merchant_code` varchar(64) DEFAULT NULL,
+  `player_id` varchar(64) DEFAULT NULL,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`session_id`),
+  KEY `IDX_PLAYER_ID` (`player_id`),
+  KEY `IDX_MERCHANT` (`merchant_code`),
+  KEY `IDX_UPDATE_TIME` (`update_time`)
+) ENGINE=ndbcluster DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE `db_mini_baccarat`.`tbl_round_state` (
   `state_id` int(11) NOT NULL AUTO_INCREMENT,
   `server_code` varchar(45) NOT NULL,
@@ -54,5 +66,5 @@ CREATE TABLE `db_mini_baccarat`.`tbl_round_state` (
   KEY `IDX_TABLE_CODE` (`table_code`),
   KEY `IDX_ROUND_STATE` (`round_state`),
   KEY `IDX_BACKUP_NUMBER` (`backup_number`)
-) ENGINE=ndbcluster DEFAULT CHARSET=utf8;
+) ENGINE=ndbcluster AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
 

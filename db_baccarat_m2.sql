@@ -14,10 +14,18 @@ CREATE TABLE `db_baccarat_m2`.`tbl_bet_record` (
   `game_result` int(11) NOT NULL DEFAULT '0',
   `pay_amount` decimal(19,4) NOT NULL DEFAULT '0.0000',
   `bet_state` int(11) NOT NULL DEFAULT '0',
+  `settle_state` int(11) NOT NULL DEFAULT '0',
+  `debit_state` int(11) NOT NULL DEFAULT '0',
+  `credit_state` int(11) NOT NULL DEFAULT '0',
+  `cancel_state` int(11) NOT NULL DEFAULT '0',
+  `is_cancelled` int(11) NOT NULL DEFAULT '0',
   `merchant_code` varchar(64) NOT NULL,
   `player_id` varchar(64) NOT NULL,
   `bet_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `settle_time` datetime DEFAULT NULL,
+  `cancel_time` datetime DEFAULT NULL,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `remark` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`bet_uuid`),
   KEY `IDX_SERVER_CODE` (`server_code`),
   KEY `IDX_ROUND_NUMBER` (`round_number`),
@@ -80,5 +88,4 @@ CREATE TABLE `db_baccarat_m2`.`tbl_trans_debit` (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`debit_uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 

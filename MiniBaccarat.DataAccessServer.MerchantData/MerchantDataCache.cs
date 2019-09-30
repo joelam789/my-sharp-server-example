@@ -117,7 +117,7 @@ namespace MiniBaccarat.DataAccessServer.MerchantData
             if (merchants.ContainsKey(merchant))
             {
                 var item = merchants[merchant];
-                if (item.active > 0) url = item.merchant;
+                if (item.active > 0) url = item.url;
             }
 
             return url;

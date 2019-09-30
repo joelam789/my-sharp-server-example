@@ -23,8 +23,9 @@ namespace MiniBaccarat.SimpleClient
 
         CommonRng m_Rng = new CommonRng();
 
-        string m_FrontEndServerURL = "ws://127.0.0.1:9996";
-        string m_BettingServerURL = "http://127.0.0.1:9998";
+        string m_FrontEndServerURL = "";
+        string m_BettingServerURL = "";
+        //string m_LoginServerURL = "http://127.0.0.1:9990";
 
         public MainForm()
         {
@@ -130,6 +131,7 @@ namespace MiniBaccarat.SimpleClient
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            /*
             m_Socket = new WebSocket(m_FrontEndServerURL);
             m_Socket.AllowUnstrustedCertificate = true;
             m_Socket.NoDelay = true;
@@ -139,11 +141,84 @@ namespace MiniBaccarat.SimpleClient
             m_Socket.Opened += (sender1, e1) => { WhenConnect(sender1); };
             m_Socket.Error += (sender1, e1) => { WhenGetError(e1.Exception.Message); };
             m_Socket.MessageReceived += (sender1, e1) => { WhenGetMessage(e1.Message); };
+            */
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private async void btnStart_Click(object sender, EventArgs e)
         {
-            m_Socket.Open();
+            //m_Socket.Open();
+
+            var url = edtLoginUrl.Text + "/login/player-login";
+            var merchant = edtMerchantCode.Text;
+            var player = edtPlayerId.Text;
+            var token = edtLoginToken.Text;
+            var req = new
+            {
+                merchant_code = merchant,
+                player_id = player,
+                login_token = token
+            };
+
+            string input = JsonConvert.SerializeObject(req);
+
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+
+            httpWebRequest.Accept = "*/*";
+            httpWebRequest.UserAgent = "curl/7.50.0";
+            httpWebRequest.ContentType = "text/plain";
+            httpWebRequest.Method = "POST";
+
+            //httpWebRequest.Timeout = timeout > 0 ? timeout : DefaultTimeout;
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                await streamWriter.WriteAsync(input);
+                await streamWriter.FlushAsync();
+                streamWriter.Close();
+            }
+
+            var ret = "";
+
+            using (var response = await TryToGetResponse(httpWebRequest))
+            {
+                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    ret = await streamReader.ReadToEndAsync();
+                    streamReader.Close();
+                }
+            }
+
+            LogMsg("LOGIN REPLY - " + ret);
+
+            dynamic reply = JsonConvert.DeserializeObject(ret);
+            if (reply.error_code == 0)
+            {
+                edtPlayerBalance.Text = reply.player_balance.ToString();
+
+                m_FrontEndServerURL = reply.front_end.ToString();
+                m_BettingServerURL = reply.bet_server.ToString();
+
+                if (m_Socket != null)
+                {
+                    m_Socket.Close();
+                    m_Socket = null;
+                }
+
+                m_Socket = new WebSocket(m_FrontEndServerURL);
+                m_Socket.AllowUnstrustedCertificate = true;
+                m_Socket.NoDelay = true;
+                m_Socket.EnableAutoSendPing = false;
+
+                m_Socket.Closed += (sender1, e1) => { WhenDisconnect(sender1); };
+                m_Socket.Opened += (sender1, e1) => { WhenConnect(sender1); };
+                m_Socket.Error += (sender1, e1) => { WhenGetError(e1.Exception.Message); };
+                m_Socket.MessageReceived += (sender1, e1) => { WhenGetMessage(e1.Message); };
+
+                m_Socket.Open();
+            }
+
+
+
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -153,6 +228,8 @@ namespace MiniBaccarat.SimpleClient
 
         private async void btnPlaceBet_Click(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(m_BettingServerURL)) return;
+
             var url = m_BettingServerURL + "/accept-bet/accept";
             var merchant = (m_Rng.Next(2) + 1).ToString();
             var player = merchant + m_Rng.Next(10).ToString() + m_Rng.Next(10).ToString() + m_Rng.Next(10).ToString();
@@ -203,6 +280,7 @@ namespace MiniBaccarat.SimpleClient
 
             LogMsg2("PLACE-BET REPLY - " + ret);
         }
+
     }
 
     public class CommonRng

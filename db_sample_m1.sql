@@ -20,6 +20,7 @@ CREATE TABLE `db_sample_m1`.`tbl_bet_record` (
   `settle_state` int(11) NOT NULL DEFAULT '0',
   `is_cancelled` int(11) NOT NULL DEFAULT '0',
   `bet_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `settle_time` datetime DEFAULT NULL,
   `cancel_time` datetime DEFAULT NULL,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `remark` varchar(500) DEFAULT NULL,

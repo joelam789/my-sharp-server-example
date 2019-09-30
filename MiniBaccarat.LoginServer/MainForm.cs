@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using MySharpServer.Common;
 using MySharpServer.Framework;
 
-namespace MiniBaccarat.TableController
+namespace MiniBaccarat.LoginServer
 {
     public partial class MainForm : Form
     {

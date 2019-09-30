@@ -43,6 +43,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BetServer.Chec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.DataAccessServer.MerchantData", "MiniBaccarat.DataAccessServer.MerchantData\MiniBaccarat.DataAccessServer.MerchantData.csproj", "{A13F4D85-93BE-4990-8F81-1B52AB1DDEFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.LoginServer", "MiniBaccarat.LoginServer\MiniBaccarat.LoginServer.csproj", "{104BF2ED-E647-45AC-95CC-58C68B246673}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.LoginServer.Service", "MiniBaccarat.LoginServer.Service\MiniBaccarat.LoginServer.Service.csproj", "{E736E3E6-EF9C-4EDC-9401-072E6BBFA1DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +133,14 @@ Global
 		{A13F4D85-93BE-4990-8F81-1B52AB1DDEFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A13F4D85-93BE-4990-8F81-1B52AB1DDEFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A13F4D85-93BE-4990-8F81-1B52AB1DDEFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{104BF2ED-E647-45AC-95CC-58C68B246673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{104BF2ED-E647-45AC-95CC-58C68B246673}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{104BF2ED-E647-45AC-95CC-58C68B246673}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{104BF2ED-E647-45AC-95CC-58C68B246673}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E736E3E6-EF9C-4EDC-9401-072E6BBFA1DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E736E3E6-EF9C-4EDC-9401-072E6BBFA1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E736E3E6-EF9C-4EDC-9401-072E6BBFA1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E736E3E6-EF9C-4EDC-9401-072E6BBFA1DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

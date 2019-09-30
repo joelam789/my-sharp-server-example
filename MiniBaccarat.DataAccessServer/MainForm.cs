@@ -40,6 +40,8 @@ namespace MiniBaccarat.DataAccessServer
         {
             CommonLog.SetGuiControl(this, mmLog);
 
+            RemoteCaller.HttpConnectionLimit = 1000;
+
             var appSettings = ConfigurationManager.AppSettings;
 
             var allKeys = appSettings.AllKeys;
