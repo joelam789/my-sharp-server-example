@@ -54,6 +54,8 @@ namespace MiniBaccarat.FrontEndServer.TableInfo
 
             //System.Diagnostics.Debugger.Break();
 
+            //m_LocalNode.GetLogger().Info("OnClientConnect: " + session.GetRequestPath());
+
             var clientMsg = new
             {
                 msg = "client_info",

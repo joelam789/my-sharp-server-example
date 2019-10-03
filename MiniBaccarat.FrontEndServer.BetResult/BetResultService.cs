@@ -13,6 +13,7 @@ namespace MiniBaccarat.FrontEndServer.BetResult
     {
         BetResultDeliverer m_Deliverer = null;
         protected IServerNode m_LocalNode = null;
+        protected string m_MainCache = "SharpNode";
 
         [Access(Name = "on-load", IsLocal = true)]
         public async Task<string> Load(IServerNode node)
@@ -54,7 +55,60 @@ namespace MiniBaccarat.FrontEndServer.BetResult
 
             //System.Diagnostics.Debugger.Break();
 
-            if (m_Deliverer != null) m_Deliverer.AddClient(session.GetRemoteAddress(), session);
+            m_LocalNode.GetLogger().Info("OnClientConnect: " + session.GetRequestPath());
+
+            var count = 0;
+            var playerId = "";
+            var merchantCode = "";
+            var sessionId = "";
+            var parts = session.GetRequestPath().Split('/');
+            foreach (var part in parts)
+            {
+                if (part.Length <= 0) continue;
+                count++;
+                if (count == 1) merchantCode = part;
+                if (count == 2) playerId = part;
+                if (count == 3) sessionId = part;
+                if (count > 3) break;
+            }
+
+            var okay = false;
+
+            if (!String.IsNullOrEmpty(merchantCode) 
+                && !String.IsNullOrEmpty(playerId)
+                && !String.IsNullOrEmpty(sessionId))
+            {
+                var dbhelper = m_LocalNode.GetDataHelper();
+                using (var cnn = dbhelper.OpenDatabase(m_MainCache))
+                {
+                    using (var cmd = cnn.CreateCommand())
+                    {
+                        dbhelper.AddParam(cmd, "@session_id", sessionId);
+                        dbhelper.AddParam(cmd, "@merchant_code", merchantCode);
+                        dbhelper.AddParam(cmd, "@player_id", playerId);
+
+                        cmd.CommandText = " select * from db_mini_baccarat.tbl_player_session "
+                                               + " where merchant_code = @merchant_code "
+                                               + " and player_id = @player_id "
+                                               + " and session_id = @session_id "
+                                               ;
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                okay = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (okay) m_LocalNode.GetLogger().Info("Client session is ok: " + sessionId);
+            else m_LocalNode.GetLogger().Info("Invalid session: " + sessionId);
+
+            if (okay && m_Deliverer != null) m_Deliverer.AddClient(session.GetRemoteAddress(), session);
+            else session.CloseConnection();
         }
 
         [Access(Name = "on-disconnect", IsLocal = true)]

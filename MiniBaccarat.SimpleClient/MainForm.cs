@@ -27,6 +27,10 @@ namespace MiniBaccarat.SimpleClient
         string m_BettingServerURL = "";
         //string m_LoginServerURL = "http://127.0.0.1:9990";
 
+        string m_CurrentPlayerId = "";
+        string m_CurrentMerchant = "";
+        string m_CurrentSessionId = "";
+
         public MainForm()
         {
             InitializeComponent();
@@ -197,6 +201,10 @@ namespace MiniBaccarat.SimpleClient
 
                 m_FrontEndServerURL = reply.front_end.ToString();
                 m_BettingServerURL = reply.bet_server.ToString();
+                m_CurrentSessionId = reply.session_id.ToString();
+
+                m_CurrentPlayerId = player;
+                m_CurrentMerchant = merchant;
 
                 if (m_Socket != null)
                 {
@@ -204,7 +212,7 @@ namespace MiniBaccarat.SimpleClient
                     m_Socket = null;
                 }
 
-                m_Socket = new WebSocket(m_FrontEndServerURL);
+                m_Socket = new WebSocket(m_FrontEndServerURL + "/" + merchant + "/" + player + "/" + m_CurrentSessionId);
                 m_Socket.AllowUnstrustedCertificate = true;
                 m_Socket.NoDelay = true;
                 m_Socket.EnableAutoSendPing = false;
@@ -242,8 +250,13 @@ namespace MiniBaccarat.SimpleClient
                 client_id = edtClientId.Text,
                 front_end = edtFrontEnd.Text,
 
-                merchant_code = "m" + merchant,
-                player_id = "p" + player,
+                session_id = m_CurrentSessionId,
+
+                //merchant_code = "m" + merchant,
+                //player_id = "p" + player,
+
+                merchant_code = m_CurrentMerchant,
+                player_id = m_CurrentPlayerId,
 
                 bet_pool = cbbBetPool.Items.IndexOf(cbbBetPool.Text) + 1,
                 bet_amount = Convert.ToInt32(cbbBetAmount.Text)
