@@ -243,7 +243,7 @@ namespace MiniBaccarat.SampleMerchant.Api
         }
 
 
-        [Access(Name = "credit-for-setling-bet")]
+        [Access(Name = "credit-for-settling-bet")]
         public async Task CreditForBetting(RequestContext ctx)
         {
             string reqstr = ctx.Data.ToString();

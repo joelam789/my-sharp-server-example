@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}</ProjectGuid>
+    <ProjectGuid>{DA33A3C4-BE8E-4559-A0B4-BE2B4A1886A0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MiniBaccarat.DataAccessServer</RootNamespace>
-    <AssemblyName>MiniBaccarat.DataAccessServer</AssemblyName>
+    <RootNamespace>MiniBaccarat.SingleWalletServer</RootNamespace>
+    <AssemblyName>MiniBaccarat.SingleWalletServer</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -126,26 +126,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.BetData\MiniBaccarat.DataAccessServer.BetData.csproj">
-      <Project>{2ab9a713-206b-4983-859c-8fe9e33811d3}</Project>
-      <Name>MiniBaccarat.DataAccessServer.BetData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.GameData\MiniBaccarat.DataAccessServer.GameData.csproj">
-      <Project>{d056d3ba-e9c3-4ad7-afe6-8357631ccbf9}</Project>
-      <Name>MiniBaccarat.DataAccessServer.GameData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.MerchantData\MiniBaccarat.DataAccessServer.MerchantData.csproj">
-      <Project>{a13f4d85-93be-4990-8f81-1b52ab1ddeff}</Project>
-      <Name>MiniBaccarat.DataAccessServer.MerchantData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.TransData\MiniBaccarat.DataAccessServer.TransData.csproj">
-      <Project>{d9d8352b-8ba4-4b96-be7e-e786d5796b81}</Project>
-      <Name>MiniBaccarat.DataAccessServer.TransData</Name>
+    <ProjectReference Include="..\MiniBaccarat.SingleWalletServer.Service\MiniBaccarat.SingleWalletServer.Service.csproj">
+      <Project>{0f0a891c-b387-494b-b9dd-efe482562c31}</Project>
+      <Name>MiniBaccarat.SingleWalletServer.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
