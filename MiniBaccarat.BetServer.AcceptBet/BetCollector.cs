@@ -50,6 +50,9 @@ namespace MiniBaccarat.BetServer.AcceptBet
                 };
             }
 
+            string betGuid = "";
+            decimal playerBalance = -1;
+
             var dbhelper = m_Node.GetDataHelper();
             using (var cnn = dbhelper.OpenDatabase(m_MainCache))
             {
@@ -83,13 +86,15 @@ namespace MiniBaccarat.BetServer.AcceptBet
                 {
                     m_Logger.Info("Saving bet record to database...");
 
-                    string betGuid = "";
-                    string ret = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                    string betTime = "";
+                    string retStr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
                                  "bet-data", "save-record", m_Node.GetJsonHelper().ToJsonString(betreq));
 
-                    if (ret.Contains("-"))
+                    if (retStr.Contains("{") && retStr.Contains("-"))
                     {
-                        betGuid = ret;
+                        dynamic ret = m_Node.GetJsonHelper().ToJsonObject(retStr);
+                        betGuid = ret.bet_uuid;
+                        betTime = ret.bet_time;
                         m_Logger.Info("Update database successfully");
                     }
                     else
@@ -97,7 +102,55 @@ namespace MiniBaccarat.BetServer.AcceptBet
                         m_Logger.Error("Failed to save bet data in database");
                     }
 
-                    if (betGuid.Length > 0)
+                    if (betGuid.Length > 0 && betTime.Length > 0)
+                    {
+                        // call single wallet
+
+                        m_Logger.Info("Call single wallet...");
+
+                        var swReq = new
+                        {
+                            bet_uuid = betGuid,
+                            table_code = betreq.table_code,
+                            shoe_code = betreq.shoe_code,
+                            round_number = betreq.round_number,
+                            bet_pool = betreq.bet_pool,
+                            merchant_code = betreq.merchant_code,
+                            player_id = betreq.player_id,
+                            bet_amount = betreq.bet_amount,
+                            bet_time = betTime
+                        };
+
+                        string swReplyStr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                                 "single-wallet", "debit-for-placing-bet", m_Node.GetJsonHelper().ToJsonString(swReq));
+
+                        if (String.IsNullOrEmpty(swReplyStr))
+                        {
+                            replyErrorCode = -5;
+                            replyErroMsg = "failed to call single-wallet service";
+                        }
+                        else
+                        {
+                            dynamic ret = m_Node.GetJsonHelper().ToJsonObject(swReplyStr);
+
+                            if (ret.error_code == 0)
+                            {
+                                playerBalance = ret.player_balance;
+                            }
+                            else
+                            {
+                                replyErrorCode = -5;
+                                replyErroMsg = "failed to debit from merchant";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        replyErrorCode = -4;
+                        replyErroMsg = "failed to add it to db";
+                    }
+
+                    if (replyErrorCode >= 0 && playerBalance >= 0)
                     {
                         using (var cmd = cnn.CreateCommand())
                         {
@@ -134,13 +187,6 @@ namespace MiniBaccarat.BetServer.AcceptBet
 
                         }
                     }
-                    else
-                    {
-                        replyErrorCode = -4;
-                        replyErroMsg = "failed to add it to db";
-                    }
-
-                    
                 }
 
                 if (replyErrorCode >= 0)
@@ -148,7 +194,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
                     return new
                     {
                         msg = replyMsgType,
-
+                        player_balance = playerBalance,
                         error_code = 0,
                         error_msg = "ok"
                     };
@@ -156,7 +202,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
                 else return new
                 {
                     msg = replyMsgType,
-
+                    player_balance = playerBalance,
                     error_code = replyErrorCode,
                     error_msg = replyErroMsg
                 };

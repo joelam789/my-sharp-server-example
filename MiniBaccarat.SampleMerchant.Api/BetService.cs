@@ -14,6 +14,8 @@ namespace MiniBaccarat.SampleMerchant.Api
         [Access(Name = "debit-for-placing-bet")]
         public async Task DebitForBetting(RequestContext ctx)
         {
+            ctx.Logger.Info("Debit for placing-bet...");
+
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
@@ -26,8 +28,9 @@ namespace MiniBaccarat.SampleMerchant.Api
             }
 
             dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            bool isRequestToCancel = req.is_cancelled;
 
-            if (req.is_cancelled)
+            if (isRequestToCancel)
             {
                 await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
                 {
@@ -232,6 +235,8 @@ namespace MiniBaccarat.SampleMerchant.Api
                 }
             }
 
+            ctx.Logger.Info("Debit done");
+
             var reply = new
             {
                 req.merchant_code,
@@ -246,6 +251,8 @@ namespace MiniBaccarat.SampleMerchant.Api
         [Access(Name = "credit-for-settling-bet")]
         public async Task CreditForBetting(RequestContext ctx)
         {
+            ctx.Logger.Info("Credit for settling-bet...");
+
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
@@ -462,6 +469,8 @@ namespace MiniBaccarat.SampleMerchant.Api
                     }
                 }
             }
+
+            ctx.Logger.Info("Credit done");
 
             var reply = new
             {

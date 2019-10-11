@@ -56,6 +56,7 @@ namespace MiniBaccarat.DataAccessServer.BetData
 
             bool okay = false;
             string betId = GetBetId();
+            string betTimeStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             dynamic betreq = ctx.JsonCodec.ToJsonObject(reqstr);
 
@@ -87,9 +88,38 @@ namespace MiniBaccarat.DataAccessServer.BetData
 
                     okay = cmd.ExecuteNonQuery() > 0;
                 }
+
+                if (okay)
+                {
+                    using (var cmd = cnn.CreateCommand())
+                    {
+                        dbhelper.AddParam(cmd, "@bet_uuid", betId);
+
+                        cmd.CommandText = "select bet_uuid, bet_time from tbl_bet_record "
+                                            + " where bet_uuid = @bet_uuid "
+                                            ;
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                betTimeStr = Convert.ToDateTime(reader["bet_time"]).ToString("yyyy-MM-dd HH:mm:ss");
+                            }
+                        }
+
+                    }
+                }
             }
 
-            if (okay) await ctx.Session.Send(betId);
+            if (okay)
+            {
+                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                {
+                    error_code = 0,
+                    bet_uuid = betId,
+                    bet_time = betTimeStr
+                }));
+            }
             else await ctx.Session.Send("Failed to update database");
         }
 
