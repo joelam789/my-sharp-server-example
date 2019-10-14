@@ -815,7 +815,7 @@ namespace MiniBaccarat.GameServer.Service
                 */
 
 
-                m_Logger.Info("Update database...");
+                m_Logger.Info("Update bets in database...");
 
                 int idx = 0;
                 int batchCount = 100;
@@ -832,28 +832,31 @@ namespace MiniBaccarat.GameServer.Service
                 
                 List<Task> dbBatchTasks = new List<Task>();
                 List<string> dbErrIds = new List<string>();
+                Dictionary<string, dynamic> passItems = new Dictionary<string, dynamic>();
                 foreach (var list in dbItems)
                 {
                     dbBatchTasks.Add(Task.Run(async () =>
                     {
+                        foreach (var item in list)
+                        {
+                            string uuid = item.bet_uuid.ToString();
+                            dbErrIds.Add(uuid);
+                        }
+
                         string dbErr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
                                                 "batch-update", "update-bet-db", m_Node.GetJsonHelper().ToJsonString(list));
                         if (dbErr.Length <= 0 || !dbErr.Contains("["))
                         {
-                            foreach (var item in list)
-                            {
-                                string uuid = item.bet_uuid.ToString();
-                                dbErrIds.Add(uuid);
-                            }
                             m_Logger.Info("Errors found when update bets in db: " + dbErr);
                         }
                         else
                         {
-                            dynamic errList = m_Node.GetJsonHelper().ToJsonObject(dbErr);
-                            foreach (var item in errList)
+                            dynamic passList = m_Node.GetJsonHelper().ToJsonObject(dbErr);
+                            foreach (var item in passList)
                             {
-                                string uuid = item.ToString();
-                                dbErrIds.Add(uuid);
+                                string uuid = item.bet_uuid.ToString();
+                                dbErrIds.Remove(uuid);
+                                passItems.Add(uuid, item);
                             }
                         }
                     }));
@@ -873,7 +876,81 @@ namespace MiniBaccarat.GameServer.Service
                         m_Logger.Error("Fialed to update bet in db: " + uuid);
                         continue;
                     }
-                    else records.Add(item); // only keep fine records
+                    else records.Add(item); // only keep good records
+                }
+
+
+                m_Logger.Info("Update wallets...");
+
+                idx = 0;
+                batchCount = 100;
+
+                List<List<dynamic>> walletItems = new List<List<dynamic>>();
+                while (idx < records.Count)
+                {
+                    List<dynamic> items = new List<dynamic>();
+                    int count = records.Count - idx >= batchCount ? batchCount : records.Count - idx;
+                    for (var i = 0; i < count; i++) //items.Add(records[idx + i]);
+                    {
+                        string currentBetId = records[idx + i].bet_uuid;
+                        items.Add(new
+                        {
+                            bet_uuid = currentBetId,
+                            table_code = TableCode,
+                            shoe_code = m_ShoeCode,
+                            round_number = m_RoundIndex,
+                            bet_pool = records[idx + i].bet_pool,
+                            merchant_code = records[idx + i].merchant_code,
+                            player_id = records[idx + i].player_id,
+                            pay_amount = records[idx + i].pay_amount,
+                            settle_time = passItems[currentBetId].settle_time
+                        });
+                    }
+                    idx += count;
+                    walletItems.Add(items);
+                }
+
+                List<Task> walletBatchTasks = new List<Task>();
+                List<string> walletErrIds = new List<string>();
+                foreach (var list in walletItems)
+                {
+                    walletBatchTasks.Add(Task.Run(async () =>
+                    {
+                        string walletErr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                                                "batch-update", "update-bet-wallet", m_Node.GetJsonHelper().ToJsonString(list));
+                        if (walletErr.Length <= 0 || !walletErr.Contains("["))
+                        {
+                            foreach (var item in list)
+                            {
+                                string uuid = item.bet_uuid.ToString();
+                                walletErrIds.Add(uuid);
+                            }
+                            m_Logger.Info("Errors found when update wallets with bet results: " + walletErr);
+                        }
+                        else
+                        {
+                            dynamic errList = m_Node.GetJsonHelper().ToJsonObject(walletErr);
+                            foreach (var item in errList)
+                            {
+                                string uuid = item.ToString();
+                                walletErrIds.Add(uuid);
+                            }
+                        }
+                    }));
+                }
+
+                Task.WaitAll(walletBatchTasks.ToArray());
+
+                m_Logger.Info("Updated wallets with bet results: " + (records.Count - walletErrIds.Count) + " / " + records.Count);
+
+
+                foreach (var item in reply)
+                {
+                    string uuid = item.bet_uuid.ToString();
+                    if (walletErrIds.Contains(uuid))
+                    {
+                        m_Logger.Error("Fialed to update wallet for bet: " + uuid);
+                    }
                 }
 
 

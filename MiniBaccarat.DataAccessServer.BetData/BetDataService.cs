@@ -133,9 +133,11 @@ namespace MiniBaccarat.DataAccessServer.BetData
                 return;
             }
 
-            bool okay = false;
-
             dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+
+            bool okay = false;
+            string betId = req.bet_uuid;
+            string settleTimeStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             string merchantCode = req.merchant_code.ToString();
 
@@ -144,7 +146,7 @@ namespace MiniBaccarat.DataAccessServer.BetData
             {
                 using (var cmd = cnn.CreateCommand())
                 {
-                    dbhelper.AddParam(cmd, "@bet_uuid", req.bet_uuid);
+                    dbhelper.AddParam(cmd, "@bet_uuid", betId);
                     dbhelper.AddParam(cmd, "@pay_amount", req.pay_amount);
                     dbhelper.AddParam(cmd, "@game_result", req.game_result);
 
@@ -152,15 +154,37 @@ namespace MiniBaccarat.DataAccessServer.BetData
                                         + " set pay_amount = @pay_amount "
                                         + " , game_result = @game_result "
                                         + " , bet_state = 1 "
+                                        + " , settle_time = CURRENT_TIMESTAMP "
                                         + " , update_time = CURRENT_TIMESTAMP "
                                         + " where bet_uuid = @bet_uuid "
                                         ;
 
                     okay = cmd.ExecuteNonQuery() > 0;
                 }
+
+                if (okay)
+                {
+                    using (var cmd = cnn.CreateCommand())
+                    {
+                        dbhelper.AddParam(cmd, "@bet_uuid", betId);
+
+                        cmd.CommandText = "select bet_uuid, settle_time from tbl_bet_record "
+                                            + " where bet_uuid = @bet_uuid "
+                                            ;
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                settleTimeStr = Convert.ToDateTime(reader["settle_time"]).ToString("yyyy-MM-dd HH:mm:ss");
+                            }
+                        }
+
+                    }
+                }
             }
 
-            if (okay) await ctx.Session.Send("ok");
+            if (okay) await ctx.Session.Send(betId + "=" + settleTimeStr);
             else await ctx.Session.Send("Failed to update database");
         }
     }

@@ -28,9 +28,9 @@ namespace MiniBaccarat.SampleMerchant.Api
             }
 
             dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
-            bool isRequestToCancel = req.is_cancelled;
+            bool requestToCancel = req.is_cancelled;
 
-            if (isRequestToCancel)
+            if (requestToCancel)
             {
                 await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
                 {
@@ -265,8 +265,9 @@ namespace MiniBaccarat.SampleMerchant.Api
             }
 
             dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            bool requestToCancel = req.is_cancelled;
 
-            if (req.is_cancelled)
+            if (requestToCancel)
             {
                 await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
                 {
@@ -412,7 +413,7 @@ namespace MiniBaccarat.SampleMerchant.Api
                         dbhelper.AddParam(cmd, "@bet_settle_time", req.bet_settle_time);
                         dbhelper.AddParam(cmd, "@credit_success", done ? 1 : 0);
 
-                        cmd.CommandText = "insert into tbl_trans_debit "
+                        cmd.CommandText = "insert into tbl_trans_credit "
                                         + " set credit_uuid = @credit_uuid , bet_uuid = @bet_uuid , merchant_code = @merchant_code , player_id = @player_id ,"
                                         + " round_id = @round_id , bet_pool = @bet_pool , credit_amount = @credit_amount , "
                                         + " credit_success = @credit_success, bet_settle_time = @bet_settle_time , update_time = NOW() "

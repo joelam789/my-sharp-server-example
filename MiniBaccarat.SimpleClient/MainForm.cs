@@ -129,6 +129,16 @@ namespace MiniBaccarat.SimpleClient
                     else if (betResult.bet > 0 && betResult.payout == betResult.bet) LogMsg2("TIE - " + msg);
                     else if (betResult.bet > 0 && betResult.payout < betResult.bet) LogMsg2("LOSE - " + msg);
                     else LogMsg2("ERROR - " + msg);
+
+                    if (betResult.bet > 0)
+                    {
+                        decimal payout = betResult.payout;
+                        decimal currentBalance = -1;
+                        if (Decimal.TryParse(edtPlayerBalance.Text, out currentBalance))
+                        {
+                            edtPlayerBalance.Text = (payout + currentBalance).ToString();
+                        }
+                    }
                 }
             }
         }
@@ -288,6 +298,16 @@ namespace MiniBaccarat.SimpleClient
                 {
                     ret = await streamReader.ReadToEndAsync();
                     streamReader.Close();
+                }
+            }
+
+            if (!String.IsNullOrEmpty(ret) && ret.Contains('{'))
+            {
+                dynamic reply = JsonConvert.DeserializeObject(ret);
+                if (reply.error_code == 0)
+                {
+                    decimal playerBalance = reply.player_balance;
+                    edtPlayerBalance.Text = playerBalance.ToString();
                 }
             }
 

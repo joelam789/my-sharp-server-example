@@ -32,7 +32,7 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
         public async Task UpdateBetsInDatabase(RequestContext ctx)
         {
             string reqstr = ctx.Data.ToString();
-            if (reqstr.Trim().Length <= 0 || !reqstr.Contains("["))
+            if (reqstr.Trim().Length <= 0 || !reqstr.Contains('['))
             {
                 await ctx.Session.Send("Invalid request");
                 return;
@@ -40,22 +40,31 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
 
             dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
 
-            List<string> errIds = new List<string>();
+            List<dynamic> passIds = new List<dynamic>();
             List<Task> dbTasks = new List<Task>();
             foreach (var item in req)
             {
                 string uuid = item.bet_uuid.ToString();
                 dbTasks.Add(Task.Run(async () =>
                 {
-                    string dbErr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                    string dbReply = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
                                             "bet-data", "update-result", m_Node.GetJsonHelper().ToJsonString(item));
-                    if (dbErr != "ok") errIds.Add(uuid);
+                    //if (dbErr != "ok") errIds.Add(uuid);
+                    if (dbReply.Contains('-') && dbReply.Contains('='))
+                    {
+                        var itemParts = dbReply.Split('=');
+                        passIds.Add(new
+                        {
+                            bet_uuid = itemParts[0],
+                            settle_time = itemParts[1]
+                        });
+                    }
                 }));
             }
 
             Task.WaitAll(dbTasks.ToArray());
 
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(errIds));
+            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(passIds));
 
         }
 
@@ -85,6 +94,46 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
             }
 
             Task.WaitAll(cacheTasks.ToArray());
+
+            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(errIds));
+
+        }
+
+        [Access(Name = "update-bet-wallet")]
+        public async Task UpdateSingleWalletForBets(RequestContext ctx)
+        {
+            string reqstr = ctx.Data.ToString();
+            if (reqstr.Trim().Length <= 0 || !reqstr.Contains("["))
+            {
+                await ctx.Session.Send("Invalid request");
+                return;
+            }
+
+            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+
+            List<string> errIds = new List<string>();
+            List<Task> walletTasks = new List<Task>();
+            foreach (var item in req)
+            {
+                string uuid = item.bet_uuid.ToString();
+                walletTasks.Add(Task.Run(async () =>
+                {
+                    string walletReplyStr = await RemoteCaller.RandomCall(m_Node.GetRemoteServices(),
+                                                "single-wallet", "credit-for-settling-bet", m_Node.GetJsonHelper().ToJsonString(item));
+                    if (String.IsNullOrEmpty(walletReplyStr) || !walletReplyStr.Contains('{'))
+                    {
+                        errIds.Add(uuid);
+                    }
+                    else
+                    {
+                        dynamic walletReply = ctx.JsonCodec.ToJsonObject(walletReplyStr);
+                        if (walletReply.error_code != 0) errIds.Add(uuid);
+                    }
+                    
+                }));
+            }
+
+            Task.WaitAll(walletTasks.ToArray());
 
             await ctx.Session.Send(ctx.JsonCodec.ToJsonString(errIds));
 
