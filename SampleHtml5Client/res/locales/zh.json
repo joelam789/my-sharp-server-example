@@ -1,0 +1,37 @@
+
+{
+    "topbar": {
+        "player": "玩家",
+        "merchant": "商家",
+        "currency": "货币",
+        "balance": "金额",
+        "lobby": "游戏大厅",
+        "flag-img": "./img/flags/china.png",
+        "language": "语言",
+        "english": "英文",
+        "chinese": "中文"
+    },
+
+    "lobby": {
+        "enter": "进入游戏",
+        "bet-limit": "下注限额"
+    },
+
+    "baccarat": {
+        "chips": "筹码",
+        "total": "总下注",
+
+        "player": "闲",
+        "banker": "庄",
+        "player-pair": "闲对",
+        "banker-pair": "庄对",
+        "tie": "和",
+
+        "betting": "玩家下注",
+        "dealing": "荷官发牌",
+        "preparing": "结算",
+
+        "ok": "确定",
+        "cancel": "取消"
+    }
+}

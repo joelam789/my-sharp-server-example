@@ -1,0 +1,37 @@
+
+{
+    "topbar": {
+        "player": "Player",
+        "merchant": "Merchant",
+        "currency": "Currency",
+        "balance": "Balance",
+        "lobby": "Lobby",
+        "flag-img": "./img/flags/uk.png",
+        "language": "Language",
+        "english": "English",
+        "chinese": "Chinese"
+    },
+
+    "lobby": {
+        "enter": "Enter",
+        "bet-limit": "Bet Limit"
+    },
+
+    "baccarat": {
+        "chips": "Chips",
+        "total": "Total",
+
+        "player": "Player",
+        "banker": "Banker",
+        "player-pair": "Player Pair",
+        "banker-pair": "Banker Pair",
+        "tie": "Tie",
+
+        "betting": "Betting",
+        "dealing": "Dealing",
+        "preparing": "Preparing",
+
+        "ok": "OK",
+        "cancel": "Cancel"
+    }
+}

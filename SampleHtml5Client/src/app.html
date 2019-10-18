@@ -1,0 +1,14 @@
+    
+<template>
+
+  <require from="./css/styles.css"></require>
+
+  <loading-indicator loading.bind="router.isNavigating || messenger.isRequesting"></loading-indicator>
+
+  <div class="container">
+    <div class="row">
+      <router-view class="col-md-12"></router-view>
+    </div>
+  </div>
+
+</template>

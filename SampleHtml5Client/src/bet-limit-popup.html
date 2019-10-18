@@ -1,0 +1,21 @@
+<template>
+  <ux-dialog class="panel panel-default">
+    <ux-dialog-header class="panel-heading">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" click.delegate="controller.cancel()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="panel-title" i18n="lobby.bet-limit">Bet Limit</h4>
+    </ux-dialog-header>
+
+    <ux-dialog-body class="panel-body">
+        <ul class="list-group">
+            <li repeat.for="item of betLimitOptions" class="list-group-item">
+            <a route-href="#/lobby" click.delegate="controller.ok($index)">
+                <p class="list-group-item-text">${betLimitOptions[$index]}</p>
+            </a>
+            </li>
+        </ul>
+    </ux-dialog-body>
+    
+    <ux-dialog-footer class="panel-footer">
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

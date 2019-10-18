@@ -1,0 +1,13 @@
+{
+
+  "defaultMerchant": "m1",
+  "defaultPlayer": "m1p1",
+
+  "loginServerAddress": "http://127.0.0.1:9990",
+
+  "defaultVideoSource": "ws://127.0.0.1:9320/v1",
+
+  "dealerInfoHost": "http://127.0.0.1",
+  "dealerInfoUrl": "http://127.0.0.1/www/dealer.php"
+
+}

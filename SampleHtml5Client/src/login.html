@@ -1,0 +1,64 @@
+<template>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Login</h3>
+        </div>
+        <div class="panel-body">
+            <form role="form" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Merchant</label>
+                <div class="col-sm-10">
+                    <input type="text" placeholder="merchant name" class="form-control" value.bind="merchantName">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Player ID</label>
+                <div class="col-sm-10">
+                <input type="text" placeholder="player id" class="form-control" value.bind="playerId">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                <input type="password" placeholder="password" class="form-control" value.bind="playerPassword">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Server URL</label>
+                <div class="col-sm-10">
+                <input type="text" placeholder="server url" class="form-control" value.bind="serverAddress">
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="section container">
+        <div class="row">
+          <div class="col-md-2 col-md-offset-9 text-right">
+            <button class="btn btn-success btn-lg btn-block" click.delegate="connectAndLogin()" disabled.bind="!canLogin">Login</button>
+          </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="alert alert-danger alert-dismissible fade-in" show.bind="!isEmptyAlertMessage" role="alert">
+                <button type="button" class="close" click.delegate="dismissAlertMessage()" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Error: </strong> ${alertMessage}
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="alert alert-info" role="alert">
+                You may append &nbsp;&nbsp;
+                <font color="red"><b>?theme=superhero</b></font> &nbsp;&nbsp; or &nbsp;&nbsp; <font color="red"><b>?theme=simplex</b></font>
+                &nbsp;&nbsp; to the URL to change current theme.
+            </div>
+        </div>
+    </div>
+
+</template>
