@@ -1,0 +1,11 @@
+<template>
+    <div style="position: relative; z-index: 1; left: 3px; width: 24px; height: 24px;
+    background-size: contain; display: table-cell; vertical-align: middle; text-align: center;
+    background-image: url(${roadmapGrid.blue ? './img/roadmap/blue-circle.png' : (roadmapGrid.red ? './img/roadmap/red-circle.png' : '')});
+    ">
+    <div if.bind="roadmapGrid.green > 1">${roadmapGrid.green}</div>
+    </div>
+    <div if.bind="roadmapGrid.green > 0" style="position: relative; z-index: 2; left: 0px; top: -13px; border: solid 1px green;
+        -ms-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); transform: rotate(-45deg);">
+    </div>
+</template>

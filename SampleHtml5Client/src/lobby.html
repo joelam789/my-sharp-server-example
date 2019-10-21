@@ -1,5 +1,7 @@
 <template>
 
+    <require from="simple-roadmap-grid"></require>
+
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
 
@@ -86,7 +88,7 @@
                 <tr>
                 <td style="vertical-align: middle;">
                   <!-- ${workingTables[$parent.$index + i].dealerName.length > 0 ? workingTables[$parent.$index + i].dealerName : "[UNKNOWN]"} -->
-                  &nbsp; (${workingTables[$parent.$index + i].state})
+                  &nbsp; ${workingTables[$parent.$index + i].state}
                 </td>
                 <td>
                   &nbsp;
@@ -94,8 +96,7 @@
                 </tr>
                 <tr>
                 <td style="vertical-align: middle; text-align: left;">
-                  <img src.bind="workingTables[$parent.$index + i].dealerPhotoUrl.length > 0 ? workingTables[$parent.$index + i].dealerPhotoUrl : './img/default-dealer.png' "
-                        style="width: 100%; height: 100%; object-fit: contain;"/>
+                  <img src="./img/default-dealer.png" style="width: 100%; height: 100%; object-fit: contain;"/>
                 </td>
                 <td style="width: 300px; height: 150px;">
                   <table if.bind="workingTables[$parent.$index + i].simpleRoadmap.length > 0" class="table-bordered" style="width: 100%; height: 100%;">
@@ -103,14 +104,8 @@
                   <tr repeat.for="row of workingTables[$parent.$index + i].simpleRoadmap[0].length">
                   <td repeat.for="col of workingTables[$parent.$parent.$index + i].simpleRoadmap.length" style="position: relative;">
 
-                    <div style="position: relative; z-index: 1; left: 3px; width: 24px; height: 24px; 
-                    background-image: url(${workingTables[$parent.$parent.$parent.$index + i].simpleRoadmap[col][row].blue ? './img/roadmap/blue-circle.png' : (workingTables[$parent.$parent.$parent.$index + i].simpleRoadmap[col][row].red ? './img/roadmap/red-circle.png' : '')});
-                    background-size: contain; display: table-cell; vertical-align: middle; text-align: center;">
-                    <div if.bind="workingTables[$parent.$parent.$parent.$index + i].simpleRoadmap[col][row].green > 1">${workingTables[$parent.$parent.$parent.$index + i].simpleRoadmap[col][row].green}</div>
-                    </div>
-                    <div if.bind="workingTables[$parent.$parent.$parent.$index + i].simpleRoadmap[col][row].green > 0" style="position: relative; z-index: 2; left: 0px; top: -13px; border: solid 1px green;
-                      -ms-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); transform: rotate(-45deg);">
-                    </div>
+                    <simple-roadmap-grid roadmap-grid.bind="workingTables[$parent.$parent.$parent.$index + i].simpleRoadmap[col][row]">
+                    </simple-roadmap-grid>
 
                   </td>
                   </tr>
@@ -133,11 +128,11 @@
                 <td style="vertical-align: top; width: 30px;">
                   ${workingTables[$parent.$index + i].countdown}
                 </td>
-                <td style="vertical-align: middle; width: *;">
+                <td style="vertical-align: middle; width: *">
                   <div class="progress">
                   <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" 
                         aria-valuenow.bind="workingTables[$parent.$index + i].countdown * 100 / 30" aria-valuemin="0" aria-valuemax="100"
-                        style="width: ${workingTables[$parent.$index + i].countdown * 100 / 30}%;">
+                        style="width: ${workingTables[$parent.$index + i].countdown * 100 / 30}%">
                   </div>
                   </div>
                 </td>
