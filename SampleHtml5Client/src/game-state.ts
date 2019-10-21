@@ -13,14 +13,7 @@ export class GameTable {
     phoneNumber: string = "";
 }
 
-export class BaccaratTableState {
-
-    static readonly SIMPLE_ROADMAP_ROW_COUNT = 5;
-    static readonly SIMPLE_ROADMAP_COL_COUNT = 10;
-
-    static readonly SIMPLE_GAME_STATES = ["Unknown", "Closed", "Prepare", "NewRound", "BettingTime", 
-                                        "Dealing", "Dealing", "Dealing", "Counting", "Settling"];
-
+export class BaccaratTableBasicInfo {
     gameServer: string = "";
     tableCode: string = "";
     shoeCode: string = "";
@@ -32,6 +25,17 @@ export class BaccaratTableState {
     bankerCards: string = "";
     gameResult: string = "";
     gameResultHistory: string = "";
+}
+
+export class BaccaratTableState {
+
+    static readonly SIMPLE_ROADMAP_ROW_COUNT = 5;
+    static readonly SIMPLE_ROADMAP_COL_COUNT = 10;
+
+    static readonly SIMPLE_GAME_STATES = ["Unknown", "Closed", "Preparing", "NewRound", "Betting", 
+                                          "Dealing", "Dealing", "Dealing", "Counting", "Settling"];
+
+    basicInfo: BaccaratTableBasicInfo = new BaccaratTableBasicInfo();
 
     simpleHistory: string = "";
     simpleRoadmap: BaccaratRoadmapCell[][] = null;
@@ -197,7 +201,7 @@ export class BaccaratTableState {
         if (start >= roadmap.length) unfit = true;
 
         if (unfit) {
-            console.log(this.tableCode + " - Failed to update simple roadmap: " + start);
+            console.log(this.basicInfo.tableCode + " - Failed to update simple roadmap: " + start);
             return false;
         }
         
@@ -237,6 +241,11 @@ export class BaccaratTableDisplayInfo {
     serverCode: string = "";
     countdown: number = 0;
     isOpen: boolean = false;
+    simpleRoadmap: Array<Array<any>> = new Array<Array<any>>();
+}
+
+export class BaccaratTableGameInfo {
+    basicInfo: BaccaratTableBasicInfo = new BaccaratTableBasicInfo();
     simpleRoadmap: Array<Array<any>> = new Array<Array<any>>();
 }
 
@@ -456,7 +465,7 @@ export class GameState {
         this.baccaratStates.get(tableCode).tableCode = tableCode;
     }
 
-    getCardCode(card: GameCard = null): string {
+    static getCardCode(card: GameCard = null): string {
         if (card != null && card.suit >= 0 && card.value >= 0) {
             let cardNamePart1Chars = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
             let cardNamePart2Chars = ['S', 'H', 'C', 'D'];
@@ -465,6 +474,17 @@ export class GameState {
             }
         }
         return "01";
+    }
+
+    static getCardByCode(code: string = null): GameCard {
+        if (code == undefined || code == null || code.length <= 1) return new GameCard();
+        let cardNamePart1Chars = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
+        let cardNamePart2Chars = ['S', 'H', 'C', 'D'];
+        let card = new GameCard();
+        card.open = true;
+        card.suit = cardNamePart2Chars.indexOf(code.charAt(1));
+        card.value = cardNamePart1Chars.indexOf(code.charAt(0));
+        return card;
     }
 
 }

@@ -22,21 +22,21 @@ export class TableInfoHandler implements MessageHandler {
                     let isOldTableCode = messenger.gameState.baccaratTableStates.has(item.table);
                     let table = isOldTableCode ?  messenger.gameState.baccaratTableStates.get(item.table) : new BaccaratTableState();
 
-                    table.gameServer = item.server;
-                    table.tableCode = item.table;
-                    table.shoeCode = item.shoe;
-                    table.roundNumber = parseInt(item.round, 10);
-                    table.roundState = parseInt(item.state, 10);
-                    table.roundStateText = item.status;
-                    table.betTimeCountdown = parseInt(item.countdown, 10);
-                    table.playerCards = item.player;
-                    table.bankerCards = item.banker;
-                    table.gameResult = item.result;
-                    table.gameResultHistory = item.history;
+                    table.basicInfo.gameServer = item.server;
+                    table.basicInfo.tableCode = item.table;
+                    table.basicInfo.shoeCode = item.shoe;
+                    table.basicInfo.roundNumber = parseInt(item.round, 10);
+                    table.basicInfo.roundState = parseInt(item.state, 10);
+                    table.basicInfo.roundStateText = item.status;
+                    table.basicInfo.betTimeCountdown = parseInt(item.countdown, 10);
+                    table.basicInfo.playerCards = item.player;
+                    table.basicInfo.bankerCards = item.banker;
+                    table.basicInfo.gameResult = item.result;
+                    table.basicInfo.gameResultHistory = item.history;
 
                     table.updateSimpleRoadmap(item.history);
 
-                    if (!isOldTableCode) messenger.gameState.baccaratTableStates.set(table.tableCode, table);
+                    if (!isOldTableCode) messenger.gameState.baccaratTableStates.set(table.basicInfo.tableCode, table);
 
                 }
 

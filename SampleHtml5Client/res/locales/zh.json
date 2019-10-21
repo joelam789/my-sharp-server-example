@@ -27,9 +27,12 @@
         "banker-pair": "庄对",
         "tie": "和",
 
+        "newround": "新开局",
+        "counting": "计算点数",
+        "settling": "结算中",
         "betting": "玩家下注",
         "dealing": "荷官发牌",
-        "preparing": "结算",
+        "preparing": "准备中",
 
         "ok": "确定",
         "cancel": "取消"

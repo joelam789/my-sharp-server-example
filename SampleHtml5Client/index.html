@@ -42,6 +42,34 @@
         <script src="bundle-vendor.js"></script>
 
         <script>
+
+            /*
+            window.AudioContext = window.AudioContext       ||
+                                    window.webkitAudioContext ||
+                                    window.mozAudioContext    ||
+                                    window.oAudioContext      ||
+                                    window.msAudioContext;
+
+            if (AudioWorkerShim == undefined) {
+                alert("Current browser is not supported by the game");
+                window.history.back();
+                throw "Browser is not supported";
+            }
+
+            if (window.AudioContext == undefined) {
+                var h5api_errmsg = "This browser do not support HTML5 Web Audio API, please use recommended browser: Chrome, Safari, Firefox, IE Edge";
+                alert(h5api_errmsg);
+                throw h5api_errmsg;
+                //console.warn("No Web Audio API supported");
+            }
+            */
+
+            var entryurlparts = window.location.href.split('#');
+            if (entryurlparts.length > 1) {
+                window.location.assign(entryurlparts[0]);
+                throw "The entry URL should not contain character '#'";
+            }
+            window.mainAppConfig.originalUrl = entryurlparts[0];
             
             // init video player
             window.mainStreamPlayer = new SimpleWebSocketStreamPlayer({ 

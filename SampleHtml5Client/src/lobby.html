@@ -104,7 +104,7 @@
                   <tr repeat.for="row of workingTables[$parent.$index + i].simpleRoadmap[0].length">
                   <td repeat.for="col of workingTables[$parent.$parent.$index + i].simpleRoadmap.length" style="position: relative;">
 
-                    <simple-roadmap-grid roadmap-grid.bind="workingTables[$parent.$parent.$parent.$index + i].simpleRoadmap[col][row]">
+                    <simple-roadmap-grid roadmap-grid.to-view="workingTables[$parent.$parent.$parent.$index + i].simpleRoadmap[col][row]">
                     </simple-roadmap-grid>
 
                   </td>

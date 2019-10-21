@@ -43,7 +43,6 @@ export class LobbyPage {
 
         this.subscribers = [];
 
-        
     }
 
     attached() {
@@ -61,11 +60,11 @@ export class LobbyPage {
             for (let tableCode of tableCodes) {
                 let tableState = this.gameState.baccaratTableStates.get(tableCode);
                 let tableInfo = new BaccaratTableDisplayInfo();
-                tableInfo.tableCode = tableState.tableCode;
-                tableInfo.countdown = tableState.betTimeCountdown;
-                tableInfo.isOpen = tableState.roundState > 1;
-                tableInfo.serverCode = tableState.gameServer;
-                tableInfo.state = BaccaratTableState.SIMPLE_GAME_STATES[tableState.roundState];
+                tableInfo.tableCode = tableState.basicInfo.tableCode;
+                tableInfo.countdown = tableState.basicInfo.betTimeCountdown;
+                tableInfo.isOpen = tableState.basicInfo.roundState > 1;
+                tableInfo.serverCode = tableState.basicInfo.gameServer;
+                tableInfo.state = BaccaratTableState.SIMPLE_GAME_STATES[tableState.basicInfo.roundState];
                 if (tableInfo.isOpen) {
                     this.workingTables.push(tableInfo);
                     tableInfo.simpleRoadmap = JSON.parse(JSON.stringify(tableState.simpleRoadmap));
@@ -109,11 +108,11 @@ export class LobbyPage {
             this.workingTables = [];
             this.gameState.baccaratTableStates.forEach((table) => {
                 let tableInfo = new BaccaratTableDisplayInfo();
-                tableInfo.tableCode = table.tableCode;
-                tableInfo.countdown = table.betTimeCountdown;
-                tableInfo.isOpen = table.roundState > 1;
-                tableInfo.serverCode = table.gameServer;
-                tableInfo.state = BaccaratTableState.SIMPLE_GAME_STATES[table.roundState];
+                tableInfo.tableCode = table.basicInfo.tableCode;
+                tableInfo.countdown = table.basicInfo.betTimeCountdown;
+                tableInfo.isOpen = table.basicInfo.roundState > 1;
+                tableInfo.serverCode = table.basicInfo.gameServer;
+                tableInfo.state = BaccaratTableState.SIMPLE_GAME_STATES[table.basicInfo.roundState];
                 if (tableInfo.isOpen) {
                     this.workingTables.push(tableInfo);
                     tableInfo.simpleRoadmap = JSON.parse(JSON.stringify(table.simpleRoadmap));
@@ -211,6 +210,8 @@ export class LobbyPage {
     enterBaccaratTable(tableCode: string) {
         this.selectedTableCode = tableCode;
         console.log("going to enter " + this.selectedTableCode);
+        this.gameState.currentTableCode = this.selectedTableCode;
+        this.router.navigate("baccarat");
     }
 
     changeLang(lang: string) {

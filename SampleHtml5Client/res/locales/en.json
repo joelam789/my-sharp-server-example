@@ -27,6 +27,9 @@
         "banker-pair": "Banker Pair",
         "tie": "Tie",
 
+        "newround": "NewRound",
+        "counting": "Counting",
+        "settling": "Settling",
         "betting": "Betting",
         "dealing": "Dealing",
         "preparing": "Preparing",
