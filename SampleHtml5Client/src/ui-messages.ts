@@ -19,6 +19,10 @@ export class ClientInfoUpdate {
   constructor(public message) { }
 }
 
+export class BetResultUpdate {
+  constructor(public messages) { }
+}
+
 export class TableListUpdate {
   constructor(public message) { }
 }
@@ -76,5 +80,5 @@ export class PlaceBetError {
 }
 
 export class PlaceBetSuccess {
-  constructor(public message){ }
+  constructor(public balance){ }
 }

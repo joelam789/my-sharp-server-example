@@ -71,3 +71,28 @@ export class ClientInfoHandler implements MessageHandler {
     }
 }
 
+export class BetResultHandler implements MessageHandler {
+    handle(messenger: Messenger, msg: any): boolean {
+        if (msg.msg == "bet_result") {
+            messenger.isRequesting = false;
+            let messages = [];
+            for (let item of msg.results) {
+                let uimsg = {
+                    table: item.table,
+                    shoe: item.shoe,
+                    round: parseInt(item.round, 10),
+                    pool: parseInt(item.pool, 10),
+                    bet: parseFloat(item.bet),
+                    payout: parseFloat(item.payout),
+                    result: item.result
+                }
+                messages.push(uimsg);
+            }
+            messenger.dispatch(new UI.BetResultUpdate(messages));
+            
+            return true;
+        }
+        return false;
+    }
+}
+

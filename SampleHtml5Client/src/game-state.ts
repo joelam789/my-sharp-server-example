@@ -1,10 +1,8 @@
 
 export enum BaccaratPool {
-    Tie = 0,
-    PlayerPair,
-    BankerPair,
-    Player,
-    Banker
+    Banker = 1,
+    Player = 2,
+    Tie = 3
 }
 
 export class GameTable {
@@ -331,9 +329,9 @@ export class BaccaratState {
     resetBetAmounts() {
         this.acceptedBetAmount.set(BaccaratPool.Tie, 0);
         this.acceptedBetAmount.set(BaccaratPool.Player, 0);
-        this.acceptedBetAmount.set(BaccaratPool.PlayerPair, 0);
+        //this.acceptedBetAmount.set(BaccaratPool.PlayerPair, 0);
         this.acceptedBetAmount.set(BaccaratPool.Banker, 0);
-        this.acceptedBetAmount.set(BaccaratPool.BankerPair, 0);
+        //this.acceptedBetAmount.set(BaccaratPool.BankerPair, 0);
     }
 
     static createEmptySimpleRoadmap() {

@@ -53,6 +53,7 @@ export class BaccaratPage {
     constructor(public dialogService: DialogService, public router: Router, 
                 public i18n: I18N, public gameState: GameState, public gameMedia: GameMedia, 
                 public messenger: Messenger, public eventChannel: EventAggregator) {
+
         this.resetBetAmounts();
         
     }
@@ -110,8 +111,12 @@ export class BaccaratPage {
 
                 this.applyTableInfo();
 
+                if (this.gameTableInfo.basicInfo.roundState == 3 ) {
+                    this.resetBetAmounts();
+                    this.resetCardSprites();
+                }
+
                 if (this.gameTableInfo.basicInfo.roundState != 4 ) this.updateGameCanvas();
-                else this.resetCardSprites();
 
                 if (this.gameTableInfo.basicInfo.roundState == 9) {
 
@@ -207,15 +212,38 @@ export class BaccaratPage {
                     this.placedBetAmount.set(pool, baccaratState.acceptedBetAmount.get(pool));
                 });
             }
+            alert(data.message);
         }));
 
         this.subscribers.push(this.eventChannel.subscribe(UI.PlaceBetSuccess, data => {
-            console.log(data.message);
+            console.log(data);
+            this.playerBalance = data.balance;
             let baccaratState = this.gameState.baccaratStates.get(this.tableCode)
             if (baccaratState != undefined && baccaratState != null) {
                 this.placedBetAmount.forEach((value, pool) => {
                     baccaratState.acceptedBetAmount.set(pool, this.placedBetAmount.get(pool));
                 });
+            }
+            console.log("place bet successfully");
+        }));
+
+        this.subscribers.push(this.eventChannel.subscribe(UI.BetResultUpdate, data => {
+            console.log(data);
+            let messages = data.messages;
+            for (let item of messages) {
+                if (item.bet > 0 && item.payout > item.bet) {
+                    this.playerBalance = parseFloat(this.playerBalance.toString()) + item.payout;
+                    console.log("WIN - " + item.payout);
+                }
+                else if (item.bet > 0 && item.payout == item.bet) {
+                    this.playerBalance = parseFloat(this.playerBalance.toString()) + item.payout;
+                    console.log("TIE - " + item.payout);
+                }
+                else if (item.bet > 0 && item.payout < item.bet) {
+                    this.playerBalance = parseFloat(this.playerBalance.toString()) + item.payout;
+                    console.log("LOSE - " + item.payout);
+                }
+                else console.log("BET ERROR!!");
             }
         }));
     }
@@ -346,8 +374,12 @@ export class BaccaratPage {
         //let baccaratState = this.gameState.baccaratStates.get(this.tableCode)
         //if (baccaratState != undefined && baccaratState != null) return baccaratState.state == "betting";
         //return false;
+
+        if (this.hasNewBets) return false;
+
         let baccaratState = this.tableState ? this.tableState.toLocaleLowerCase() : "";
         if (baccaratState != undefined && baccaratState != null) return baccaratState == "betting";
+
         return false;
     }
 
@@ -366,12 +398,12 @@ export class BaccaratPage {
         return this.hasNewBets;
     }
 
-    get playerPairPoolBet(): number {
-        return this.placedBetAmount.get(BaccaratPool.PlayerPair);
-    }
-    get bankerPairPoolBet(): number {
-        return this.placedBetAmount.get(BaccaratPool.BankerPair);
-    }
+    //get playerPairPoolBet(): number {
+    //    return this.placedBetAmount.get(BaccaratPool.PlayerPair);
+    //}
+    //get bankerPairPoolBet(): number {
+    //    return this.placedBetAmount.get(BaccaratPool.BankerPair);
+    //}
     get playerPoolBet(): number {
         return this.placedBetAmount.get(BaccaratPool.Player);
     }
@@ -382,14 +414,14 @@ export class BaccaratPage {
         return this.placedBetAmount.get(BaccaratPool.Tie);
     }
 
-    get playerPairPoolWinloss(): string {
-        let value = this.gainAmount.get(BaccaratPool.PlayerPair);
-        return value > 0 ? "(WIN)" : "";
-    }
-    get bankerPairPoolWinloss(): string {
-        let value = this.gainAmount.get(BaccaratPool.BankerPair);
-        return value > 0 ? "(WIN)" : "";
-    }
+    //get playerPairPoolWinloss(): string {
+    //    let value = this.gainAmount.get(BaccaratPool.PlayerPair);
+    //    return value > 0 ? "(WIN)" : "";
+    //}
+    //get bankerPairPoolWinloss(): string {
+    //    let value = this.gainAmount.get(BaccaratPool.BankerPair);
+    //    return value > 0 ? "(WIN)" : "";
+    //}
     get playerPoolWinloss(): string {
         let value = this.gainAmount.get(BaccaratPool.Player);
         return value > 0 ? "(WIN)" : "";
@@ -450,6 +482,7 @@ export class BaccaratPage {
         if (newpart.bets.length > 0) {
             //this.messenger.placeBaccaratBet(newpart.pools, newpart.bets);
             console.log("request betting");
+            this.messenger.placeBet(this.tableCode, newpart.pools[0], newpart.bets[0]);
         }
     }
 
@@ -457,14 +490,19 @@ export class BaccaratPage {
         this.hasNewBets = false;
         this.placedBetAmount.set(BaccaratPool.Tie, 0);
         this.placedBetAmount.set(BaccaratPool.Player, 0);
-        this.placedBetAmount.set(BaccaratPool.PlayerPair, 0);
+        //this.placedBetAmount.set(BaccaratPool.PlayerPair, 0);
         this.placedBetAmount.set(BaccaratPool.Banker, 0);
-        this.placedBetAmount.set(BaccaratPool.BankerPair, 0);
+        //this.placedBetAmount.set(BaccaratPool.BankerPair, 0);
         this.gainAmount.set(BaccaratPool.Tie, 0);
         this.gainAmount.set(BaccaratPool.Player, 0);
-        this.gainAmount.set(BaccaratPool.PlayerPair, 0);
+        //this.gainAmount.set(BaccaratPool.PlayerPair, 0);
         this.gainAmount.set(BaccaratPool.Banker, 0);
-        this.gainAmount.set(BaccaratPool.BankerPair, 0);
+        //this.gainAmount.set(BaccaratPool.BankerPair, 0);
+
+        let baccaratState = this.gameState.baccaratStates.get(this.tableCode)
+        if (baccaratState != undefined && baccaratState != null) {
+            baccaratState.resetBetAmounts();
+        }
     }
 
     showCardAnimation() {

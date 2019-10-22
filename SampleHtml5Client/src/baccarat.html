@@ -88,7 +88,7 @@
         <div class="panel-heading">
         <h3 class="panel-title" i18n="baccarat.player">Player</h3>
         </div>
-        <div class="panel-body" click.trigger="addBet(3)">
+        <div class="panel-body" click.trigger="addBet(2)">
         <p>${playerPoolBet} ${playerPoolWinloss}</p>
         </div>
         </div>
@@ -98,7 +98,7 @@
         <div class="panel-heading">
         <h3 class="panel-title" i18n="baccarat.tie">Tie</h3>
         </div>
-        <div class="panel-body" click.trigger="addBet(0)">
+        <div class="panel-body" click.trigger="addBet(3)">
         <p>${tiePoolBet} ${tiePoolWinloss}</p>
         </div>
         </div>
@@ -108,7 +108,7 @@
         <div class="panel-heading">
         <h3 class="panel-title" i18n="baccarat.banker">Banker</h3>
         </div>
-        <div class="panel-body" click.trigger="addBet(4)">
+        <div class="panel-body" click.trigger="addBet(1)">
         <p>${bankerPoolBet} ${bankerPoolWinloss}</p>
         </div>
         </div>
@@ -133,8 +133,10 @@
     <td>
     <div class="row">
         <div class="col-md-6 form-inline form-group">
+        <!--
         <label i18n="baccarat.total">Total</label>
         <input type="text" class="form-control input-sm" placeholder="" value.to-view="totalBetAmount" disabled>
+        -->
         </div>
         <div class="col-md-6 text-right">
         <button class="btn btn-success" click.delegate="applyNewBets()"

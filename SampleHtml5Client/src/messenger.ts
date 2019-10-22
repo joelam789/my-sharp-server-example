@@ -19,7 +19,7 @@ export class Messenger {
     handlers: Array<Handlers.MessageHandler> = [];
 
     constructor(public gameState: GameState, public eventChannel: EventAggregator) {
-        this.handlers = [new Handlers.TableInfoHandler(), new Handlers.ClientInfoHandler()
+        this.handlers = [new Handlers.TableInfoHandler(), new Handlers.ClientInfoHandler(), new Handlers.BetResultHandler()
                         ];
     }
 
@@ -87,7 +87,7 @@ export class Messenger {
         };
         
         HttpClient.postJSON(this.gameState.loginServerAddress + "/login/player-login", reqmsg, (reply) => {
-            if (reply.error_code == 0) {
+            if (reply.error_code != undefined && reply.error_code == 0) {
                 this.gameState.frontEndServerAddress = reply.front_end;
                 this.gameState.bettingServerAddress = reply.bet_server;
                 this.gameState.currentPlayerSessionId = reply.session_id;
@@ -102,6 +102,44 @@ export class Messenger {
             let errormsg = "Failed to login: " + errmsg;
             console.log(errormsg);
             this.dispatch(new UI.LoginError(errormsg)); // send error msg to ui ...
+        })
+        
+    }
+
+    placeBet(tableCode: string, betPool: number, betAmount: number) {
+        
+        let table = this.gameState.baccaratTableStates.get(tableCode);
+        if (!table) return;
+
+        console.log("placing bet on " + tableCode + " - " + this.gameState.bettingServerAddress);
+
+        let reqmsg = {
+            server_code: table.basicInfo.gameServer,
+            table_code: table.basicInfo.tableCode,
+            shoe_code: table.basicInfo.shoeCode,
+            round_number: table.basicInfo.roundNumber,
+            client_id: this.gameState.frontEndClientId,
+            front_end: this.gameState.frontEndServerName,
+
+            session_id: this.gameState.currentPlayerSessionId,
+
+            merchant_code: this.gameState.merchantName,
+            player_id: this.gameState.playerId,
+
+            bet_pool: betPool,
+            bet_amount: betAmount
+        };
+        
+        HttpClient.postJSON(this.gameState.bettingServerAddress + "/accept-bet/accept", reqmsg, (reply) => {
+            if (reply.error_code != undefined && reply.error_code == 0) {
+                this.dispatch(new UI.PlaceBetSuccess(parseFloat(reply.player_balance)));
+            } else {
+                let errormsg = "Failed to place bet: " + reply.error_msg;
+                this.dispatch(new UI.PlaceBetError(errormsg)); // send error msg to ui ...
+            }
+        }, (errmsg) => {
+            let errormsg = "Failed to place bet: " + errmsg;
+            this.dispatch(new UI.PlaceBetError(errormsg)); // send error msg to ui ...
         })
         
     }
