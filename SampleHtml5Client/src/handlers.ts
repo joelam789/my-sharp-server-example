@@ -36,12 +36,18 @@ export class TableInfoHandler implements MessageHandler {
 
                     table.updateSimpleRoadmap(item.history);
 
-                    if (!isOldTableCode) messenger.gameState.baccaratTableStates.set(table.basicInfo.tableCode, table);
+                    if (!isOldTableCode) {
+                        messenger.gameState.baccaratTableStates.set(table.basicInfo.tableCode, table);
+                        messenger.gameState.resetBaccaratState(table.basicInfo.tableCode);
+                    }
 
                 }
 
                 for (let tableCode of clientTableCodes) {
-                    if (serverTableCodes.indexOf(tableCode) < 0) messenger.gameState.baccaratTableStates.delete(tableCode);
+                    if (serverTableCodes.indexOf(tableCode) < 0) {
+                        messenger.gameState.baccaratTableStates.delete(tableCode);
+                        messenger.gameState.baccaratStates.delete(tableCode);
+                    }
                 }
                 
                 messenger.dispatch(new UI.TableInfoUpdate(msg.tables.length));

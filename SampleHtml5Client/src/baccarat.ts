@@ -57,41 +57,80 @@ export class BaccaratPage {
         
     }
 
+    applyTableInfo() {
+
+        let table = this.gameState.baccaratTableStates.get(this.tableCode);
+        this.gameTableInfo.basicInfo = JSON.parse(JSON.stringify(table.basicInfo));
+        this.gameTableInfo.simpleRoadmap = JSON.parse(JSON.stringify(table.simpleRoadmap));
+
+        this.countdown = this.gameTableInfo.basicInfo.betTimeCountdown;
+        this.gameTableStateText = BaccaratTableState.SIMPLE_GAME_STATES[this.gameTableInfo.basicInfo.roundState].toLocaleLowerCase();
+
+        let playerCardArray = this.gameTableInfo.basicInfo.playerCards.split(",");
+        for (let i=0; i<playerCardArray.length; i++) {
+            if (playerCardArray[i].charAt(0) == 'A') 
+                playerCardArray[i] = '1' + playerCardArray[i].charAt(1);
+        }
+        //console.log(playerCardArray);
+        this.playerCards = [];
+        for (let i=1; i<=3; i++) {
+            if (playerCardArray.length < i) {
+                this.playerCards.push(new GameCard());
+            } else {
+                let card = GameState.getCardByCode(playerCardArray[i-1]);
+                this.playerCards.push(card);
+            }
+        }
+        //console.log(this.playerCards);
+
+        let bankerCardArray = this.gameTableInfo.basicInfo.bankerCards.split(",");
+        for (let i=0; i<bankerCardArray.length; i++) {
+            if (bankerCardArray[i].charAt(0) == 'A') 
+                bankerCardArray[i] = '1' + bankerCardArray[i].charAt(1);
+        }
+        //console.log(bankerCardArray);
+        this.bankerCards = [];
+        for (let i=1; i<=3; i++) {
+            if (bankerCardArray.length < i) {
+                this.bankerCards.push(new GameCard());
+            } else {
+                let card = GameState.getCardByCode(bankerCardArray[i-1]);
+                this.bankerCards.push(card);
+            }
+        }
+        //console.log(this.bankerCards);
+
+    }
+
     attached() {
         this.subscribers = [];
 
         this.subscribers.push(this.eventChannel.subscribe(UI.TableInfoUpdate, data => {
             if (this.gameState.baccaratTableStates.has(this.tableCode)) {
-                let table = this.gameState.baccaratTableStates.get(this.tableCode);
-                this.gameTableInfo.basicInfo = JSON.parse(JSON.stringify(table.basicInfo));
-                this.gameTableInfo.simpleRoadmap = JSON.parse(JSON.stringify(table.simpleRoadmap));
 
-                this.countdown = this.gameTableInfo.basicInfo.betTimeCountdown;
-                this.gameTableStateText = BaccaratTableState.SIMPLE_GAME_STATES[this.gameTableInfo.basicInfo.roundState].toLocaleLowerCase();
+                this.applyTableInfo();
 
-                let playerCardArray = this.gameTableInfo.basicInfo.playerCards.split(",");
-                this.playerCards = [];
-                for (let i=1; i<=3; i++) {
-                    if (playerCardArray.length <= i) {
-                        this.playerCards.push(new GameCard());
-                    } else {
-                        let card = GameState.getCardByCode(playerCardArray[i-1]);
-                        this.playerCards.push(card);
-                    }
+                if (this.gameTableInfo.basicInfo.roundState != 4 ) this.updateGameCanvas();
+                else this.resetCardSprites();
+
+                if (this.gameTableInfo.basicInfo.roundState == 9) {
+
+                    //console.log(this.gameTableInfo.basicInfo.bankerCards);
+                    //console.log(this.gameTableInfo.basicInfo.playerCards);
+                    //console.log(this.gameTableInfo.basicInfo.gameResult);
+
+                    let winloss = this.gameTableInfo.basicInfo.gameResult.charAt(0);
+                    this.gainAmount.set(BaccaratPool.Banker, winloss == '1' ? 1 : 0);
+                    this.gainAmount.set(BaccaratPool.Player, winloss == '2' ? 1 : 0);
+                    this.gainAmount.set(BaccaratPool.Tie, winloss == '3' ? 1 : 0);
+
+                } else {
+
+                    this.gainAmount.set(BaccaratPool.Tie, 0);
+                    this.gainAmount.set(BaccaratPool.Player, 0);
+                    this.gainAmount.set(BaccaratPool.Banker, 0);
+
                 }
-                console.log(this.playerCards);
-
-                let bankerCardArray = this.gameTableInfo.basicInfo.bankerCards.split(",");
-                this.bankerCards = [];
-                for (let i=1; i<=3; i++) {
-                    if (bankerCardArray.length <= i) {
-                        this.bankerCards.push(new GameCard());
-                    } else {
-                        let card = GameState.getCardByCode(bankerCardArray[i-1]);
-                        this.bankerCards.push(card);
-                    }
-                }
-                console.log(this.bankerCards);
 
             }
         }));
@@ -198,6 +237,7 @@ export class BaccaratPage {
         this.playerBalance = this.gameState.playerMoney;
 
         this.tableCode = this.gameState.currentTableCode;
+        this.tableName = this.tableCode;
 
         let tableState = this.gameState.tableStates.get(this.tableCode);
         if (tableState != undefined && tableState != null) {
@@ -206,6 +246,17 @@ export class BaccaratPage {
             this.countdown = tableState.countdown;
             this.tableName = tableState.tableName;
         }
+
+        this.merchantCode = this.gameState.merchantName;
+        this.playerName = this.gameState.playerId;
+
+        if (this.playerCurrency.length <= 0) {
+            this.playerCurrency = this.gameState.playerCurrency;
+            this.playerBalance = this.gameState.playerMoney;
+        }
+
+        this.playerBalance = this.gameState.currentPlayerBalance;
+        if (this.playerCurrency.length <= 0) this.playerCurrency = "CNY";
 
         //let chipSetList = this.gameState.talbeChips.get(this.tableCode);
         //let selectedIndex = this.gameState.selectedBetLimitIndex;
@@ -220,38 +271,7 @@ export class BaccaratPage {
         this.chips = [];
         this.chips.push(...[1, 2, 5, 10, 20, 50, 100]);
 
-        if (this.gameState.baccaratTableStates.has(this.tableCode)) {
-            let table = this.gameState.baccaratTableStates.get(this.tableCode);
-            this.gameTableInfo.basicInfo = JSON.parse(JSON.stringify(table.basicInfo));
-            this.gameTableInfo.simpleRoadmap = JSON.parse(JSON.stringify(table.simpleRoadmap));
-
-            this.countdown = this.gameTableInfo.basicInfo.betTimeCountdown;
-            this.gameTableStateText = BaccaratTableState.SIMPLE_GAME_STATES[this.gameTableInfo.basicInfo.roundState].toLocaleLowerCase();
-
-            let playerCardArray = this.gameTableInfo.basicInfo.playerCards.split(",");
-                this.playerCards = [];
-                for (let i=1; i<=3; i++) {
-                    if (playerCardArray.length <= i) {
-                        this.playerCards.push(new GameCard());
-                    } else {
-                        let card = GameState.getCardByCode(playerCardArray[i-1]);
-                        this.playerCards.push(card);
-                    }
-                }
-                console.log(this.playerCards);
-
-                let bankerCardArray = this.gameTableInfo.basicInfo.bankerCards.split(",");
-                this.bankerCards = [];
-                for (let i=1; i<=3; i++) {
-                    if (bankerCardArray.length <= i) {
-                        this.bankerCards.push(new GameCard());
-                    } else {
-                        let card = GameState.getCardByCode(bankerCardArray[i-1]);
-                        this.bankerCards.push(card);
-                    }
-                }
-                console.log(this.bankerCards);
-        }
+        this.applyTableInfo();
 
         this.messenger.processPendingMessages("table");
 
@@ -398,8 +418,11 @@ export class BaccaratPage {
             pools: [],
             bets: []
         };
+
         let baccaratState = this.gameState.baccaratStates.get(this.tableCode)
-        if (baccaratState != undefined && baccaratState != null && baccaratState.state == "betting") {
+        console.log(baccaratState);
+        //if (baccaratState != undefined && baccaratState != null && baccaratState.state == "betting") {
+        if (baccaratState != undefined && baccaratState != null && this.gameTableInfo.basicInfo.roundState == 4 ) {
             this.placedBetAmount.forEach((value, pool) => {
                 let diff = this.placedBetAmount.get(pool) - baccaratState.acceptedBetAmount.get(pool);
                 if (diff > 0) {
@@ -448,10 +471,12 @@ export class BaccaratPage {
 
         if (this.playerCards.length < 3 || this.bankerCards.length < 3) return;
 
-        let baccaratState = this.gameState.baccaratStates.get(this.tableCode);
-        if (baccaratState == undefined || baccaratState == null) return;
+        //let baccaratState = this.gameState.baccaratStates.get(this.tableCode);
+        //if (baccaratState == undefined || baccaratState == null) return;
+        //if (baccaratState.state == "betting") return;
 
-        if (baccaratState.state == "betting") return;
+        if (this.gameTableInfo == null || this.gameTableInfo.basicInfo == null 
+            || this.gameTableInfo.basicInfo.roundState <= 4 ) return;
 
         let group = this.gameMedia.getSpriteGroup("baccarat");
         if (group == undefined || group == null) return;
@@ -464,12 +489,12 @@ export class BaccaratPage {
             let cardImage = "";
 
             let playerCard = group.getByName("P"+i);
-            if (baccaratState.playerCards[i].value >= 0) {
+            if (this.playerCards[i].value >= 0) {
                 if (playerCard.target == null && !startedNewAnimation && !foundUnfinishedAnimation) {
                     playerCard.target = {  
                                             x: i == 2 ? 80 : 260 - 70 * i, 
                                             y: i == 2 ? 85 : 10, 
-                                            image: GameState.getCardCode(baccaratState.playerCards[i]),
+                                            image: GameState.getCardCode(this.playerCards[i]),
                                             done: false
                                         };
                     playerCard.loadTexture(backImage);
@@ -490,12 +515,12 @@ export class BaccaratPage {
             }
 
             let bankerCard = group.getByName("B"+i);
-            if (baccaratState.bankerCards[i].value >= 0) {
+            if (this.bankerCards[i].value >= 0) {
                 if (bankerCard.target == null && !startedNewAnimation && !foundUnfinishedAnimation) {
                     bankerCard.target = {  
                                             x: i == 2 ? 590 : 350 + 70 * i,
                                             y: i == 2 ? 20 : 10, 
-                                            image: GameState.getCardCode(baccaratState.bankerCards[i]),
+                                            image: GameState.getCardCode(this.bankerCards[i]),
                                             done: false
                                         };
                     bankerCard.loadTexture(backImage);
@@ -556,9 +581,13 @@ export class BaccaratPage {
     }
 
     updateGameCanvas() {
-        let baccaratState = this.gameState.baccaratStates.get(this.tableCode);
-        if (baccaratState == undefined || baccaratState == null) return;
-        if (baccaratState.state == "betting") {
+
+        //let baccaratState = this.gameState.baccaratStates.get(this.tableCode);
+        //if (baccaratState == undefined || baccaratState == null) return;
+
+        if (this.gameTableInfo == null || this.gameTableInfo.basicInfo == null) return;
+
+        if (this.gameTableInfo.basicInfo.roundState <= 4) {
             
             this.gameMedia.gameContainer.style.display = 'none';
             this.gameMedia.game.paused = true;
