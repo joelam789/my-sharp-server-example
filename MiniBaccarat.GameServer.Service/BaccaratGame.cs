@@ -107,8 +107,8 @@ namespace MiniBaccarat.GameServer.Service
         private string m_MainCache = "SharpNode";
 
         public static readonly int GET_READY_COUNTDOWN = 3;
-        public static readonly int BET_TIME_COUNTDOWN = 8;
-        public static readonly int MAX_HIST_LENGTH = 10;
+        public static readonly int BET_TIME_COUNTDOWN = 10;
+        public static readonly int MAX_HIST_LENGTH = 20;
 
         public string TableCode { get; set; } = "b0";
 
@@ -290,6 +290,15 @@ namespace MiniBaccarat.GameServer.Service
                         case (GAME_STATUS.Unknown): break;
                         case (GAME_STATUS.NotWorking): break;
                         case (GAME_STATUS.GetGameReady):
+                            cmd.CommandText = "update db_mini_baccarat.tbl_round_state "
+                                            + " set round_state = @round_state "
+                                            + " , round_state_text = @round_state_text "
+                                            + " , bet_time_countdown = @bet_time_countdown "
+                                            + " , round_update_time = @round_update_time "
+                                            + " where server_code = @server_code and table_code = @table_code "
+                                            + " and shoe_code = @shoe_code and round_number = @round_number "
+                                            ;
+                            cmd.ExecuteNonQuery();
                             break;
                         case (GAME_STATUS.StartNewRound):
                             cmd.CommandText = "update db_mini_baccarat.tbl_round_state "

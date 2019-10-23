@@ -48,6 +48,8 @@ export class BaccaratPage {
     playerCards: Array<GameCard> = [];
     bankerCards: Array<GameCard> = [];
 
+    lastTableState: number = 0;
+
     countdownTimer: any = null;
 
     constructor(public dialogService: DialogService, public router: Router, 
@@ -61,6 +63,7 @@ export class BaccaratPage {
     applyTableInfo() {
 
         let table = this.gameState.baccaratTableStates.get(this.tableCode);
+        this.lastTableState = this.gameTableInfo.basicInfo.roundState;
         this.gameTableInfo.basicInfo = JSON.parse(JSON.stringify(table.basicInfo));
         this.gameTableInfo.simpleRoadmap = JSON.parse(JSON.stringify(table.simpleRoadmap));
 
@@ -111,12 +114,21 @@ export class BaccaratPage {
 
                 this.applyTableInfo();
 
+                if (this.gameTableInfo.basicInfo.roundState < 3 ) {
+                    this.resetBetAmounts();
+                }
+
                 if (this.gameTableInfo.basicInfo.roundState == 3 ) {
                     this.resetBetAmounts();
                     this.resetCardSprites();
                 }
 
+                if (this.gameTableInfo.basicInfo.roundState > 4 && this.lastTableState <= 4) {
+                    this.resetCardSprites();
+                }
+
                 if (this.gameTableInfo.basicInfo.roundState != 4 ) this.updateGameCanvas();
+                else this.resetCardSprites();
 
                 if (this.gameTableInfo.basicInfo.roundState == 9) {
 
@@ -625,7 +637,7 @@ export class BaccaratPage {
 
         if (this.gameTableInfo == null || this.gameTableInfo.basicInfo == null) return;
 
-        if (this.gameTableInfo.basicInfo.roundState <= 4) {
+        if (this.gameTableInfo.basicInfo.roundState <= 4 && this.gameTableInfo.basicInfo.roundState != 2) {
             
             this.gameMedia.gameContainer.style.display = 'none';
             this.gameMedia.game.paused = true;
