@@ -107,6 +107,7 @@ export class BaccaratPage {
     }
 
     attached() {
+
         this.subscribers = [];
 
         this.subscribers.push(this.eventChannel.subscribe(UI.TableInfoUpdate, data => {
@@ -114,7 +115,7 @@ export class BaccaratPage {
 
                 this.applyTableInfo();
 
-                if (this.gameTableInfo.basicInfo.roundState < 3 ) {
+                if (this.gameTableInfo.basicInfo.roundState == 4 && this.lastTableState < 4) {
                     this.resetBetAmounts();
                 }
 
@@ -143,77 +144,18 @@ export class BaccaratPage {
 
                 } else {
 
-                    this.gainAmount.set(BaccaratPool.Tie, 0);
-                    this.gainAmount.set(BaccaratPool.Player, 0);
-                    this.gainAmount.set(BaccaratPool.Banker, 0);
+                    //this.gainAmount.set(BaccaratPool.Tie, 0);
+                    //this.gainAmount.set(BaccaratPool.Player, 0);
+                    //this.gainAmount.set(BaccaratPool.Banker, 0);
 
                 }
 
-            }
-        }));
-
-        this.subscribers.push(this.eventChannel.subscribe(UI.TableStateUpdate, data => {
-            if (this.tableCode == data.tableCode) {
-                let tableState = this.gameState.tableStates.get(this.tableCode);
-                if (tableState != undefined && tableState != null) {
-                    this.anchorId = tableState.anchorId;
-                    this.dealerId = tableState.dealerId;
-                    this.countdown = tableState.countdown;
-                    this.tableName = tableState.tableName;
-                }
             }
         }));
 
         this.subscribers.push(this.eventChannel.subscribe(UI.LeaveGameTable, data => {
             console.log(data.message);
             this.router.navigate("lobby");
-        }));
-
-        this.subscribers.push(this.eventChannel.subscribe(UI.BaccaratBigSync, data => {
-            console.log(data.message);
-            this.updateGameCanvas();
-        }));
-
-        this.subscribers.push(this.eventChannel.subscribe(UI.StartBetting, data => {
-            console.log(data.message);
-            this.resetBetAmounts();
-            this.updateGameCanvas();
-        }));
-
-        this.subscribers.push(this.eventChannel.subscribe(UI.EndBetting, data => {
-            console.log(data.message);
-            this.cannelNewBets();
-            this.updateGameCanvas();
-        }));
-
-        this.subscribers.push(this.eventChannel.subscribe(UI.SetCard, data => {
-            console.log(data.message);
-            this.updateGameCanvas();
-        }));
-
-        this.subscribers.push(this.eventChannel.subscribe(UI.VoidCard, data => {
-            console.log(data.message);
-            this.updateGameCanvas();
-        }));
-
-        this.subscribers.push(this.eventChannel.subscribe(UI.CancelRound, data => {
-            console.log(data.message);
-            this.updateGameCanvas();
-        }));
-
-        this.subscribers.push(this.eventChannel.subscribe(UI.EndRound, data => {
-            console.log(data.result.message);
-            let winpools = data.result.win;
-            //this.gainAmount.set(BaccaratPool.PlayerPair, (winpools & BaccaratResult.PlayerPair) != 0 ? 1 : 0);
-            //this.gainAmount.set(BaccaratPool.BankerPair, (winpools & BaccaratResult.BankerPair) != 0 ? 1 : 0);
-            //this.gainAmount.set(BaccaratPool.Player, (winpools & BaccaratResult.Player) != 0 ? 1 : 0);
-            //this.gainAmount.set(BaccaratPool.Banker, (winpools & BaccaratResult.Banker) != 0 ? 1 : 0);
-            //this.gainAmount.set(BaccaratPool.Tie, (winpools & BaccaratResult.Tie) != 0 ? 1 : 0);
-            this.updateGameCanvas();
-        }));
-
-        this.subscribers.push(this.eventChannel.subscribe(UI.PlayerMoney, data => {
-            this.playerBalance = data.value;
         }));
 
         this.subscribers.push(this.eventChannel.subscribe(UI.PlaceBetError, data => {
@@ -366,9 +308,6 @@ export class BaccaratPage {
     }
 
     get tableState(): string {
-        //let baccaratState = this.gameState.baccaratStates.get(this.tableCode)
-        //if (baccaratState != undefined && baccaratState != null) return baccaratState.state;
-        //return "";
         return this.gameTableStateText;
     }
 
@@ -383,10 +322,7 @@ export class BaccaratPage {
     }
 
     get canBet(): boolean {
-        //let baccaratState = this.gameState.baccaratStates.get(this.tableCode)
-        //if (baccaratState != undefined && baccaratState != null) return baccaratState.state == "betting";
-        //return false;
-
+        
         if (this.hasNewBets) return false;
 
         let baccaratState = this.tableState ? this.tableState.toLocaleLowerCase() : "";
@@ -410,12 +346,6 @@ export class BaccaratPage {
         return this.hasNewBets;
     }
 
-    //get playerPairPoolBet(): number {
-    //    return this.placedBetAmount.get(BaccaratPool.PlayerPair);
-    //}
-    //get bankerPairPoolBet(): number {
-    //    return this.placedBetAmount.get(BaccaratPool.BankerPair);
-    //}
     get playerPoolBet(): number {
         return this.placedBetAmount.get(BaccaratPool.Player);
     }
@@ -426,14 +356,6 @@ export class BaccaratPage {
         return this.placedBetAmount.get(BaccaratPool.Tie);
     }
 
-    //get playerPairPoolWinloss(): string {
-    //    let value = this.gainAmount.get(BaccaratPool.PlayerPair);
-    //    return value > 0 ? "(WIN)" : "";
-    //}
-    //get bankerPairPoolWinloss(): string {
-    //    let value = this.gainAmount.get(BaccaratPool.BankerPair);
-    //    return value > 0 ? "(WIN)" : "";
-    //}
     get playerPoolWinloss(): string {
         let value = this.gainAmount.get(BaccaratPool.Player);
         return value > 0 ? "(WIN)" : "";
