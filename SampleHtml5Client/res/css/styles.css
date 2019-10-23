@@ -52,3 +52,19 @@ li.list-group-item > a {
 li.list-group-item.active > a {
   color: white;
 }
+
+.red-circle {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border: 3px solid red;
+  border-radius: 50%;
+}
+
+.blue-circle {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border: 3px solid red;
+  border-radius: 50%;
+}

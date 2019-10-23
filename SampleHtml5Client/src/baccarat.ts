@@ -1,6 +1,7 @@
 
 import {autoinject} from 'aurelia-framework';
 import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
+import {BindingSignaler} from 'aurelia-templating-resources';
 import {Router} from 'aurelia-router';
 
 import {DialogService} from 'aurelia-dialog';
@@ -52,7 +53,7 @@ export class BaccaratPage {
 
     countdownTimer: any = null;
 
-    constructor(public dialogService: DialogService, public router: Router, 
+    constructor(public dialogService: DialogService, public router: Router, public signaler: BindingSignaler,
                 public i18n: I18N, public gameState: GameState, public gameMedia: GameMedia, 
                 public messenger: Messenger, public eventChannel: EventAggregator) {
 
@@ -131,7 +132,7 @@ export class BaccaratPage {
                 if (this.gameTableInfo.basicInfo.roundState != 4 ) this.updateGameCanvas();
                 else this.resetCardSprites();
 
-                if (this.gameTableInfo.basicInfo.roundState == 9) {
+                if (this.gameTableInfo.basicInfo.roundState >= 8) {
 
                     //console.log(this.gameTableInfo.basicInfo.bankerCards);
                     //console.log(this.gameTableInfo.basicInfo.playerCards);
@@ -264,7 +265,8 @@ export class BaccaratPage {
         this.countdownTimer = setInterval(() => {
             //let tableState = this.gameState.tableStates.get(this.tableCode);
             //if (tableState != undefined && tableState != null) this.countdown = tableState.countdown;
-        }, 1000);
+            this.signaler.signal('pool-signal');
+        }, 500);
 
         this.gameMedia.gameContainer.style.top = "200px";
         this.gameMedia.gameContainer.style.left = "calc(50% - 300px)";

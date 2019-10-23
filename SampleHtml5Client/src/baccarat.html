@@ -1,6 +1,6 @@
 <template>
 
-<require from="simple-roadmap-grid"></require>
+<require from="./simple-roadmap-grid"></require>
 
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -89,7 +89,7 @@
         <h3 class="panel-title" i18n="baccarat.player">Player</h3>
         </div>
         <div class="panel-body" click.trigger="addBet(2)">
-        <p>${playerPoolBet} ${playerPoolWinloss}</p>
+        <p>${playerPoolBet & signal:'pool-signal'} ${playerPoolWinloss & signal:'pool-signal'}</p>
         </div>
         </div>
         </td>
@@ -99,7 +99,7 @@
         <h3 class="panel-title" i18n="baccarat.tie">Tie</h3>
         </div>
         <div class="panel-body" click.trigger="addBet(3)">
-        <p>${tiePoolBet} ${tiePoolWinloss}</p>
+        <p>${tiePoolBet & signal:'pool-signal'} ${tiePoolWinloss & signal:'pool-signal'}</p>
         </div>
         </div>
         </td>
@@ -109,7 +109,7 @@
         <h3 class="panel-title" i18n="baccarat.banker">Banker</h3>
         </div>
         <div class="panel-body" click.trigger="addBet(1)">
-        <p>${bankerPoolBet} ${bankerPoolWinloss}</p>
+        <p>${bankerPoolBet & signal:'pool-signal'} ${bankerPoolWinloss & signal:'pool-signal'}</p>
         </div>
         </div>
         </td>

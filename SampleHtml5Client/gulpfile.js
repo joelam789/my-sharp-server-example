@@ -42,7 +42,8 @@ gulp.task('restore-module-config', function () {
 gulp.task('create-fake-bundle', async () => {
     //fs.closeSync(fs.openSync('./dist/bundle-app.js', 'a'));
     //fs.closeSync(fs.openSync('./dist/bundle-vendor.js', 'a'));
-    fs.writeFileSync('./dist/bundle-app.js', "console.log('fake app bundle is loaded');", 'utf8');
+    fs.writeFileSync('./dist/bundle-ui.js', "console.log('fake ui bundle is loaded');", 'utf8');
+    fs.writeFileSync('./dist/bundle-logic.js', "console.log('fake logic bundle is loaded');", 'utf8');
     fs.writeFileSync('./dist/bundle-vendor.js', "console.log('fake vendor bundle is loaded');", 'utf8');
 });
 
@@ -134,7 +135,7 @@ gulp.task("bundle", async () => {
 
 gulp.task('clean-up', async () => {
     del.sync(["dist/*.js.map"]);
-    del.sync(["dist/*.js", "!dist/config.js", "!dist/bundle-app.js", "!dist/bundle-vendor.js"]);
+    del.sync(["dist/*.js", "!dist/config.js", "!dist/bundle-ui.js", "!dist/bundle-logic.js", "!dist/bundle-vendor.js"]);
     del.sync(["dist/*.html", "!dist/index.html"]);
     del.sync(["tmp/**/*"]); //del.sync(["./tmp"]);
     try { del.sync(["tmp/**/*"]); del.sync(["./tmp"]); } catch(err) { }

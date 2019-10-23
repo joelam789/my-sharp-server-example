@@ -3,10 +3,9 @@
   "baseURL": "dist",
   "configPath": "config.js",
   "bundles": {
-    "bundle-app": {
+    "bundle-logic": {
       "includes": [
         "[*.js]",
-        "*.html!text",
         "*.css!text"
       ],
       "excludes": [
@@ -15,6 +14,19 @@
       "options": {
         "inject": true,
         "minify": true
+      }
+    },
+
+    "bundle-ui": {
+      "includes": [
+        "*.html!text"
+      ],
+      "excludes": [
+        "config"
+      ],
+      "options": {
+        "inject": true,
+        "minify": false
       }
     },
 

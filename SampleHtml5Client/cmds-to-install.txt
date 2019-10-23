@@ -8,10 +8,10 @@ npm install --save-dev del gulp gulp-typescript gulp-sourcemaps gulp-webserver
 npm install --save-dev aurelia-bundler@0.6.0
 
 npm install --save core-js i18next i18next-xhr-backend
-npm install --save aurelia-framework aurelia-bootstrapper aurelia-router aurelia-event-aggregator aurelia-pal-browser aurelia-dialog aurelia-i18n
+npm install --save aurelia-framework aurelia-bootstrapper aurelia-router aurelia-event-aggregator aurelia-templating-resources aurelia-pal-browser aurelia-dialog aurelia-i18n
 
 jspm init
 jspm install text core-js nprogress npm:i18next npm:i18next-xhr-backend
-jspm install aurelia-framework aurelia-bootstrapper aurelia-router aurelia-event-aggregator aurelia-pal-browser aurelia-dialog aurelia-i18n
+jspm install aurelia-framework aurelia-bootstrapper aurelia-router aurelia-event-aggregator aurelia-templating-resources aurelia-pal-browser aurelia-dialog aurelia-i18n
 
 npm install @types/nprogress @types/jquery
