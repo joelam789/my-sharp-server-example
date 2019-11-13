@@ -32,3 +32,11 @@ CREATE TABLE `db_baccarat_main`.`tbl_merchant_info` (
   PRIMARY KEY (`merchant_code`),
   KEY `IDX_ACTIVE_STATE` (`is_active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `db_baccarat_main`.`tbl_bo_account` (
+  `account_id` varchar(64) NOT NULL,
+  `merchant_code` varchar(50) NOT NULL,
+  `account_pwd` varchar(64) NOT NULL,
+  `is_active` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`account_id`,`merchant_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='backoffice accounts';

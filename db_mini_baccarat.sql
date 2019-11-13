@@ -68,3 +68,14 @@ CREATE TABLE `db_mini_baccarat`.`tbl_round_state` (
   KEY `IDX_BACKUP_NUMBER` (`backup_number`)
 ) ENGINE=ndbcluster AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `db_mini_baccarat`.`tbl_bo_session` (
+  `session_id` varchar(64) NOT NULL,
+  `account_id` varchar(64) NOT NULL,
+  `merchant_code` varchar(50) NOT NULL,
+  `last_access_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`session_id`)
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1 COMMENT='backoffice sessions';
+
+
+
+
