@@ -53,6 +53,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.SingleWalletSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.DataAccessServer.TransData", "MiniBaccarat.DataAccessServer.TransData\MiniBaccarat.DataAccessServer.TransData.csproj", "{D9D8352B-8BA4-4B96-BE7E-E786D5796B81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.DataAccessServer.BackOfficeData", "MiniBaccarat.DataAccessServer.BackOfficeData\MiniBaccarat.DataAccessServer.BackOfficeData.csproj", "{D8F9F8BF-84B7-4902-9844-AD73437D6EA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BackOfficeServer", "MiniBaccarat.BackOfficeServer\MiniBaccarat.BackOfficeServer.csproj", "{9BD7EC87-E5D9-4F5F-B720-9F6BAE4E9338}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BackOfficeServer.Service", "MiniBaccarat.BackOfficeServer.Service\MiniBaccarat.BackOfficeServer.Service.csproj", "{6FE9BE2A-DCDC-4DE9-A49B-512BCD1C0E35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBaccarat.BackOfficeServer.LoginService", "MiniBaccarat.BackOfficeServer.LoginService\MiniBaccarat.BackOfficeServer.LoginService.csproj", "{F6E65BC9-2F95-434D-944C-7952D01EFEFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +167,22 @@ Global
 		{D9D8352B-8BA4-4B96-BE7E-E786D5796B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9D8352B-8BA4-4B96-BE7E-E786D5796B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9D8352B-8BA4-4B96-BE7E-E786D5796B81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8F9F8BF-84B7-4902-9844-AD73437D6EA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8F9F8BF-84B7-4902-9844-AD73437D6EA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8F9F8BF-84B7-4902-9844-AD73437D6EA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8F9F8BF-84B7-4902-9844-AD73437D6EA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BD7EC87-E5D9-4F5F-B720-9F6BAE4E9338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BD7EC87-E5D9-4F5F-B720-9F6BAE4E9338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BD7EC87-E5D9-4F5F-B720-9F6BAE4E9338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BD7EC87-E5D9-4F5F-B720-9F6BAE4E9338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FE9BE2A-DCDC-4DE9-A49B-512BCD1C0E35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FE9BE2A-DCDC-4DE9-A49B-512BCD1C0E35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FE9BE2A-DCDC-4DE9-A49B-512BCD1C0E35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FE9BE2A-DCDC-4DE9-A49B-512BCD1C0E35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6E65BC9-2F95-434D-944C-7952D01EFEFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6E65BC9-2F95-434D-944C-7952D01EFEFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6E65BC9-2F95-434D-944C-7952D01EFEFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6E65BC9-2F95-434D-944C-7952D01EFEFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

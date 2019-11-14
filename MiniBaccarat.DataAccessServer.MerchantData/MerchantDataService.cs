@@ -42,6 +42,8 @@ namespace MiniBaccarat.DataAccessServer.MerchantData
             }
             await Task.Delay(100);
 
+            node.GetLogger().Info(this.GetType().Name + " service stopped");
+
             return "";
         }
 

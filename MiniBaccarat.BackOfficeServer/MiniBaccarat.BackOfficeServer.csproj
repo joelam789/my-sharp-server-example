@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD7AC73F-4181-42EF-AA85-98D2C7BE175E}</ProjectGuid>
+    <ProjectGuid>{9BD7EC87-E5D9-4F5F-B720-9F6BAE4E9338}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MiniBaccarat.DataAccessServer</RootNamespace>
-    <AssemblyName>MiniBaccarat.DataAccessServer</AssemblyName>
+    <RootNamespace>MiniBaccarat.BackOfficeServer</RootNamespace>
+    <AssemblyName>MiniBaccarat.BackOfficeServer</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -126,30 +126,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.BackOfficeData\MiniBaccarat.DataAccessServer.BackOfficeData.csproj">
-      <Project>{d8f9f8bf-84b7-4902-9844-ad73437d6ea4}</Project>
-      <Name>MiniBaccarat.DataAccessServer.BackOfficeData</Name>
+    <ProjectReference Include="..\MiniBaccarat.BackOfficeServer.LoginService\MiniBaccarat.BackOfficeServer.LoginService.csproj">
+      <Project>{f6e65bc9-2f95-434d-944c-7952d01efeff}</Project>
+      <Name>MiniBaccarat.BackOfficeServer.LoginService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.BetData\MiniBaccarat.DataAccessServer.BetData.csproj">
-      <Project>{2ab9a713-206b-4983-859c-8fe9e33811d3}</Project>
-      <Name>MiniBaccarat.DataAccessServer.BetData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.GameData\MiniBaccarat.DataAccessServer.GameData.csproj">
-      <Project>{d056d3ba-e9c3-4ad7-afe6-8357631ccbf9}</Project>
-      <Name>MiniBaccarat.DataAccessServer.GameData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.MerchantData\MiniBaccarat.DataAccessServer.MerchantData.csproj">
-      <Project>{a13f4d85-93be-4990-8f81-1b52ab1ddeff}</Project>
-      <Name>MiniBaccarat.DataAccessServer.MerchantData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MiniBaccarat.DataAccessServer.TransData\MiniBaccarat.DataAccessServer.TransData.csproj">
-      <Project>{d9d8352b-8ba4-4b96-be7e-e786d5796b81}</Project>
-      <Name>MiniBaccarat.DataAccessServer.TransData</Name>
+    <ProjectReference Include="..\MiniBaccarat.BackOfficeServer.Service\MiniBaccarat.BackOfficeServer.Service.csproj">
+      <Project>{6fe9be2a-dcdc-4de9-a49b-512bcd1c0e35}</Project>
+      <Name>MiniBaccarat.BackOfficeServer.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
