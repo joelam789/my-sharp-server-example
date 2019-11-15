@@ -1,0 +1,106 @@
+{
+	"liveAPI" : "",
+	"internalAPI" : "",
+	"localAPI" : "localhost:63105/",
+	"dev2API" : "",
+
+	"domainApiUrl" : "localhost:63105/",
+
+	"lang": "en",
+	"theme": "default",
+
+
+	"userId": "",
+	"UserId2": "",
+	"agentId": "",
+	"agentIds": [],
+	"sessionId": "",
+	"role": "",
+	"BetDate": "",
+	"approvedBetDate": "",
+	"settlementDate": "",
+	"Team" : "",
+	
+
+	"loginPage": "login-page.html",
+	"loginReqUrl": "Account/Login.ashx",
+	"getConnectionString": "Account/GetConnectionString.ashx",
+	"logoutReqUrl": "Account/Logout.ashx",
+	"validationUrl": "Account/ValidateLogin.ashx",
+	"getRolesReqUrl": "Account/GetRoles.ashx",
+
+	"refreshDateReqUrl": "Account/GetCacheData.ashx",
+
+
+	"mainPage": "main-page.html",
+
+
+	"infoPage": "agent-info-page.html",
+	"changePasswordReqUrl": "Account/ChangePassword.ashx",
+	"getTreeReqUrl": "Agent/GetTree.ashx",
+	"editTreeReqUrl": "Agent/EditTree.ashx",
+	"editCommissionReqUrl": "Agent/EditShare.ashx",
+	"QRCodeUrl": "Agent/GetAgentQRCode.ashx",
+	"createUserReqUrl": "Account/CreateUser.ashx",
+
+
+	"reportPage": "agent-report-page.html",
+	"rootWithDirect": {},
+	"toproot":[],
+
+	"getReportReqUrl": "Agent/GetGeneralAgentReport.ashx",
+	"getReportDetailReqUrl": "Agent/GetGeneralAgentReportDetail.ashx",
+
+
+
+	"SettlementLog": "settlement-log-page.html",
+	"loadSettleLog2ReqUrl": "Agent/loadSettleLog2.ashx",
+	"agentSettlePage": "agent-settle-page.html",
+	"adjustmentLogPage": "adjustment-log-page.html",
+	"getAdjustmentLogReqUrl": "Agent/GetAdjustments.ashx",
+	"loadSettleLogReqUrl": "Agent/loadSettleLog.ashx",
+	"GetSettlePreviewReqUrl": "Agent/GetSettlePreview.ashx",
+	"doSettleReqUrl": "Agent/DoSettlement.ashx",
+	"DoAdjustmentManualReqUrl" : "Agent/DoAdjustmentManually.ashx",
+	
+	"commented_DoAdjustmentReqUrl" : "Agent/DoAdjustment.ashx",
+	"commented_DoAdjustmentZeroReqUrl" : "Agent/DoAdjustmentZero.ashx",
+
+
+	"importPage": "import-info-page.html",
+	"AgentParseReqUrl": "Agent/AgentParser.ashx",
+	"AgentParseImportFile1ReqUrl": "Agent/AgentParserImportFile1.ashx",
+	"PlayerParseReqUrl": "Agent/PlayerParser.ashx",
+	"PlayerParseImportFile1ReqUrl": "Agent/PlayerParserImportFile1.ashx",
+	"PlayerBetParseReqUrl": "Agent/PlayerBetParser.ashx",
+	"PlayerBetParseImportFile1ReqUrl": "Agent/PlayerBetParserImportFile1.ashx",
+	"PlayerBetParseImportFile2ReqUrl": "Agent/PlayerBetParserImportFile2.ashx",
+	"BonusRebateParseReqUrl": "Agent/BonusRebateParser.ashx",
+	"BonusRebateParseImportFile1ReqUrl": "Agent/BonusRebateParserImportFile1.ashx",
+	"AdjustBetReqUrl": "Agent/AdjustBet.ashx",
+	"saveValidationDateReqUrl": "Agent/saveValidationDate.ashx",
+
+
+	"importStatisticPage": "import-statistic.html",
+	"importStatisticPlayerBetPage": "import-statistic-player-bet-page.html",
+	"importStatisticPlayerBetReqUrl"	: "Agent/ImportStatisticPlayerBetReport.ashx",
+	"UnsettlementPlayerBetPage": "unsettlement-player-bet-page.html",
+	"UnsettlementPlayerBetReqUrl"	: "Agent/UnsettlementPlayerBetReport.ashx",
+	"importStatisticBonusRebatePage": "import-statistic-bonus-rebate-page.html",
+	"importStatisticBonusRebateReqUrl"	: "Agent/ImportStatisticBonusRebateReport.ashx",
+	
+	"playerMgtPage": "player-mgt-page.html",
+	"getPlayerMgtReqUrl": "Agent/GetPlayers.ashx",
+	"playerWinLossPage": "player-winloss-page.html",
+	"getPlayerWinLossReqUrl": "Agent/GetPlayerWinLoss.ashx",
+
+	"jumpPage" : "",
+	"landingPage" : "",
+	"QRCodeAPI" : "https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=",
+	"QRCodeManagementPage" : "qr-code-management-page.html",
+	"getAgentCommRateReqUrl": "Agent/GetAgentCommRate.ashx",
+
+	"getVisibleDirectDownline": "Agent/GetVisibleDirectDownline.ashx",
+
+	"errorPage": "about:blank"
+}

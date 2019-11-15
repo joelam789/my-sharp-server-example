@@ -1,0 +1,24 @@
+{
+  "name": "backoffice-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp",
+    "start": "gulp start"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/core-js": "^2.5.2",
+    "@types/jquery": "^3.3.31",
+    "core-js": "^2.6.10",
+    "del": "^5.1.0",
+    "gulp": "^4.0.2",
+    "gulp-rename": "^1.4.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^5.0.1",
+    "gulp-webserver": "^0.9.1",
+    "typescript": "^3.7.2"
+  }
+}
