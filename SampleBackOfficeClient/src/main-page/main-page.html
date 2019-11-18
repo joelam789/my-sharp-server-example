@@ -81,7 +81,7 @@
                     window.gui = main.gui;
                     var len = window.appConfig.validationUrl.length;
                     var url = len > 0 ? window.appConfig.validationUrl : "";
-                    window.gui.entry.validate(url, "", function(result) {
+                    window.gui.entry.validate(url, { session_id: window.appConfig["sessionId"] }, function(result) {
                         if (result && result.error === 0) {
                             window.gui.init(function () {
                                 //document.getElementById("change-password-dialog").style.visibility = "visible";

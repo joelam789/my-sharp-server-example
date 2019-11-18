@@ -16,6 +16,8 @@ namespace MiniBaccarat.BackOfficeServer.Service
         [Access(Name = "validate-request")]
         public string ValidateRequest(RequestContext ctx)
         {
+            //System.Diagnostics.Debugger.Break();
+
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
@@ -23,7 +25,6 @@ namespace MiniBaccarat.BackOfficeServer.Service
             }
 
             dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
-
             string sessionId = req.session_id.ToString();
 
             var okay = false;
@@ -58,6 +59,16 @@ namespace MiniBaccarat.BackOfficeServer.Service
             return "";
         }
 
-        
+        [Access(Name = "check-session")]
+        public async Task CheckSession(RequestContext ctx)
+        {
+            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+            {
+                error = 0
+            }));
+        }
+
+
+
     }
 }

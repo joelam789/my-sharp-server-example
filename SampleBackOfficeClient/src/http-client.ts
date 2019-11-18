@@ -61,6 +61,7 @@ export class HttpClient {
                 } catch(err) {
                     console.log("parse json error: ");
                     console.log(err);
+                    console.log(response);
                 }
                 if (callback) {
                     if (json) callback(json);

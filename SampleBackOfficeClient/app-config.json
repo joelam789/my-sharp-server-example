@@ -23,15 +23,11 @@
 
 	"logoutReqUrl": "Account/Logout.ashx",
 
-	"validationUrl": "",
-
-	"refreshDateReqUrl": "Account/GetCacheData.ashx",
+	"validationUrl": "bo-service/check-session",
 
 
-	
 
-
-	"infoPage": "agent-info-page.html",
+	"infoPage": "info-page.html",
 	"changePasswordReqUrl": "Account/ChangePassword.ashx",
 	"getTreeReqUrl": "Agent/GetTree.ashx",
 	"editTreeReqUrl": "Agent/EditTree.ashx",

@@ -35,8 +35,7 @@ class Gui extends Container {
             reqData["password"] = data.user_pwd;
             reqData["merchant"] = data.merchant_code;;
         HttpClient.postJSON(url , reqData, (json) => {
-            if (json)
-            {
+            if (json) {
                 if(json.error_code == 0) { 
                     this.redirect(json);
                 } else ($ as any).messager.alert('Login', json.error_message, 'error');
