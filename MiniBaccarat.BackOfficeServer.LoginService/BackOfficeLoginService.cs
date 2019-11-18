@@ -16,6 +16,8 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
         [Access(Name = "user-login")]
         public async Task UserLogin(RequestContext ctx)
         {
+            //System.Diagnostics.Debugger.Break();
+
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {

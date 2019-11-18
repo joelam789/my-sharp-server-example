@@ -1,38 +1,34 @@
 {
 	"liveAPI" : "",
 	"internalAPI" : "",
-	"localAPI" : "localhost:63105/",
+	"localAPI" : "localhost:9700/",
 	"dev2API" : "",
 
-	"domainApiUrl" : "localhost:63105/",
+	"domainApiUrl" : "localhost:9700/",
 
 	"lang": "en",
 	"theme": "default",
 
 
 	"userId": "",
-	"UserId2": "",
-	"agentId": "",
-	"agentIds": [],
+	"merchantCode": "",
 	"sessionId": "",
-	"role": "",
-	"BetDate": "",
-	"approvedBetDate": "",
-	"settlementDate": "",
-	"Team" : "",
+	"password": "",
 	
 
 	"loginPage": "login-page.html",
-	"loginReqUrl": "Account/Login.ashx",
-	"getConnectionString": "Account/GetConnectionString.ashx",
+	"mainPage": "main-page.html",
+
+	"loginReqUrl": "bo-login-service/user-login",
+
 	"logoutReqUrl": "Account/Logout.ashx",
-	"validationUrl": "Account/ValidateLogin.ashx",
-	"getRolesReqUrl": "Account/GetRoles.ashx",
+
+	"validationUrl": "",
 
 	"refreshDateReqUrl": "Account/GetCacheData.ashx",
 
 
-	"mainPage": "main-page.html",
+	
 
 
 	"infoPage": "agent-info-page.html",

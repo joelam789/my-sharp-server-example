@@ -19,8 +19,6 @@ class Gui extends Container {
             });
             if (callback) callback();
         });
-
-        //this.getConnectionString();
     }
 
     login() {
@@ -31,58 +29,30 @@ class Gui extends Container {
             return;
         }
         data.user_pwd = (window as any).md5(data.user_pwd);
-        let url = (window as any).appConfig.loginReqUrl;
-        let data1 = {};
-            data1["loginName"] = data.user_id;
-            //data1["userPwd"] = data.user_pwd;
-            data1["step1"] = 1;
-        HttpClient.postJSON(url , data1, (json) => {
+        let url = window.location.protocol + "//" + (window as any).appConfig.domainApiUrl + (window as any).appConfig.loginReqUrl;
+        let reqData = {};
+            reqData["account"] = data.user_id;
+            reqData["password"] = data.user_pwd;
+            reqData["merchant"] = data.merchant_code;;
+        HttpClient.postJSON(url , reqData, (json) => {
             if (json)
             {
-                if(json.error == 0) { 
-                    let loginName = json.Data.loginName;
-                    let salt = json.Data.salt;
-                    //this.login2(salt);
+                if(json.error_code == 0) { 
                     this.redirect(json);
-                }
-                else
-                if(json.error == -1) { ($ as any).messager.alert('Login', 'invalid input', 'error');}
-                else
-                if(json.error == -4) { ($ as any).messager.alert('Login', 'disabled', 'error');}
-                else
-                if(json.error == -5) { ($ as any).messager.alert('Login', 'db error', 'error');}
+                } else ($ as any).messager.alert('Login', json.error_message, 'error');
             }
-            else
-            {
-                ($ as any).messager.alert('Login', 'unknown', 'error');
-            }
+            else ($ as any).messager.alert('Login', 'unknown', 'error');
         });
     }
 
     redirect(json)
     {
         let href  = (window as any).appConfig.mainPage;
-        href += "?UserId2=" + json.Data.Id + "&userId=" + json.Data.LoginId;
-        href += "&sessionId=" + json.sessionId ;
-        href += "&defaultAgentId=" + json.Data.DefaultAgentId;
-        href += "&isOperator=" + json.isOperator;
+        href += "?merchantCode=" + json.merchant;
+        href += "&userId=" + json.account ;
+        href += "&sessionId=" + json.session_id ;
+        //href += "&isOperator=" + json.isOperator;
         window.location.href = href;
-    }
-
-    getConnectionString()
-    {
-        let url = (window as any).appConfig.getConnectionString;
-        let data1 = {};
-        HttpClient.postJSON(url , data1, (json) => {
-            if (json)
-            {
-                ($('#connectionStringText') as any).html(json);
-            }
-            else
-            {
-                ($ as any).messager.alert('Cannot get Connection String');
-            }
-        });
     }
 
 }

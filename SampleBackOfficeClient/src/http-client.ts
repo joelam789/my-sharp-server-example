@@ -49,7 +49,7 @@ export class HttpClient {
             type: "POST",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'text/plain;charset=utf-8'
             },
             crossDomain: true,
             data: JSON.stringify(data),

@@ -32,20 +32,19 @@
                 <form id="login-form" method="get" onsubmit="$('#submitButton').click(); return false;" >
                     <input type="submit" style="visibility:hidden;" />
                     <div style="margin-bottom:20px; margin-top:100px;text-align: center;">
-                        <input class="easyui-textbox" name="user_id" prompt="User ID" iconWidth="28" style="width:50%;height:34px;padding:10px;" value="xyj001">
+                        <input class="easyui-textbox" name="merchant_code" prompt="Merchant Code" iconWidth="28" style="width:50%;height:34px;padding:10px;" value="">
+                    </div>
+                    <div style="margin-bottom:20px; text-align: center;">
+                        <input class="easyui-textbox" name="user_id" prompt="User ID" iconWidth="28" style="width:50%;height:34px;padding:10px;" value="">
                     </div>
                     <div style="margin-bottom:20px;text-align: center;">
-                        <input class="easyui-passwordbox" name="user_pwd" prompt="Password" iconWidth="28" style="width:50%;height:34px;padding:10px" value="test12345">
+                        <input class="easyui-passwordbox" name="user_pwd" prompt="Password" iconWidth="28" style="width:50%;height:34px;padding:10px" value="">
                     </div>
                 </form>
                 <div style="text-align: right; width: 50%; margin-left: 25%;">
                     <a id="submitButton" href="javascript:void(0)" class="easyui-linkbutton" onclick="window.gui.login();" style="width:80px">Login</a>
                 </div>
             </div>
-        </div>
-
-        <div class="connectionString" style="display:none">
-            Connection:<span id="connectionStringText"></span>
         </div>
 
         <script>
@@ -71,7 +70,6 @@
                     
                     var isDev = /localhost/.test( window.appConfig.domainApiUrl );
                     var isUAT = /192\.168\.0\.46/.test( window.appConfig.domainApiUrl );
-                    var isLive = /88xyj88/.test( window.appConfig.domainApiUrl );
 
                     //if (isDev) { $('#main-layout div').css('background-color','#EFE'); }
                     //if (isUAT) { $('#main-layout div').css('background-color','#EEF'); }
