@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="css/easyui/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/easyui/themes/icon.css">
         <link rel="stylesheet" type="text/css" href="css/easyui/themes/color.css">
-        <title>Main</title>
+        <title>Game Result List</title>
     </head>
 
     <body>
@@ -26,37 +26,27 @@
 
         <script src="js/app-config.js"></script>
 
-        <div id="main-layout" class="easyui-layout" data-options="fit:true" style="width:100%;height:100%;">
-            <div class="theme-color" data-options="region:'west',title:'Main Menu',split:true,minWidth:150" style="width:180px;">
-                <ul id="menu-tree" class="easyui-tree"></ul>
-            </div>
-            <div data-options="region:'center'">
-                <div id="main-panel" class="easyui-panel"
-                    style="width:100%; height:100%; overflow-y: hidden; margin: 0; padding: 0;"
-                    data-options="fit:true, noheader:true, border:false">
-                    <iframe id="main-frame" src="about:blank" frameborder="0" scrolling="no" style="width:100%; height:101%; margin: 0; padding: 0; overflow-y: hidden;"></iframe>
-                </div>
-            </div>
-        </div>
-
-        <div id="change-password-dialog" class="easyui-dialog" title="Change password" style="width:600px;height:400px;margin:0;padding:0;overflow-y:hidden;visibility:hidden;"
-                data-options="iconCls:'icon-edit', closed: true, modal:true,
-                buttons:[{text:'OK', iconCls:'icon-ok', handler:function(){window.gui.saveNewPassword();}},
-                         {text:'Cancel', iconCls:'icon-cancel', handler:function(){window.gui.closePasswordDialog();}}]">
-                <form id="change-password-form" method="post">
-                    <div style="margin-bottom:20px; margin-top:80px; text-align: center;">
-                        <input class="easyui-passwordbox" name="old_pwd" prompt="Old Password" iconWidth="28" style="width:50%;height:34px;padding:10px">
-                    </div> 
-                    <div style="margin-bottom:20px;text-align: center;">
-                        <input class="easyui-passwordbox" name="new_pwd" prompt="New Password" iconWidth="28" style="width:50%;height:34px;padding:10px">
-                    </div>
-                    <div style="margin-bottom:20px;text-align: center;">
-                        <input class="easyui-passwordbox" name="new_pwd2" prompt="Input again the new password to confirm" iconWidth="28" style="width:50%;height:34px;padding:10px">
-                    </div>
-                        <input type="hidden" name="user_id" value="" />
-                        <input type="hidden" name="merchant_code" value="" />
-                </form>
-        </div>
+        <table id="tt" class="easyui-datagrid" style="width:100%;height:calc(100% - 10px)"
+			url="#"
+			title="Game Results" toolbar="#tb"
+			rownumbers="true" pagination="true">
+		<thead>
+			<tr>
+				<th field="record_id" width="100">Record ID</th>
+                <th field="table_code" width="100">Table Code</th>
+                <th field="round_code" width="150">Game Round</th>
+                <th field="game_time" width="200">Game Time</th>
+				<th field="game_result" width="500">Game Result</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" class="easyui-panel" style="padding:3px" data-options="noheader: true">
+        <span style="margin-left:10px">From:</span>
+		<input class="easyui-datetimebox" id="fromdt" style="width:180px">
+        <span style="margin-left:10px">To:</span>
+		<input class="easyui-datetimebox" id="todt" style="width:180px">
+		<a href="#" class="easyui-linkbutton" style="margin-left:10px" iconCls="icon-search" onclick="window.gui.doSearch()">Search</a>
+	</div>
         
         <script>
 
@@ -77,15 +67,15 @@
             SystemJS.config( { packages: { ".": { defaultExtension: "js" } } } );
             window.onload = function()
              {
-                SystemJS.import('main-page/main-page').then(function(main) 
+                SystemJS.import('game-result-page/game-result-page').then(function(main) 
                 {
                     window.gui = main.gui;
                     var len = window.appConfig.validationUrl.length;
                     var url = len > 0 ? window.appConfig.validationUrl : "";
-                    window.gui.entry.validate(url, { session_id: window.appConfig["sessionId"] }, function(result) {
+                    window.gui.entry.validate("", { session_id: window.appConfig["sessionId"] }, function(result) {
                         if (result && result.error === 0) {
                             window.gui.init(function () {
-                                //document.getElementById("change-password-dialog").style.visibility = "visible";
+                                // ...
                             });
                         } else {
                             $.messager.alert("Security","Please login first", "error", function () {

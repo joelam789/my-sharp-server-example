@@ -9,19 +9,19 @@ export class MenuTree extends BaseTree {
             if (this.gui) {
                 var data = [];
                 data.push({
+                    id: 1,
+                    text: "Game Results",
+                    iconCls: "icon-report",
+                    attributes: {
+                        url: (window as any).appConfig.gameResultSearchPage
+                    }
+                });
+                data.push({
                     id: 2,
                     text: "Bet Records",
                     iconCls: "icon-report",
                     attributes: {
                         url: (window as any).appConfig.reportPage
-                    }
-                });
-                data.push({
-                    id: 3,
-                    text: "Game Results",
-                    iconCls: "icon-report",
-                    attributes: {
-                        url: (window as any).appConfig.agentSettlePage
                     }
                 });
                 data.push({
