@@ -7,7 +7,7 @@ export class MenuTree extends BaseTree {
     init(callback?) {
         super.init(() => {
             if (this.gui) {
-                var data = [];
+                let data = [];
                 data.push({
                     id: 1,
                     text: "Game Results",

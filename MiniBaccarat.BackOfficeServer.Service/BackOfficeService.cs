@@ -24,8 +24,10 @@ namespace MiniBaccarat.BackOfficeServer.Service
                 return "Invalid request";
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
-            string sessionId = req.session_id.ToString();
+            //dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            var req = ctx.JsonCodec.ToDictionary(reqstr);
+            string sessionId = req.ContainsKey("session_id")? req["session_id"].ToString() 
+                                : (req.ContainsKey("sessionId") ? req["sessionId"].ToString() : "");
 
             var okay = false;
 
@@ -68,7 +70,75 @@ namespace MiniBaccarat.BackOfficeServer.Service
             }));
         }
 
+        [Access(Name = "get-game-results")]
+        public async Task GetGameResults(RequestContext ctx)
+        {
+            //System.Diagnostics.Debugger.Break();
 
+            string reqstr = ctx.Data.ToString();
+            if (reqstr.Trim().Length <= 0)
+            {
+                return;
+            }
+
+            //dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            var req = ctx.JsonCodec.ToDictionary(reqstr);
+
+            string sessionId = req.ContainsKey("sessionId") ? req["sessionId"].ToString() : "";
+
+            IDictionary<string, object> queryParam = req.ContainsKey("queryParam") ? req["queryParam"] as IDictionary<string, object> : null;
+
+            if (queryParam == null)
+            {
+                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                {
+                    total = 0,
+                    rows = new List<dynamic>(),
+                    error_code = 1,
+                    error_message = "Failed to get game results from DB",
+                }));
+                return;
+            }
+
+            string pageSize = queryParam.ContainsKey("rows") ? queryParam["rows"].ToString() : "1";
+            string pageNumber = queryParam.ContainsKey("page") ? queryParam["page"].ToString() : "1";
+
+            string merchantCode = queryParam.ContainsKey("merchantCode") ? queryParam["merchantCode"].ToString() : "";
+            string userId = queryParam.ContainsKey("userId") ? queryParam["userId"].ToString() : "";
+            string fromDateTime = queryParam.ContainsKey("fromDateTime") ? queryParam["fromDateTime"].ToString() : "";
+            string toDateTime = queryParam.ContainsKey("toDateTime") ? queryParam["toDateTime"].ToString() : "";
+
+            //ctx.Logger.Info("SessionID is: " + sessionId);
+            //ctx.Logger.Info("Page Size is: " + pageSize);
+            //ctx.Logger.Info("Page is: " + pageNumber);
+            //ctx.Logger.Info("merchantCode is: " + merchantCode);
+            //ctx.Logger.Info("fromDateTime is: " + fromDateTime);
+
+            var dbReq = new
+            {
+                pageSize,
+                pageNumber,
+                fromGameTime = fromDateTime,
+                toGameTime = toDateTime
+            };
+            string replystr = await RemoteCaller.RandomCall(ctx.RemoteServices,
+                "bo-data", "get-game-results", ctx.JsonCodec.ToJsonString(dbReq));
+
+            if (String.IsNullOrEmpty(replystr))
+            {
+                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                {
+                    total = 0,
+                    rows = new List<dynamic>(),
+                    error_code = 1,
+                    error_message = "Failed to get game results from DB",
+                }));
+            }
+            else
+            {
+                await ctx.Session.Send(replystr);
+            }
+        }
 
     }
 }

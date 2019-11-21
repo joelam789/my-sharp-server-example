@@ -1,3 +1,4 @@
+import { BaseGrid } from './../ui-common/base-grid';
 import { BaseDateTimebox } from './../ui-common/base-datebox';
 
 import { Container } from "../ui-common/container";
@@ -11,16 +12,35 @@ class Gui extends Container {
 
     fromDt: BaseDateTimebox = new BaseDateTimebox("fromdt");
     toDt: BaseDateTimebox = new BaseDateTimebox("todt");
+    gameResultGrid: BaseGrid = new BaseGrid("game-result-grid");
 
     init(callback) {
-        this.load([this.fromDt, this.toDt], callback);
+        this.load([this.fromDt, this.toDt, this.gameResultGrid], () => {
+
+            let reqUrl = window.location.protocol + "//" 
+                        + (window as any).appConfig.domainApiUrl 
+                        + (window as any).appConfig.gameResultReqUrl;
+
+            this.gameResultGrid.gui({
+                url: reqUrl,
+                contentType: "text/plain;charset=utf-8",
+                loader: function(param, success, error) {
+                    HttpClient.postJSON(reqUrl , { 
+                        sessionId: (window as any).appConfig.sessionId,
+                        queryParam: param } , 
+                        (json) => success(json), () => error()
+                    );
+                }
+            })
+            if (callback) callback();
+        });
     }
 
     doSearch() {
         let fromDateTime = this.fromDt.gui('getValue');
         let toDateTime = this.toDt.gui('getValue');
         
-        let data = {
+        let reqParams = {
             sessionId: (window as any).appConfig.sessionId,
             merchantCode: (window as any).appConfig.merchantCode,
             userId: (window as any).appConfig.userId,
@@ -28,7 +48,9 @@ class Gui extends Container {
             toDateTime: toDateTime
         }
 
-        console.log(data);
+        console.log(reqParams);
+
+        this.gameResultGrid.gui("load", reqParams);
     }
 
     

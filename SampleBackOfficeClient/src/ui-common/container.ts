@@ -38,7 +38,16 @@ export class Container {
             let m = date.getMonth()+1;
             let d = date.getDate();
             return y + '-' + m + '-' + d;
-        }
+        };
+
+        ($.fn as any).datebox.defaults.parser = function(s) {
+            let t = Date.parse(s);
+            if (!isNaN(t)) {
+                return new Date(t);
+            } else {
+                return new Date();
+            }
+        };
 
     }
 
