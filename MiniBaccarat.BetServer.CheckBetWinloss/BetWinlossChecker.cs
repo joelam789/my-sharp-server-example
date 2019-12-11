@@ -18,7 +18,7 @@ namespace MiniBaccarat.BetServer.CheckBetWinloss
         private IServerNode m_Node = null;
         private IServerLogger m_Logger = null;
 
-        private string m_MainCache = "SharpNode";
+        private string m_MainCache = "MainCache";
 
         private Dictionary<string, decimal> m_PayRates = new Dictionary<string, decimal>()
         {
@@ -55,7 +55,7 @@ namespace MiniBaccarat.BetServer.CheckBetWinloss
                 {
                     dbhelper.AddParam(cmd, "@server_code", gameServer);
 
-                    cmd.CommandText = " select a.game_result, b.bet_uuid, b.merchant_code, b.player_id, b.bet_pool, b.bet_amount from db_mini_baccarat.tbl_round_state a, db_mini_baccarat.tbl_bet_record b "
+                    cmd.CommandText = " select a.game_result, b.bet_uuid, b.merchant_code, b.player_id, b.bet_pool, b.bet_amount from tbl_round_state a, tbl_bet_record b "
                                     + " where a.round_state = 9 and b.bet_state = 0 "
                                     + " and a.server_code = @server_code "
                                     + " and a.server_code = b.server_code "

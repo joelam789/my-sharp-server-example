@@ -11,7 +11,7 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
     [Access(Name = "bo-login-service")]
     public class BackOfficeLoginService
     {
-        protected string m_MainCache = "SharpNode";
+        protected string m_MainCache = "MainCache";
 
         [Access(Name = "user-login")]
         public async Task UserLogin(RequestContext ctx)
@@ -77,7 +77,7 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
                     dbhelper.AddParam(cmd, "@account_id", req.account);
                     dbhelper.AddParam(cmd, "@merchant_code", req.merchant);
 
-                    cmd.CommandText = " update db_mini_baccarat.tbl_bo_session "
+                    cmd.CommandText = " update tbl_bo_session "
                                            + " set session_id = @session_id , last_access_time = NOW() "
                                            + " where merchant_code = @merchant_code and account_id = @account_id ";
 
@@ -91,7 +91,7 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
                             dbhelper.AddParam(cmd2, "@account_id", req.account);
                             dbhelper.AddParam(cmd2, "@merchant_code", req.merchant);
 
-                            cmd2.CommandText = " insert into db_mini_baccarat.tbl_bo_session "
+                            cmd2.CommandText = " insert into tbl_bo_session "
                                                 + " ( session_id , account_id , merchant_code, last_access_time ) values "
                                                 + " ( @session_id, @account_id, @merchant_code, NOW() ) ";
 

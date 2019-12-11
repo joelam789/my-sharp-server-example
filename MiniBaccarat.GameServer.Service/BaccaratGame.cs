@@ -104,7 +104,7 @@ namespace MiniBaccarat.GameServer.Service
 
         private Queue<int> m_History = new Queue<int>();
 
-        private string m_MainCache = "SharpNode";
+        private string m_MainCache = "MainCache";
 
         public static readonly int GET_READY_COUNTDOWN = 3;
         public static readonly int BET_TIME_COUNTDOWN = 10;
@@ -189,9 +189,9 @@ namespace MiniBaccarat.GameServer.Service
                         dbhelper.AddParam(cmd, "@server_code", m_Node.GetName());
                         dbhelper.AddParam(cmd, "@table_code", TableCode);
 
-                        cmd.CommandText = " delete from db_mini_baccarat.tbl_round_state "
+                        cmd.CommandText = " delete from tbl_round_state "
                                                 + " where server_code = @server_code ; ";
-                        cmd.CommandText = cmd.CommandText + " delete from db_mini_baccarat.tbl_round_state "
+                        cmd.CommandText = cmd.CommandText + " delete from tbl_round_state "
                                                 + " where table_code = @table_code ; ";
 
                         cmd.ExecuteNonQuery();
@@ -290,7 +290,7 @@ namespace MiniBaccarat.GameServer.Service
                         case (GAME_STATUS.Unknown): break;
                         case (GAME_STATUS.NotWorking): break;
                         case (GAME_STATUS.GetGameReady):
-                            cmd.CommandText = "update db_mini_baccarat.tbl_round_state "
+                            cmd.CommandText = "update tbl_round_state "
                                             + " set round_state = @round_state "
                                             + " , round_state_text = @round_state_text "
                                             + " , bet_time_countdown = @bet_time_countdown "
@@ -301,12 +301,12 @@ namespace MiniBaccarat.GameServer.Service
                             cmd.ExecuteNonQuery();
                             break;
                         case (GAME_STATUS.StartNewRound):
-                            cmd.CommandText = "update db_mini_baccarat.tbl_round_state "
+                            cmd.CommandText = "update tbl_round_state "
                                             + " set backup_number = backup_number + 1 , init_flag = state_id "
                                             + " where server_code = @server_code and table_code = @table_code ; ";
-                            cmd.CommandText = cmd.CommandText + "delete from db_mini_baccarat.tbl_round_state "
+                            cmd.CommandText = cmd.CommandText + "delete from tbl_round_state "
                                             + " where server_code = @server_code and table_code = @table_code and backup_number > 3 ; ";
-                            cmd.CommandText = cmd.CommandText + " insert into db_mini_baccarat.tbl_round_state "
+                            cmd.CommandText = cmd.CommandText + " insert into tbl_round_state "
                                             + " ( server_code, table_code, shoe_code, round_number, round_state, round_state_text, bet_time_countdown, "
                                             + "   player_cards, banker_cards, game_result, game_history, init_flag, round_start_time, round_update_time ) values "
                                             + " ( @server_code , @table_code , @shoe_code , @round_number , @round_state , @round_state_text , @bet_time_countdown , "
@@ -316,7 +316,7 @@ namespace MiniBaccarat.GameServer.Service
                             cmd.ExecuteNonQuery();
                             break;
                         case (GAME_STATUS.BettingTime):
-                            cmd.CommandText = "update db_mini_baccarat.tbl_round_state "
+                            cmd.CommandText = "update tbl_round_state "
                                             + " set round_state = @round_state "
                                             + " , round_state_text = @round_state_text "
                                             + " , bet_time_countdown = @bet_time_countdown "
@@ -331,7 +331,7 @@ namespace MiniBaccarat.GameServer.Service
                         case (GAME_STATUS.DealingLastBankerCard):
                         case (GAME_STATUS.CountingPoints):
                         case (GAME_STATUS.OutputGameResult):
-                            cmd.CommandText = "update db_mini_baccarat.tbl_round_state "
+                            cmd.CommandText = "update tbl_round_state "
                                             + " set round_state = @round_state "
                                             + " , round_state_text = @round_state_text "
                                             + " , player_cards = @player_cards "

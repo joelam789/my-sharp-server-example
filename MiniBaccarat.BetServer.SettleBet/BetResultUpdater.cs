@@ -16,7 +16,7 @@ namespace MiniBaccarat.BetServer.SettleBet
         private IServerNode m_Node = null;
         private IServerLogger m_Logger = null;
 
-        private string m_MainCache = "SharpNode";
+        private string m_MainCache = "MainCache";
 
         public BetResultUpdater(IServerNode node)
         {
@@ -41,7 +41,7 @@ namespace MiniBaccarat.BetServer.SettleBet
                     dbhelper.AddParam(cmd, "@pay_amount", bet.pay_amount);
                     dbhelper.AddParam(cmd, "@game_result", bet.game_result);
 
-                    cmd.CommandText = "update db_mini_baccarat.tbl_bet_record "
+                    cmd.CommandText = "update tbl_bet_record "
                                         + " set pay_amount = @pay_amount "
                                         + " , game_result = @game_result "
                                         + " , bet_state = 1 "

@@ -12,7 +12,7 @@ namespace MiniBaccarat.LoginServer.Service
     [Access(Name = "login")]
     public class LoginService
     {
-        protected string m_MainCache = "SharpNode";
+        protected string m_MainCache = "MainCache";
         protected IServerNode m_LocalNode = null;
 
         [Access(Name = "on-load", IsLocal = true)]
@@ -111,7 +111,7 @@ namespace MiniBaccarat.LoginServer.Service
                     dbhelper.AddParam(cmd, "@merchant_code", req.merchant_code);
                     dbhelper.AddParam(cmd, "@player_id", req.player_id);
 
-                    cmd.CommandText = " update db_mini_baccarat.tbl_player_session "
+                    cmd.CommandText = " update tbl_player_session "
                                            + " set session_id = @session_id , update_time = NOW() "
                                            + " where merchant_code = @merchant_code and player_id = @player_id ";
 
@@ -125,7 +125,7 @@ namespace MiniBaccarat.LoginServer.Service
                             dbhelper.AddParam(cmd2, "@merchant_code", req.merchant_code);
                             dbhelper.AddParam(cmd2, "@player_id", req.player_id);
 
-                            cmd2.CommandText = " insert into db_mini_baccarat.tbl_player_session "
+                            cmd2.CommandText = " insert into tbl_player_session "
                                                    + " ( session_id , merchant_code, player_id, update_time ) values "
                                                    + " ( @session_id, @merchant_code, @player_id, NOW() ) ";
 

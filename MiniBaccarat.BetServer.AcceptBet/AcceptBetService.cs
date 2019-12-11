@@ -13,7 +13,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
     {
         IServerNode m_Node = null;
         BetCollector m_BetCollector = null;
-        protected string m_MainCache = "SharpNode";
+        protected string m_MainCache = "MainCache";
 
         [Access(Name = "on-load", IsLocal = true)]
         public async Task<string> Load(IServerNode node)
@@ -76,7 +76,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
                         dbhelper.AddParam(cmd, "@merchant_code", merchantCode);
                         dbhelper.AddParam(cmd, "@player_id", playerId);
 
-                        cmd.CommandText = " select * from db_mini_baccarat.tbl_player_session "
+                        cmd.CommandText = " select * from tbl_player_session "
                                                + " where merchant_code = @merchant_code "
                                                + " and player_id = @player_id "
                                                + " and session_id = @session_id "

@@ -11,7 +11,7 @@ namespace MiniBaccarat.BackOfficeServer.Service
     [Access(Name = "bo-service")]
     public class BackOfficeService
     {
-        protected string m_MainCache = "SharpNode";
+        protected string m_MainCache = "MainCache";
 
         [Access(Name = "validate-request")]
         public string ValidateRequest(RequestContext ctx)
@@ -40,7 +40,7 @@ namespace MiniBaccarat.BackOfficeServer.Service
                     {
                         dbhelper.AddParam(cmd, "@session_id", sessionId);
 
-                        cmd.CommandText = " UPDATE db_mini_baccarat.tbl_bo_session "
+                        cmd.CommandText = " UPDATE tbl_bo_session "
                                                + " SET last_access_time = NOW() "
                                                + " WHERE session_id = @session_id "
                                                + " AND TIMESTAMPDIFF(SECOND, last_access_time, NOW()) <= 180 " // session timeout in 3 mins

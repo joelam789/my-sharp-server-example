@@ -21,7 +21,7 @@ namespace MiniBaccarat.FrontEndServer.TableInfo
 
         private bool m_IsRunning = false;
 
-        private string m_MainCache = "SharpNode";
+        private string m_MainCache = "MainCache";
 
         public TableInfoDeliverer(IServerNode node)
         {
@@ -77,7 +77,7 @@ namespace MiniBaccarat.FrontEndServer.TableInfo
             {
                 using (var cmd = cnn.CreateCommand())
                 {
-                    cmd.CommandText = "select * from db_mini_baccarat.tbl_round_state where backup_number = 0 ";
+                    cmd.CommandText = "select * from tbl_round_state where backup_number = 0 ";
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())

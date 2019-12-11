@@ -22,7 +22,7 @@ namespace MiniBaccarat.FrontEndServer.BetResult
 
         private bool m_IsRunning = false;
 
-        private string m_MainCache = "SharpNode";
+        private string m_MainCache = "MainCache";
 
         private string m_ServerName = "";
 
@@ -101,7 +101,7 @@ namespace MiniBaccarat.FrontEndServer.BetResult
                 {
                     dbhelper.AddParam(cmd, "@front_end", m_ServerName);
 
-                    cmd.CommandText = " update db_mini_baccarat.tbl_bet_record "
+                    cmd.CommandText = " update tbl_bet_record "
                                     + " set bet_state = 2 " // that means we are going to send them
                                     + " where front_end = @front_end and bet_state = 1 ";
 
@@ -113,7 +113,7 @@ namespace MiniBaccarat.FrontEndServer.BetResult
                     dbhelper.AddParam(cmd, "@front_end", m_ServerName);
 
                     // select records which are ready to be sent
-                    cmd.CommandText = " select * from db_mini_baccarat.tbl_bet_record "
+                    cmd.CommandText = " select * from tbl_bet_record "
                                     + " where front_end = @front_end and bet_state = 2 ";
 
                     using (var reader = cmd.ExecuteReader())
@@ -154,7 +154,7 @@ namespace MiniBaccarat.FrontEndServer.BetResult
                     dbhelper.AddParam(cmd, "@front_end", m_ServerName);
 
                     // remove them
-                    cmd.CommandText = " delete from db_mini_baccarat.tbl_bet_record "
+                    cmd.CommandText = " delete from tbl_bet_record "
                                     + " where front_end = @front_end and bet_state = 2 ";
 
                     cmd.ExecuteNonQuery();

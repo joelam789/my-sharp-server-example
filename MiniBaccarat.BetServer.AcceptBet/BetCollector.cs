@@ -16,7 +16,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
         private IServerNode m_Node = null;
         private IServerLogger m_Logger = null;
 
-        private string m_MainCache = "SharpNode";
+        private string m_MainCache = "MainCache";
 
         private Dictionary<string, decimal> m_PayRates = new Dictionary<string, decimal>()
         {
@@ -63,7 +63,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
                     dbhelper.AddParam(cmd, "@shoe_code", betreq.shoe_code);
                     dbhelper.AddParam(cmd, "@round_number", betreq.round_number);
 
-                    cmd.CommandText = " select * from db_mini_baccarat.tbl_round_state "
+                    cmd.CommandText = " select * from tbl_round_state "
                                     + " where round_state = 4 and bet_time_countdown > 0 "
                                     + " and server_code = @server_code and table_code = @table_code "
                                     + " and shoe_code = @shoe_code and round_number = @round_number ";
@@ -168,7 +168,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
                             dbhelper.AddParam(cmd, "@bet_pool", betreq.bet_pool);
                             dbhelper.AddParam(cmd, "@bet_amount", betreq.bet_amount);
 
-                            cmd.CommandText = " insert into db_mini_baccarat.tbl_bet_record "
+                            cmd.CommandText = " insert into tbl_bet_record "
                                             + " ( bet_uuid, merchant_code, player_id, server_code, table_code, shoe_code, round_number, client_id, front_end, bet_pool, bet_amount, bet_time ) values "
                                             + " ( @bet_uuid, @merchant_code, @player_id, @server_code , @table_code , @shoe_code , @round_number , @client_id , @front_end , @bet_pool, @bet_amount , CURRENT_TIMESTAMP ) "
                                             ;
