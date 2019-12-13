@@ -85,7 +85,7 @@ namespace MiniBaccarat.DataAccessServer.MerchantData
             {
                 using (var cmd = cnn.CreateCommand())
                 {
-                    cmd.CommandText = " select * from db_baccarat_main.tbl_merchant_info ";
+                    cmd.CommandText = " select * from tbl_merchant_info ";
 
                     using (var reader = cmd.ExecuteReader())
                     {
