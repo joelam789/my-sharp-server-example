@@ -139,6 +139,33 @@ namespace MiniBaccarat.GameServer.Service
             return m_Node.GetName() + "-" + m_ShoeCode + "-" + m_RoundIndex;
         }
 
+        private int GetCurrentCountdown()
+        {
+            int result = -1;
+            switch (m_GameState)
+            {
+                case (GAME_STATUS.Unknown): break;
+                case (GAME_STATUS.NotWorking): break;
+                case (GAME_STATUS.GetGameReady):
+                    result = m_GameReadyCountdown;
+                    break;
+                case (GAME_STATUS.StartNewRound):
+                    break;
+                case (GAME_STATUS.BettingTime):
+                    result = m_BettingTimeCountdown;
+                    break;
+                case (GAME_STATUS.DealingFirst4Cards):
+                case (GAME_STATUS.DealingLastPlayerCard):
+                case (GAME_STATUS.DealingLastBankerCard):
+                    break;
+                case (GAME_STATUS.CountingPoints):
+                    break;
+                case (GAME_STATUS.OutputGameResult):
+                    break;
+            }
+            return result;
+        }
+
         private dynamic Snapshot()
         {
             int gameResult = 0;
@@ -157,7 +184,7 @@ namespace MiniBaccarat.GameServer.Service
                 round = m_RoundIndex,
                 state = (int)m_GameState,
                 status = m_GameStatus[(int)m_GameState],
-                countdown = m_BettingTimeCountdown,
+                countdown = GetCurrentCountdown(),
                 starttime = m_RoundStartTime,
                 updatetime = m_RoundUpdateTime,
                 history = String.Join(",", m_History.ToArray()),
@@ -277,7 +304,7 @@ namespace MiniBaccarat.GameServer.Service
                     dbhelper.AddParam(cmd, "@round_number", snapshot.round);
                     dbhelper.AddParam(cmd, "@round_state", snapshot.state);
                     dbhelper.AddParam(cmd, "@round_state_text", snapshot.status);
-                    dbhelper.AddParam(cmd, "@bet_time_countdown", snapshot.countdown);
+                    dbhelper.AddParam(cmd, "@current_countdown", snapshot.countdown);
                     dbhelper.AddParam(cmd, "@player_cards", snapshot.player);
                     dbhelper.AddParam(cmd, "@banker_cards", snapshot.banker);
                     dbhelper.AddParam(cmd, "@game_result", snapshot.result);
@@ -291,9 +318,8 @@ namespace MiniBaccarat.GameServer.Service
                         case (GAME_STATUS.NotWorking): break;
                         case (GAME_STATUS.GetGameReady):
                             cmd.CommandText = "update tbl_round_state "
-                                            + " set round_state = @round_state "
-                                            + " , round_state_text = @round_state_text "
-                                            + " , bet_time_countdown = @bet_time_countdown "
+                                            + " set bet_time_countdown = -1 "
+                                            + " , next_round_countdown = @current_countdown "
                                             + " , round_update_time = @round_update_time "
                                             + " where server_code = @server_code and table_code = @table_code "
                                             + " and shoe_code = @shoe_code and round_number = @round_number "
@@ -309,7 +335,7 @@ namespace MiniBaccarat.GameServer.Service
                             cmd.CommandText = cmd.CommandText + " insert into tbl_round_state "
                                             + " ( server_code, table_code, shoe_code, round_number, round_state, round_state_text, bet_time_countdown, "
                                             + "   player_cards, banker_cards, game_result, game_history, init_flag, round_start_time, round_update_time ) values "
-                                            + " ( @server_code , @table_code , @shoe_code , @round_number , @round_state , @round_state_text , @bet_time_countdown , "
+                                            + " ( @server_code , @table_code , @shoe_code , @round_number , @round_state , @round_state_text , @current_countdown , "
                                             + "   @player_cards , @banker_cards , @game_result, @game_history, 0, @round_start_time, @round_update_time ) "
                                             ;
 
@@ -319,7 +345,7 @@ namespace MiniBaccarat.GameServer.Service
                             cmd.CommandText = "update tbl_round_state "
                                             + " set round_state = @round_state "
                                             + " , round_state_text = @round_state_text "
-                                            + " , bet_time_countdown = @bet_time_countdown "
+                                            + " , bet_time_countdown = @current_countdown "
                                             + " , round_update_time = @round_update_time "
                                             + " where server_code = @server_code and table_code = @table_code " 
                                             + " and shoe_code = @shoe_code and round_number = @round_number "

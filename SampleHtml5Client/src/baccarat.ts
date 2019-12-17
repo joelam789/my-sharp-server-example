@@ -68,7 +68,7 @@ export class BaccaratPage {
         this.gameTableInfo.basicInfo = JSON.parse(JSON.stringify(table.basicInfo));
         this.gameTableInfo.simpleRoadmap = JSON.parse(JSON.stringify(table.simpleRoadmap));
 
-        this.countdown = this.gameTableInfo.basicInfo.betTimeCountdown;
+        this.countdown = this.lastTableState >= 9 ? this.gameTableInfo.basicInfo.nextRoundCountdown : this.gameTableInfo.basicInfo.betTimeCountdown;
         this.gameTableStateText = BaccaratTableState.SIMPLE_GAME_STATES[this.gameTableInfo.basicInfo.roundState].toLocaleLowerCase();
 
         let playerCardArray = this.gameTableInfo.basicInfo.playerCards.split(",");

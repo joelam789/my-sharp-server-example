@@ -28,7 +28,8 @@ export class TableInfoHandler implements MessageHandler {
                     table.basicInfo.roundNumber = parseInt(item.round, 10);
                     table.basicInfo.roundState = parseInt(item.state, 10);
                     table.basicInfo.roundStateText = item.status;
-                    table.basicInfo.betTimeCountdown = parseInt(item.countdown, 10);
+                    table.basicInfo.betTimeCountdown = parseInt(item.bet_countdown, 10);
+                    table.basicInfo.nextRoundCountdown = parseInt(item.next_countdown, 10);
                     table.basicInfo.playerCards = item.player;
                     table.basicInfo.bankerCards = item.banker;
                     table.basicInfo.gameResult = item.result;

@@ -70,17 +70,17 @@ namespace MiniBaccarat.GameServer
             }
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (m_ServerNode != null && m_ServerNode.IsWorking()) m_ServerNode.Stop();
+            if (m_ServerNode != null && m_ServerNode.IsWorking()) await m_ServerNode.Stop();
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private async void btnStart_Click(object sender, EventArgs e)
         {
             if (m_ServerNode != null && !m_ServerNode.IsWorking())
             {
-                m_ServerNode.Start(m_InternalSetting, m_PublicSetting);
-                Thread.Sleep(500);
+                await m_ServerNode.Start(m_InternalSetting, m_PublicSetting);
+                await Task.Delay(500);
                 if (m_ServerNode.IsWorking())
                 {
                     CommonLog.Info("Server Started");
@@ -90,12 +90,12 @@ namespace MiniBaccarat.GameServer
             }
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
+        private async void btnStop_Click(object sender, EventArgs e)
         {
             if (m_ServerNode != null && m_ServerNode.IsWorking())
             {
-                m_ServerNode.Stop();
-                Thread.Sleep(500);
+                await m_ServerNode.Stop();
+                await Task.Delay(500);
                 if (!m_ServerNode.IsWorking())
                 {
                     CommonLog.Info("Server Stopped");

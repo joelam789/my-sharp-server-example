@@ -70,9 +70,9 @@ namespace MiniBaccarat.BackOfficeServer
             }
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (m_ServerNode != null && m_ServerNode.IsWorking()) m_ServerNode.Stop();
+            if (m_ServerNode != null && m_ServerNode.IsWorking()) await m_ServerNode.Stop();
         }
 
         private async void btnStart_Click(object sender, EventArgs e)

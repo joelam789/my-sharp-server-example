@@ -19,6 +19,7 @@ export class BaccaratTableBasicInfo {
     roundState: number = 0;
     roundStateText: string = "";
     betTimeCountdown: number = 0;
+    nextRoundCountdown: number = 0;
     playerCards: string = "";
     bankerCards: string = "";
     gameResult: string = "";
