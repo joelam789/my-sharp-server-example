@@ -656,7 +656,31 @@ namespace MiniBaccarat.GameServer.Service
 
             int playerCard1 = GetCardValue(m_PlayerCards[0][0].ToString());
             int playerCard2 = GetCardValue(m_PlayerCards[1][0].ToString());
+            int playerCard3 = -1;
             int playerValue = (playerCard1 + playerCard2) % 10;
+
+            int bankerCard1 = GetCardValue(m_BankerCards[0][0].ToString());
+            int bankerCard2 = GetCardValue(m_BankerCards[1][0].ToString());
+            int bankerCard3 = -1;
+            int bankerValue = (bankerCard1 + bankerCard2) % 10;
+
+            if (playerValue == 8 || playerValue == 9
+                || bankerValue == 8 || bankerValue == 9)
+            {
+                // no need to add cards ...
+                m_WaitingForDealing = false;
+                UpdateRoundState(GAME_STATUS.DealingLastBankerCard);
+                return "";
+            }
+
+            if ((playerValue == 6 || playerValue == 7)
+                && (bankerValue == 6 || bankerValue == 7))
+            {
+                // no need to add cards ...
+                m_WaitingForDealing = false;
+                UpdateRoundState(GAME_STATUS.DealingLastBankerCard);
+                return "";
+            }
 
             if (playerValue >= 0 && playerValue <= 5)
             {
@@ -678,6 +702,16 @@ namespace MiniBaccarat.GameServer.Service
 
             if (m_WaitingForDealing) return "";
 
+            int playerCard1 = GetCardValue(m_PlayerCards[0][0].ToString());
+            int playerCard2 = GetCardValue(m_PlayerCards[1][0].ToString());
+            int playerCard3 = -1;
+            int playerValue = (playerCard1 + playerCard2) % 10;
+            if (m_PlayerCards.Count >= 3)
+            {
+                playerCard3 = GetCardValue(m_PlayerCards[2][0].ToString());
+                playerValue = (playerCard1 + playerCard2 + playerCard3) % 10;
+            }
+
             int bankerCard1 = GetCardValue(m_BankerCards[0][0].ToString());
             int bankerCard2 = GetCardValue(m_BankerCards[1][0].ToString());
             int bankerValue = (bankerCard1 + bankerCard2) % 10;
@@ -689,11 +723,7 @@ namespace MiniBaccarat.GameServer.Service
             else if (bankerValue == 3)
             {
                 bool needMore = true;
-                if (m_PlayerCards.Count == 3)
-                {
-                    int playerCard3 = GetCardValue(m_PlayerCards[2][0].ToString());
-                    if (playerCard3 == 8) needMore = false;
-                }
+                if (playerCard3 == 8) needMore = false;
                 if (needMore) DealingOneBankerCard(GAME_STATUS.CountingPoints);
                 //else m_GameState = GAME_STATUS.CountingPoints;
                 else UpdateRoundState(GAME_STATUS.CountingPoints);
@@ -701,11 +731,7 @@ namespace MiniBaccarat.GameServer.Service
             else if (bankerValue == 4)
             {
                 bool needMore = true;
-                if (m_PlayerCards.Count == 3)
-                {
-                    int playerCard3 = GetCardValue(m_PlayerCards[2][0].ToString());
-                    if (playerCard3 == 0 || playerCard3 == 1 || playerCard3 == 8 || playerCard3 == 9) needMore = false;
-                }
+                if (playerCard3 == 0 || playerCard3 == 1 || playerCard3 == 8 || playerCard3 == 9) needMore = false;
                 if (needMore) DealingOneBankerCard(GAME_STATUS.CountingPoints);
                 //else m_GameState = GAME_STATUS.CountingPoints;
                 else UpdateRoundState(GAME_STATUS.CountingPoints);
@@ -713,12 +739,8 @@ namespace MiniBaccarat.GameServer.Service
             else if (bankerValue == 5)
             {
                 bool needMore = true;
-                if (m_PlayerCards.Count == 3)
-                {
-                    int playerCard3 = GetCardValue(m_PlayerCards[2][0].ToString());
-                    if (playerCard3 == 0 || playerCard3 == 1 || playerCard3 == 2 
-                        || playerCard3 == 3 || playerCard3 == 8 || playerCard3 == 9) needMore = false;
-                }
+                if (playerCard3 == 0 || playerCard3 == 1 || playerCard3 == 2 || playerCard3 == 3
+                    || playerCard3 == 8 || playerCard3 == 9) needMore = false;
                 if (needMore) DealingOneBankerCard(GAME_STATUS.CountingPoints);
                 //else m_GameState = GAME_STATUS.CountingPoints;
                 else UpdateRoundState(GAME_STATUS.CountingPoints);
@@ -726,11 +748,7 @@ namespace MiniBaccarat.GameServer.Service
             else if (bankerValue == 6)
             {
                 bool needMore = false;
-                if (m_PlayerCards.Count == 3)
-                {
-                    int playerCard3 = GetCardValue(m_PlayerCards[2][0].ToString());
-                    if (playerCard3 == 6 || playerCard3 == 7) needMore = true;
-                }
+                if (playerCard3 == 6 || playerCard3 == 7) needMore = true;
                 if (needMore) DealingOneBankerCard(GAME_STATUS.CountingPoints);
                 //else m_GameState = GAME_STATUS.CountingPoints;
                 else UpdateRoundState(GAME_STATUS.CountingPoints);

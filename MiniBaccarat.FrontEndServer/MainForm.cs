@@ -70,9 +70,12 @@ namespace MiniBaccarat.FrontEndServer
             }
         }
 
-        private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (m_ServerNode != null && m_ServerNode.IsWorking()) await m_ServerNode.Stop();
+            CommonLog.Info("Exiting...");
+            this.Text = this.Text + " - Exiting...";
+            if (m_ServerNode != null && m_ServerNode.IsWorking()) m_ServerNode.Stop();
+            Thread.Sleep(1000);
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
