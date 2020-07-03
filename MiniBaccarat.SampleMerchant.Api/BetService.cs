@@ -19,7 +19,7 @@ namespace MiniBaccarat.SampleMerchant.Api
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -27,12 +27,12 @@ namespace MiniBaccarat.SampleMerchant.Api
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
             bool requestToCancel = req.is_cancelled;
 
             if (requestToCancel)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -2,
                     error_message = "Not support cancelling"
@@ -244,7 +244,7 @@ namespace MiniBaccarat.SampleMerchant.Api
                 player_balance = balance,
                 error_code = found && done ? 0 : -1
             };
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(reply));
         }
 
 
@@ -256,7 +256,7 @@ namespace MiniBaccarat.SampleMerchant.Api
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -264,12 +264,12 @@ namespace MiniBaccarat.SampleMerchant.Api
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
             bool requestToCancel = req.is_cancelled;
 
             if (requestToCancel)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -2,
                     error_message = "Not support cancelling"
@@ -480,7 +480,7 @@ namespace MiniBaccarat.SampleMerchant.Api
                 player_balance = balance,
                 error_code = found && done ? 0 : -1
             };
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(reply));
         }
 
     }

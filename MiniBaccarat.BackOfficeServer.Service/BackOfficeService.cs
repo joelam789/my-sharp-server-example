@@ -24,8 +24,8 @@ namespace MiniBaccarat.BackOfficeServer.Service
                 return "Invalid request";
             }
 
-            //dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
-            var req = ctx.JsonCodec.ToDictionary(reqstr);
+            //dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
+            var req = ctx.JsonHelper.ToDictionary(reqstr);
             string sessionId = req.ContainsKey("session_id")? req["session_id"].ToString() 
                                 : (req.ContainsKey("sessionId") ? req["sessionId"].ToString() : "");
 
@@ -64,7 +64,7 @@ namespace MiniBaccarat.BackOfficeServer.Service
         [Access(Name = "check-session")]
         public async Task CheckSession(RequestContext ctx)
         {
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
             {
                 error = 0
             }));
@@ -81,8 +81,8 @@ namespace MiniBaccarat.BackOfficeServer.Service
                 return;
             }
 
-            //dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
-            var req = ctx.JsonCodec.ToDictionary(reqstr);
+            //dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
+            var req = ctx.JsonHelper.ToDictionary(reqstr);
 
             string sessionId = req.ContainsKey("sessionId") ? req["sessionId"].ToString() : "";
 
@@ -90,7 +90,7 @@ namespace MiniBaccarat.BackOfficeServer.Service
 
             if (queryParam == null)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     total = 0,
                     rows = new List<dynamic>(),
@@ -122,11 +122,11 @@ namespace MiniBaccarat.BackOfficeServer.Service
                 toGameTime = toDateTime
             };
             string replystr = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                "bo-data", "get-game-results", ctx.JsonCodec.ToJsonString(dbReq));
+                "bo-data", "get-game-results", ctx.JsonHelper.ToJsonString(dbReq));
 
             if (String.IsNullOrEmpty(replystr))
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     total = 0,
                     rows = new List<dynamic>(),

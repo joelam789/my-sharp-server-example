@@ -60,7 +60,7 @@ namespace MiniBaccarat.BetServer.SettleBet
                 return;
             }
 
-            dynamic betreq = ctx.JsonCodec.ToJsonObject(betstr);
+            dynamic betreq = ctx.JsonHelper.ToJsonObject(betstr);
 
             bool okay = m_Updater.Update(betreq) > 0;
 

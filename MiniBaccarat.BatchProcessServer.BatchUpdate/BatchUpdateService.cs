@@ -38,7 +38,7 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             List<dynamic> passIds = new List<dynamic>();
             List<Task> dbTasks = new List<Task>();
@@ -64,7 +64,7 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
 
             Task.WaitAll(dbTasks.ToArray());
 
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(passIds));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(passIds));
 
         }
 
@@ -78,7 +78,7 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             List<string> errIds = new List<string>();
             List<Task> cacheTasks = new List<Task>();
@@ -95,7 +95,7 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
 
             Task.WaitAll(cacheTasks.ToArray());
 
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(errIds));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(errIds));
 
         }
 
@@ -109,7 +109,7 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             List<string> errIds = new List<string>();
             List<Task> walletTasks = new List<Task>();
@@ -126,7 +126,7 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
                     }
                     else
                     {
-                        dynamic walletReply = ctx.JsonCodec.ToJsonObject(walletReplyStr);
+                        dynamic walletReply = ctx.JsonHelper.ToJsonObject(walletReplyStr);
                         if (walletReply.error_code != 0) errIds.Add(uuid);
                     }
                     
@@ -135,7 +135,7 @@ namespace MiniBaccarat.BatchProcessServer.BatchUpdate
 
             Task.WaitAll(walletTasks.ToArray());
 
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(errIds));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(errIds));
 
         }
     }

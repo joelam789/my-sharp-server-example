@@ -58,7 +58,7 @@ namespace MiniBaccarat.DataAccessServer.BetData
             string betId = GetBetId();
             string betTimeStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            dynamic betreq = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic betreq = ctx.JsonHelper.ToJsonObject(reqstr);
 
             string merchantCode = betreq.merchant_code.ToString();
 
@@ -113,7 +113,7 @@ namespace MiniBaccarat.DataAccessServer.BetData
 
             if (okay)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = 0,
                     bet_uuid = betId,
@@ -133,7 +133,7 @@ namespace MiniBaccarat.DataAccessServer.BetData
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             bool okay = false;
             string betId = req.bet_uuid;

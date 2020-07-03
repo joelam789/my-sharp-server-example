@@ -55,7 +55,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
                 return "Invalid request";
             }
 
-            dynamic betreq = ctx.JsonCodec.ToJsonObject(betstr);
+            dynamic betreq = ctx.JsonHelper.ToJsonObject(betstr);
 
             string playerId = betreq.player_id;
             string merchantCode = betreq.merchant_code;
@@ -121,7 +121,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
                 return;
             }
 
-            dynamic betreq = ctx.JsonCodec.ToJsonObject(betstr);
+            dynamic betreq = ctx.JsonHelper.ToJsonObject(betstr);
 
             var reply = await m_BetCollector.AcceptBet(betreq);
 
@@ -129,7 +129,7 @@ namespace MiniBaccarat.BetServer.AcceptBet
                 ctx.Logger.Info("BET - [" + betreq.merchant_code + " - "  + betreq.player_id + "], " 
                     + "[" + betreq.round_number + "], " + betreq.bet_pool + " , " + betreq.bet_amount);
 
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(reply));
 
         }
     }

@@ -21,7 +21,7 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -29,7 +29,7 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             var dataReq = new
             {
@@ -39,11 +39,11 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
             };
 
             string dataReplyString = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                                        "bo-data", "check-account", ctx.JsonCodec.ToJsonString(dataReq));
+                                        "bo-data", "check-account", ctx.JsonHelper.ToJsonString(dataReq));
 
             if (String.IsNullOrEmpty(dataReplyString))
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Failed to check backoffice account from db: [" + req.merchant.ToString() + "]" + req.account.ToString()
@@ -51,10 +51,10 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
                 return;
             }
 
-            dynamic dataReply = ctx.JsonCodec.ToJsonObject(dataReplyString);
+            dynamic dataReply = ctx.JsonHelper.ToJsonObject(dataReplyString);
             if (dataReply.error_code != 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     dataReply.error_code,
                     error_message = "Failed to validate backoffice account from db: [" + req.merchant.ToString() + "]"
@@ -104,7 +104,7 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
             if (!okay)
             {
                 ctx.Logger.Error("Failed to let backoffice user login: cache error");
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Failed to let backoffice user login: cache error"
@@ -112,7 +112,7 @@ namespace MiniBaccarat.BackOfficeServer.LoginService
                 return;
             }
 
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
             {
                 session_id = sessionId,
                 req.account,

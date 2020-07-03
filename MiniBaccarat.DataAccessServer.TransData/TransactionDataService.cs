@@ -17,7 +17,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -25,7 +25,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             bool okay = false;
             string debitId = req.bet_uuid + "-debit";
@@ -40,7 +40,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
 
             if (String.IsNullOrEmpty(merchantUrl))
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Merchant API URL not found: " + req.merchant_code.ToString()
@@ -82,7 +82,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
 
             if (okay)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = 0,
                     debit_uuid = debitId,
@@ -90,7 +90,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
                     request_url = requestUrl
                 }));
             }
-            else await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+            else await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
             {
                 error_code = -1,
                 error_message = "Failed to update database"
@@ -103,7 +103,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -111,7 +111,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             bool okay = false;
             string debitId = req.debit_uuid;
@@ -146,12 +146,12 @@ namespace MiniBaccarat.DataAccessServer.TransData
 
             if (okay)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = 0
                 }));
             }
-            else await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+            else await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
             {
                 error_code = -1,
                 error_message = "Failed to update database"
@@ -164,7 +164,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -172,7 +172,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             bool okay = false;
             string creditId = req.bet_uuid + "-credit";
@@ -187,7 +187,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
 
             if (String.IsNullOrEmpty(merchantUrl))
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Merchant API URL not found: " + req.merchant_code.ToString()
@@ -229,7 +229,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
 
             if (okay)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = 0,
                     credit_uuid = creditId,
@@ -237,7 +237,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
                     request_url = requestUrl
                 }));
             }
-            else await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+            else await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
             {
                 error_code = -1,
                 error_message = "Failed to update database"
@@ -250,7 +250,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -258,7 +258,7 @@ namespace MiniBaccarat.DataAccessServer.TransData
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             bool okay = false;
             string creditId = req.credit_uuid;
@@ -293,12 +293,12 @@ namespace MiniBaccarat.DataAccessServer.TransData
 
             if (okay)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = 0
                 }));
             }
-            else await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+            else await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
             {
                 error_code = -1,
                 error_message = "Failed to update database"

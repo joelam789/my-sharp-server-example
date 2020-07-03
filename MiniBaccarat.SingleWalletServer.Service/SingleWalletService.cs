@@ -19,7 +19,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -27,7 +27,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             ctx.Logger.Info("Create debit record in db...");
 
@@ -43,11 +43,11 @@ namespace MiniBaccarat.SingleWalletServer.Service
                 bet_amount = req.bet_amount
             };
             string dbReplyStr = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                "transaction-data", "create-debit", ctx.JsonCodec.ToJsonString(saveReq));
+                "transaction-data", "create-debit", ctx.JsonHelper.ToJsonString(saveReq));
 
             if (dbReplyStr.Trim().Length <= 0 || !dbReplyStr.Contains("{"))
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Failed to create debit record in db: " + dbReplyStr
@@ -58,7 +58,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
 
             ctx.Logger.Info("Call merchant site to debit...");
 
-            dynamic dbReply = ctx.JsonCodec.ToJsonObject(dbReplyStr);
+            dynamic dbReply = ctx.JsonHelper.ToJsonObject(dbReplyStr);
             string apiUrl = dbReply.request_url;
 
             var apiReq = new
@@ -90,11 +90,11 @@ namespace MiniBaccarat.SingleWalletServer.Service
                     response_error = 0
                 };
                 string dbReplyStr2 = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                    "transaction-data", "update-debit", ctx.JsonCodec.ToJsonString(updateReq));
+                    "transaction-data", "update-debit", ctx.JsonHelper.ToJsonString(updateReq));
 
-                dynamic dbReply2 = ctx.JsonCodec.ToJsonObject(dbReplyStr2);
+                dynamic dbReply2 = ctx.JsonHelper.ToJsonObject(dbReplyStr2);
 
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Failed to call debit function from merchant site"
@@ -117,7 +117,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
                         response_error = 0
                     };
                     string dbReplyStr2 = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                        "transaction-data", "update-debit", ctx.JsonCodec.ToJsonString(updateReq));
+                        "transaction-data", "update-debit", ctx.JsonHelper.ToJsonString(updateReq));
 
                     if (String.IsNullOrEmpty(dbReplyStr2))
                     {
@@ -125,7 +125,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
                     }
                     else
                     {
-                        dynamic dbReply2 = ctx.JsonCodec.ToJsonObject(dbReplyStr2);
+                        dynamic dbReply2 = ctx.JsonHelper.ToJsonObject(dbReplyStr2);
                         ctx.Logger.Info("Update debit record in db - error code: " + dbReply2.error_code.ToString());
                     }
                 }
@@ -142,13 +142,13 @@ namespace MiniBaccarat.SingleWalletServer.Service
                         response_error = ret.error_code
                     };
                     string dbReplyStr2 = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                        "transaction-data", "update-debit", ctx.JsonCodec.ToJsonString(updateReq));
+                        "transaction-data", "update-debit", ctx.JsonHelper.ToJsonString(updateReq));
 
-                    dynamic dbReply2 = ctx.JsonCodec.ToJsonObject(dbReplyStr2);
+                    dynamic dbReply2 = ctx.JsonHelper.ToJsonObject(dbReplyStr2);
 
                 }
 
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(ret));
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(ret));
             }
         }
 
@@ -160,7 +160,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -168,7 +168,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             ctx.Logger.Info("Create credit record in db...");
 
@@ -184,11 +184,11 @@ namespace MiniBaccarat.SingleWalletServer.Service
                 pay_amount = req.pay_amount
             };
             string dbReplyStr = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                "transaction-data", "create-credit", ctx.JsonCodec.ToJsonString(saveReq));
+                "transaction-data", "create-credit", ctx.JsonHelper.ToJsonString(saveReq));
 
             if (dbReplyStr.Trim().Length <= 0 || !dbReplyStr.Contains('{'))
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Failed to create credit record in db: " + dbReplyStr
@@ -199,7 +199,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
 
             ctx.Logger.Info("Call merchant site to credit...");
 
-            dynamic dbReply = ctx.JsonCodec.ToJsonObject(dbReplyStr);
+            dynamic dbReply = ctx.JsonHelper.ToJsonObject(dbReplyStr);
             string apiUrl = dbReply.request_url;
 
             var apiReq = new
@@ -231,11 +231,11 @@ namespace MiniBaccarat.SingleWalletServer.Service
                     response_error = 0
                 };
                 string dbReplyStr2 = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                    "transaction-data", "update-credit", ctx.JsonCodec.ToJsonString(updateReq));
+                    "transaction-data", "update-credit", ctx.JsonHelper.ToJsonString(updateReq));
 
-                dynamic dbReply2 = ctx.JsonCodec.ToJsonObject(dbReplyStr2);
+                dynamic dbReply2 = ctx.JsonHelper.ToJsonObject(dbReplyStr2);
 
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Failed to call credit function from merchant site"
@@ -258,7 +258,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
                         response_error = 0
                     };
                     string dbReplyStr2 = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                        "transaction-data", "update-credit", ctx.JsonCodec.ToJsonString(updateReq));
+                        "transaction-data", "update-credit", ctx.JsonHelper.ToJsonString(updateReq));
 
                     if (String.IsNullOrEmpty(dbReplyStr2))
                     {
@@ -266,7 +266,7 @@ namespace MiniBaccarat.SingleWalletServer.Service
                     }
                     else
                     {
-                        dynamic dbReply2 = ctx.JsonCodec.ToJsonObject(dbReplyStr2);
+                        dynamic dbReply2 = ctx.JsonHelper.ToJsonObject(dbReplyStr2);
                         ctx.Logger.Info("Update credit record in db - error code: " + dbReply2.error_code.ToString());
                     }
                 }
@@ -283,13 +283,13 @@ namespace MiniBaccarat.SingleWalletServer.Service
                         response_error = ret.error_code
                     };
                     string dbReplyStr2 = await RemoteCaller.RandomCall(ctx.RemoteServices,
-                        "transaction-data", "update-credit", ctx.JsonCodec.ToJsonString(updateReq));
+                        "transaction-data", "update-credit", ctx.JsonHelper.ToJsonString(updateReq));
 
-                    dynamic dbReply2 = ctx.JsonCodec.ToJsonObject(dbReplyStr2);
+                    dynamic dbReply2 = ctx.JsonHelper.ToJsonObject(dbReplyStr2);
 
                 }
 
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(ret));
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(ret));
             }
         }
     }

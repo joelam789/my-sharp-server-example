@@ -54,7 +54,7 @@ namespace MiniBaccarat.LoginServer.Service
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -62,14 +62,14 @@ namespace MiniBaccarat.LoginServer.Service
                 return;
             }
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             string merchantUrl = await RemoteCaller.RandomCall(m_LocalNode.GetRemoteServices(),
                                         "merchant-data", "get-merchant-url", req.merchant_code.ToString());
 
             if (String.IsNullOrEmpty(merchantUrl))
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Merchant API URL not found: " + req.merchant_code.ToString()
@@ -91,7 +91,7 @@ namespace MiniBaccarat.LoginServer.Service
             if (ret == null || ret.error_code != 0)
             {
                 ctx.Logger.Error("Three-Way Login Error: " + (ret == null ? "Failed to call merchant API" : ret.error_message));
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Three-Way Login Error"
@@ -138,7 +138,7 @@ namespace MiniBaccarat.LoginServer.Service
             if (!okay)
             {
                 ctx.Logger.Error("Three-Way Login Failed!");
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Three-Way Login Failed"
@@ -151,7 +151,7 @@ namespace MiniBaccarat.LoginServer.Service
             var frontEndUrl = RandomPickPublicServiceUrl(remoteServices, "table-info");
             var betServerUrl = RandomPickPublicServiceUrl(remoteServices, "accept-bet");
 
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
             {
                 req.merchant_code,
                 req.player_id,

@@ -24,7 +24,7 @@ namespace MiniBaccarat.SampleMerchant.Api
             decimal balance = -1;
             bool found = false;
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             string merchantCode = req.merchant_code.ToString();
 
@@ -82,7 +82,7 @@ namespace MiniBaccarat.SampleMerchant.Api
                 error_code = balance >= 0 ? 0 : -1
             };
             if (reply.error_code == 0) ctx.Logger.Info("Three-Way Login Passed on merchant site!");
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(reply));
         }
 
         [Access(Name = "get-player-balance")]
@@ -98,7 +98,7 @@ namespace MiniBaccarat.SampleMerchant.Api
             decimal balance = 0;
             bool found = false;
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             string merchantCode = req.merchant_code.ToString();
 
@@ -137,7 +137,7 @@ namespace MiniBaccarat.SampleMerchant.Api
                 error_code = balance >= 0 ? 0 : -1
             };
             
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(reply));
         }
     }
 }

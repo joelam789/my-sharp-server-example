@@ -30,7 +30,7 @@ namespace MiniBaccarat.DataAccessServer.BackOfficeData
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -41,7 +41,7 @@ namespace MiniBaccarat.DataAccessServer.BackOfficeData
             bool okay = false;
             //string sessionId = "";
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             var dbhelper = ctx.DataHelper;
             using (var cnn = dbhelper.OpenDatabase("main"))
@@ -67,7 +67,7 @@ namespace MiniBaccarat.DataAccessServer.BackOfficeData
             if (okay)
             {
                 //sessionId = Guid.NewGuid().ToString();
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = 0,
                     //session_id = sessionId,
@@ -76,7 +76,7 @@ namespace MiniBaccarat.DataAccessServer.BackOfficeData
             } 
             else
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = 2,
                     error_message = "Invalid account or password"
@@ -90,7 +90,7 @@ namespace MiniBaccarat.DataAccessServer.BackOfficeData
             string reqstr = ctx.Data.ToString();
             if (reqstr.Trim().Length <= 0)
             {
-                await ctx.Session.Send(ctx.JsonCodec.ToJsonString(new
+                await ctx.Session.Send(ctx.JsonHelper.ToJsonString(new
                 {
                     error_code = -1,
                     error_message = "Invalid request"
@@ -103,7 +103,7 @@ namespace MiniBaccarat.DataAccessServer.BackOfficeData
             dynamic reply = new ExpandoObject();
             reply.rows = new List<ExpandoObject>();
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             string pageSizeStr = req.pageSize;
             string pageNumberStr = req.pageNumber;
@@ -192,7 +192,7 @@ namespace MiniBaccarat.DataAccessServer.BackOfficeData
                 reply.error_message = "Failed to get game results from DB";
             }
 
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(reply));
         }
 
     }

@@ -61,7 +61,7 @@ namespace MiniBaccarat.BetServer.CheckBetWinloss
             }
 
             var reply = m_Checker.CheckBetWinlossByGameResult(gameServerName);
-            await ctx.Session.Send(ctx.JsonCodec.ToJsonString(reply));
+            await ctx.Session.Send(ctx.JsonHelper.ToJsonString(reply));
 
         }
     }

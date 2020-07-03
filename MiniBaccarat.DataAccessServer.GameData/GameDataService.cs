@@ -35,7 +35,7 @@ namespace MiniBaccarat.DataAccessServer.GameData
 
             bool okay = false;
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             var dbhelper = ctx.DataHelper;
             using (var cnn = dbhelper.OpenDatabase("main"))
@@ -80,7 +80,7 @@ namespace MiniBaccarat.DataAccessServer.GameData
 
             bool okay = false;
 
-            dynamic req = ctx.JsonCodec.ToJsonObject(reqstr);
+            dynamic req = ctx.JsonHelper.ToJsonObject(reqstr);
 
             var dbhelper = ctx.DataHelper;
             using (var cnn = dbhelper.OpenDatabase("main"))
